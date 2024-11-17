@@ -1,6 +1,6 @@
 [configuration]
 
-entry_symbol = "example_library_init"
+entry_symbol = "rdphysics_init"
 compatibility_minimum = "4.1"
 
 [libraries]
@@ -9,10 +9,10 @@ macos.debug = "res://bin/macos/macos.framework/libEXTENSION-NAME.macos.template_
 macos.release = "res://bin/macos/macos.framework/libEXTENSION-NAME.macos.template_release"
 ios.debug = "res://bin/ios/ios.framework/libEXTENSION-NAME.ios.template_debug"
 ios.release = "res://bin/ios/ios.framework/libEXTENSION-NAME.ios.template_release"
-windows.debug.x86_32 = "res://bin/windows/libEXTENSION-NAME.windows.template_debug.x86_32.dll"
-windows.release.x86_32 = "res://bin/windows/libEXTENSION-NAME.windows.template_release.x86_32.dll"
-windows.debug.x86_64 = "res://bin/windows/libEXTENSION-NAME.windows.template_debug.x86_64.dll"
-windows.release.x86_64 = "res://bin/windows/libEXTENSION-NAME.windows.template_release.x86_64.dll"
+windows.debug.x86_32 = "res://bin/windows/libRDPhysics.windows.template_debug.x86_32.dll"
+windows.release.x86_32 = "res://bin/windows/libRDPhysics.windows.template_release.x86_32.dll"
+windows.debug.x86_64 = "res://bin/windows/libRDPhysics.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://bin/windows/libRDPhysics.windows.template_release.x86_64.dll"
 linux.debug.x86_64 = "res://bin/linux/libEXTENSION-NAME.linux.template_debug.x86_64.so"
 linux.release.x86_64 = "res://bin/linux/libEXTENSION-NAME.linux.template_release.x86_64.so"
 linux.debug.arm64 = "res://bin/linux/libEXTENSION-NAME.linux.template_debug.arm64.so"
