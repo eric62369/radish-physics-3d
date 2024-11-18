@@ -45,6 +45,8 @@ compile_commands.json
 *.includes
 *.idb
 *.exp
+*.dll
+*.a
 
 # Other stuff
 *.log
