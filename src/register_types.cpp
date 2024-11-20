@@ -1,4 +1,7 @@
 #include "register_types.h"
+
+#include "gdexample.h"
+
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/defs.hpp>
@@ -11,6 +14,8 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
+
+	GDREGISTER_CLASS(GDExample);
 	//GDREGISTER_CLASS(YourClass);
 }
 
