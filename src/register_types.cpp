@@ -7,7 +7,30 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
+#include "./math/sg_fixed_singleton.h"
+#include "./math/sg_fixed_vector2.h"
+#include "./math/sg_fixed_rect2.h"
+#include "./math/sg_fixed_transform_2d.h"
+#include "./scene/2d/sg_fixed_position_2d.h"
+#include "./scene/2d/sg_area_2d.h"
+#include "./scene/2d/sg_static_body_2d.h"
+#include "./scene/2d/sg_character_body_2d.h"
+#include "./scene/2d/sg_ray_cast_2d.h"
+#include "./scene/2d/sg_collision_shape_2d.h"
+#include "./scene/2d/sg_collision_polygon_2d.h"
+#include "./scene/resources/sg_shapes_2d.h"
+#include "./servers/sg_physics_2d_server.h"
+#include "../internal/sg_world_2d_internal.h"
+
+#if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
+#include "./editor/sg_collision_shape_2d_editor_plugin.h"
+#include "./editor/sg_collision_polygon_2d_editor_plugin.h"
+#endif
+
 using namespace godot;
+
+static SGFixed *fixed_singleton;
+static SGPhysics2DServer *server_singleton;
 
 void initialize_gdextension_types(ModuleInitializationLevel p_level)
 {

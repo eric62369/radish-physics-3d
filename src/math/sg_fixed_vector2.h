@@ -27,7 +27,7 @@
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/variant.hpp>
 
-#include "../../internal/sg_fixed_vector2_internal.h"
+#include "../internal/sg_fixed_vector2_internal.h"
 
 using namespace godot;
 
