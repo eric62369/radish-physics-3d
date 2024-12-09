@@ -5,7 +5,9 @@
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/defs.hpp>
+#include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/godot.hpp>
+
 
 #include "./math/sg_fixed_singleton.h"
 #include "./math/sg_fixed_vector2.h"
