@@ -28,7 +28,7 @@
 
 #include "sg_fixed_node_2d.h"
 
-#include "../../../internal/sg_bodies_2d_internal.h"
+#include "../../internal/sg_bodies_2d_internal.h"
 #include "../../math/sg_fixed_vector2.h"
 
 class SGRayCast2D : public SGFixedNode2D {

@@ -20,7 +20,7 @@
 #include "./scene/2d/sg_collision_polygon_2d.h"
 #include "./scene/resources/sg_shapes_2d.h"
 #include "./servers/sg_physics_2d_server.h"
-#include "../internal/sg_world_2d_internal.h"
+#include "./internal/sg_world_2d_internal.h"
 
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 #include "./editor/sg_collision_shape_2d_editor_plugin.h"

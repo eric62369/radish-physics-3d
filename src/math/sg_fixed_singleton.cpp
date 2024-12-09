@@ -26,7 +26,7 @@
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/packed_string_array.hpp>
 
-#include "../../internal/sg_fixed_number_internal.h"
+#include "../internal/sg_fixed_number_internal.h"
 
 const int64_t SGFixed::TENS[] { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000 };
 const int SGFixed::TENS_SIZE = sizeof(TENS)/sizeof(TENS[0]);

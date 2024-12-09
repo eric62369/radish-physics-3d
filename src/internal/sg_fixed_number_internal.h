@@ -24,11 +24,7 @@
 #ifndef SG_FIXED_NUMBER_INTERNAL_H
 #define SG_FIXED_NUMBER_INTERNAL_H
 
-#ifdef USE_GDEXTENSION
 #include <godot_cpp/core/error_macros.hpp>
-#else
-#include <core/error_macros.h>
-#endif
 
 #ifndef MIN
 #define MIN(m_a, m_b) (((m_a) < (m_b)) ? (m_a) : (m_b))

@@ -27,7 +27,7 @@
 #include <godot_cpp/classes/ref_counted.hpp>
 
 #include "sg_fixed_vector2.h"
-#include "../../internal/sg_fixed_transform_2d_internal.h"
+#include "../internal/sg_fixed_transform_2d_internal.h"
 
 using namespace godot;
 
