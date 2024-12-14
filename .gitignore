@@ -1,60 +1,25 @@
-# Godot auto generated files
-*.gen.*
-.godot/
+/.vscode/
+/bin/
+/build/
 
-# Ignore library files but not the gdextension file
-demo/bin/*
-!demo/bin/android
-demo/bin/android/*
-!demo/bin/android/.gitkeep
-!demo/bin/linux
-demo/bin/linux/*
-!demo/bin/linux/.gitkeep
-!demo/bin/macos
-demo/bin/macos/*
-!demo/bin/macos/.gitkeep
-!demo/bin/windows
-demo/bin/windows/*
-!demo/bin/windows/.gitkeep
-!demo/bin/*.gdextension
-.sconsign*.dblite
+/projects/godot-4/.godot/
+/projects/godot-4/sg-physics-2d/
+/projects/godot-4/build/
 
-# Ignore custom.py
-custom.py
+/projects/godot-3/.import/
+/projects/godot-3/.mono/
+/projects/godot-3/build/
 
-# Ignore generated compile_commands.json
-compile_commands.json
+*.code-workspace
 
-# Ignore files generated for documentation
-/src/gen
+.sconsign.dblite
 
-# Binaries
+*.swp
 *.o
 *.os
 *.so
-*.obj
-*.bc
 *.pyc
-*.dblite
-*.pdb
-*.lib
-*.config
-*.creator
-*.creator.user
-*.files
-*.includes
-*.idb
-*.exp
-*.dll
-*.a
+*.bc
+*.obj
+*.tmp
 
-# Other stuff
-*.log
-
-# VSCode
-.vscode/*
-!.vscode/extensions.json
-.DS_Store
-
-# Jetbrains
-.idea/

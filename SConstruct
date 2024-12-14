@@ -1,64 +1,69 @@
 #!/usr/bin/env python
 import os
-import sys
 
-from methods import print_error
+opts = Variables([], ARGUMENTS)
+env = SConscript("godot-cpp/SConstruct")
+
+# Define our options
+opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'bin/'))
+opts.Add(PathVariable('target_name', 'The library name.', 'libsgphysics2d', PathVariable.PathAccept))
+
+# For the reference:
+# - CCFLAGS are compilation flags shared between C and C++
+# - CFLAGS are for C-specific compilation flags
+# - CXXFLAGS are for C++-specific compilation flags
+# - CPPFLAGS are for pre-processor flags
+# - CPPDEFINES are for pre-processor defines
+# - LINKFLAGS are for linking flags
+
+env.Append(CPPDEFINES={'GODOT_MAJOR_VERSION': "4"})
+env.Append(CPPDEFINES=['USE_GDEXTENSION'])
+
+# Updates the environment with the option variables.
+opts.Update(env)
+
+sg_physics_2d_subdirs = [
+	"internal/",
+    "godot-4/math/",
+    "godot-4/servers/",
+    "godot-4/scene/2d/",
+    "godot-4/scene/resources/",
+    "godot-4/scene/animation/",
+    "godot-4/",
+]
+sources = []
+
+for d in sg_physics_2d_subdirs:
+    sources += Glob('src/sg_physics_2d/' + d + "*.cpp")
+
+if env.editor_build or env.debug_features:
+    sources += Glob('src/sg_physics_2d/godot-4/editor/*.cpp')
+
+env.Append(CPPPATH=['src/'])
+
+# Platform specifics.
+if env["platform"] == "macos":
+    library = env.SharedLibrary(
+        (env['target_path'] + 'sg-physics-2d/lib/' + env['target_name'] + ".{}.{}.framework/" + env['target_name'] + ".{}.{}").format(
+            env["platform"], env["target"], env["platform"], env["target"]
+        ),
+        source=sources,
+    )
+else:
+    library = env.SharedLibrary(
+        env['target_path'] + 'sg-physics-2d/lib/' + env['target_name'] + env["suffix"] + env["SHLIBSUFFIX"],
+        source=sources,
+    )
 
 
-libname = "RDPhysics"
-projectdir = "demo"
+build_icons = env.Install(target=env['target_path'] + 'sg-physics-2d/icons/', source=Glob('src/sg_physics_2d/godot-4/icons/*.svg'))
+project_icons = env.Install(target='projects/godot-4/sg-physics-2d/icons/', source=Glob('src/sg_physics_2d/godot-4/icons/*.svg'))
 
-localEnv = Environment(tools=["default"], PLATFORM="")
+library_copy = env.Install(target='projects/godot-4/sg-physics-2d/lib/', source=library)
+gdextension_copy = env.Install(target='projects/godot-4/sg-physics-2d/', source=env['target_path'] + 'sg-physics-2d/sg-physics-2d.gdextension')
 
-customs = ["custom.py"]
-customs = [os.path.abspath(path) for path in customs]
+Default(library, build_icons, project_icons, library_copy, gdextension_copy)
 
-opts = Variables(customs, ARGUMENTS)
-opts.Update(localEnv)
 
-Help(opts.GenerateHelpText(localEnv))
-
-env = localEnv.Clone()
-
-submodule_initialized = False
-dir_name = 'godot-cpp'
-if os.path.isdir(dir_name):
-    if os.listdir(dir_name):
-        submodule_initialized = True
-
-if not submodule_initialized:
-    print_error("""godot-cpp is not available within this folder, as Git submodules haven't been initialized.
-Run the following command to download godot-cpp:
-
-    git submodule update --init --recursive""")
-    sys.exit(1)
-
-env = SConscript("godot-cpp/SConstruct", {"env": env, "customs": customs})
-
-env.Append(CPPPATH=["src/"])
-sources = Glob("src/*.cpp")
-
-if env["target"] in ["editor", "template_debug"]:
-    try:
-        doc_data = env.GodotCPPDocData("src/gen/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
-        sources.append(doc_data)
-    except AttributeError:
-        print("Not including class reference as we're targeting a pre-4.3 baseline.")
-
-file = "{}{}{}".format(libname, env["suffix"], env["SHLIBSUFFIX"])
-filepath = ""
-
-if env["platform"] == "macos" or env["platform"] == "ios":
-    filepath = "{}.framework/".format(env["platform"])
-    file = "{}.{}.{}".format(libname, env["platform"], env["target"])
-
-libraryfile = "bin/{}/{}{}".format(env["platform"], filepath, file)
-library = env.SharedLibrary(
-    libraryfile,
-    source=sources,
-)
-
-copy = env.InstallAs("{}/bin/{}/{}lib{}".format(projectdir, env["platform"], filepath, file), library)
-
-default_args = [library, copy]
-Default(*default_args)
+# Generates help for the -h scons option.
+Help(opts.GenerateHelpText(env))

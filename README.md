@@ -1,259 +1,339 @@
-# godot-cpp template
-This repository serves as a quickstart template for GDExtension development with Godot 4.0+.
+SG Physics 2D
+=============
 
-## Contents
-* An empty Godot project (`demo/`)
-* godot-cpp as a submodule (`godot-cpp/`)
-* GitHub Issues template (`.github/ISSUE_TEMPLATE.yml`)
-* GitHub CI/CD workflows to publish your library packages when creating a release (`.github/workflows/builds.yml`)
-* GitHub CI/CD actions to build (`.github/actions/build/action.yml`) and to sign Mac frameworks (`.github/actions/build/sign.yml`).
-* preconfigured source files for C++ development of the GDExtension (`src/`)
-* setup to automatically generate `.xml` files in a `doc_classes/` directory to be parsed by Godot as [GDExtension built-in documentation](https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/gdextension_docs_system.html)
+**SG Physics 2D** is a deterministic 2D physics engine for Godot,
+based on fixed-point math. It's useful for online multiplayer games, especially
+those using rollback netcode.
 
-## Usage - Template
+Download
+--------
 
-To use this template, log in to GitHub and click the green "Use this template" button at the top of the repository page.
-This will let you create a copy of this repository with a clean git history. Make sure you clone the correct branch as these are configured for development of their respective Godot development branches and differ from each other. Refer to the docs to see what changed between the versions.
+You can download prebuilt binaries for several platforms from the "Releases" page:
 
-For getting started after cloning your own copy to your local machine, you should: 
-* initialize the godot-cpp git submodule via `git submodule update --init`
-* change the name of your library
-  * change the name of the compiled library file inside the `SConstruct` file by modifying the `libname` string.
-  * change the pathnames of the to be loaded library name inside the `demo/bin/example.gdextension` file. By replacing `libgdexample` to the name specified in your `SConstruct` file.
-  * change the name of the `demo/bin/example.gdextension` file
-* change the `entry_symbol` string inside your `demo/bin/your-extension.gdextension` file to be configured for your GDExtension name. This should be the same as the `GDExtensionBool GDE_EXPORT` external C function. As the name suggests, this sets the entry function for your GDExtension to be loaded by the Godot editors C API.
-* register the classes you want Godot to interact with inside the `register_types.cpp` file in the initialization method (here `initialize_gdextension_types`) in the syntax `GDREGISTER_CLASS(CLASS-NAME);`.
+[https://gitlab.com/snopek-games/sg-physics-2d/-/releases](https://gitlab.com/snopek-games/sg-physics-2d/-/releases)
 
-## Usage - Actions
+What is "deterministic" physics and why would I need it?
+--------------------------------------------------------
 
-The actions builds `godot-cpp` at a specified location, and then builds the `gdextension` at a configurable location. It builds for desktop, mobile and web and allows for configuration on what platforms you need. It also supports configuration for debug and release builds, and for double builds.
+A physics engine is "deterministic" if it will play out exactly the same on
+two different computers, if both have the exact same starting state.
 
-The action uses SConstruct for both godot-cpp and the GDExtension that is built.
+Most physics engines aren't deterministic (including the builtin physics
+engine in Godot), or are only deterministic under certain conditions (ex.
+Box2D is deterministic if both computers are running the same binary, so
+it's not deterministic cross-platform).
 
-To reuse the build actions, in a github actions yml file, do the following:
+And that's usually fine, because most games don't need deterministic physics!
 
-```yml
-name: Build GDExtension
-on:
-  workflow_call:
-  push:
+But for some games, especially online multiplayer games using certain network
+synchronization techniques (like rollback and prediction), a deterministic
+physics engine is a requirement.
 
-jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: linux
-            arch: x86_64
-            os: ubuntu-20.04
-          - platform: windows
-            arch: x86_32
-            os: windows-latest
-          - platform: windows
-            arch: x86_64
-            os: windows-latest
-          - platform: macos
-            arch: universal
-            os: macos-latest
-          - platform: android
-            arch: arm64
-            os: ubuntu-20.04
-          - platform: android
-            arch: arm32
-            os: ubuntu-20.04
-          - platform: android
-            arch: x86_64
-            os: ubuntu-20.04
-          - platform: android
-            arch: x86_32
-            os: ubuntu-20.04
-          - platform: ios
-            arch: arm64
-            os: macos-latest
-          - platform: web
-            arch: wasm32
-            os: ubuntu-20.04
+Fixed-point math
+----------------
 
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-      - name: 🔗 GDExtension Build
-        uses: godotengine/godot-cpp-template/.github/actions/build@main
-        with:
-          platform: ${{ matrix.platform }}
-          arch: ${{ matrix.arch }}
-          float-precision: single
-          build-target-type: template_release
-      - name: 🔗 GDExtension Build
-        uses: ./.github/actions/build
-        with:
-          platform: ${{ matrix.platform }}
-          arch: ${{ matrix.arch }}
-          float-precision: ${{ matrix.float-precision }}
-          build-target-type: template_debug
-      - name: Mac Sign
-        if: ${{ matrix.platform == 'macos' && env.APPLE_CERT_BASE64 }}
-        env:
-          APPLE_CERT_BASE64: ${{ secrets.APPLE_CERT_BASE64 }}
-        uses: godotengine/godot-cpp-template/.github/actions/sign@main
-        with:
-          FRAMEWORK_PATH: bin/macos/macos.framework
-          APPLE_CERT_BASE64: ${{ secrets.APPLE_CERT_BASE64 }}
-          APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
-          APPLE_DEV_PASSWORD: ${{ secrets.APPLE_DEV_PASSWORD }}
-          APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
-          APPLE_DEV_TEAM_ID: ${{ secrets.APPLE_DEV_TEAM_ID }}
-          APPLE_DEV_APP_ID: ${{ secrets.APPLE_DEV_APP_ID }}
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: GDExtension-${{ matrix.platform }}-${{ matrix.arch }}
-          path: |
-            ${{ github.workspace }}/bin/**
-  merge:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Merge Artifacts
-        uses: actions/upload-artifact/merge@v4
-        with:
-          name: GDExtension-all
-          pattern: GDExtension-*
-          delete-merged: true
-```
+Normally, decimal numbers with a fractional part are represented as hardware-based
+_floating-point numbers_.
 
-The above example is a lengthy one, so we will go through it action by action to see what is going on.
+However, the result of floating-point math can be slightly different on
+different CPUs, operating systems or versions - which can break determinism!
 
-In the `Checkout` step, we checkout the code.
-In the `🔗 GDExtension Build` step, we are using the reusable action:
-```yml
-uses: godotengine/godot-cpp-template/.github/actions/build@main
-with:
-  platform: ${{ matrix.platform }}
-  arch: ${{ matrix.arch }}
-  float-precision: single
-  build-target-type: template_release
-```
-with the parameters from the matrix.
+There's a couple solutions to this problem:
 
-As a result of this step, the binaries will be built in the `bin` folder (as specified in the SConstruct file). After all builds are completed, all individual builds will be merged into one common GDExtension-all zip that you can download.
+ - Soft floats: implementing floating-point math in software, rather than using
+   the hardware floating-point features of your CPU.
+ - Fixed-point math: using integers to represent decimals with a fixed number of
+   bits reserved for the fractional part.
 
-Note: for macos, you will have to build the binary as a `.dylib` in a `EXTENSION-NAME.framework` folder. The framework folder should also have a `Resources` folder with a file called `Info.plist`. Without this file, signing will fail.
+SG Physics 2D went with fixed-point math.
 
-Note: for iOS, the same should be as for MacOS, however the `Info.plist` file needs to be close to the `.dylib`, instead of in a `Resources` folder (If this is not done, the build will fail to upload to the App Store).
+Specifically, we use 64-bit signed integers, with the first 16 bits reserved for
+the fractional part.
 
-So, in our case, the builds should be:
+This means the smallest fractional part that can be represented is one 65536th
+(ie. `1/65536`) and we can theoretically represent "real world" numbers in the
+range from `-140737488355327` to `140737488355328`.
 
-```sh
-bin/EXTENSION-NAME.macos.template_debug.framework/EXTENSION-NAME.macos.template_release
-bin/EXTENSION-NAME.ios.template_debug.framework/EXTENSION-NAME.ios.template_release.arm64.dylib
+To convert from a "real world" number to our fixed-point format, you'd multiply
+it by 65536 and discard any remaining fractional part. So, for example, `4.25`
+is `278528` in our fixed-point representation.
 
-Afterwards, you want to set in the `.gdextension` file the paths to the `.framework` folder, instead of the `.dylib` file (Note that for the `.dylib` binary, the extension is not needed, you could have a file without any extension and it would still work).
+In GDScript, we use normal integers for fixed-point values, and provide some
+utilities to work with them, for example:
 
-In the `name: Mac Sign` step, we are signing the generated mac binaries.
-We are reusing the following action:
-```yml
-uses: godotengine/godot-cpp-template/.github/actions/sign@main
-with:
-  FRAMEWORK_PATH: bin/macos/macos.framework
-  APPLE_CERT_BASE64: ${{ secrets.APPLE_CERT_BASE64 }}
-  APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
-  APPLE_DEV_PASSWORD: ${{ secrets.APPLE_DEV_PASSWORD }}
-  APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
-  APPLE_DEV_TEAM_ID: ${{ secrets.APPLE_DEV_TEAM_ID }}
-  APPLE_DEV_APP_ID: ${{ secrets.APPLE_DEV_APP_ID }}
-```
-As you can see, this action requires some secrets to be configured in order to run. Also, you need to tell it the path to the `.framework` folder, where you have both the binary (`.dylib` file) and the `Resources` folder with the `Info.plist` file.
+ - `SGFixed.mul(a, b)`: multiplies two fixed-point numbers
+ - `SGFixed.div(a, b)`: divides two fixed-point numbers
+ - `SGFixed.to_float(a)`: converts a fixed-point number to a float
 
-## Configuration - Mac Signing Secrets
+BTW, for addition and subtraction, you can just add or subtract the integers the
+normal way! However, there is an `SGFixed.add(a, b)` and `SGFixed.sub(a, b)` for
+completeness.
 
-In order to sign the Mac binary, you need to configure the following secrets:
-`APPLE_CERT_BASE64`, `APPLE_CERT_PASSWORD`, `APPLE_DEV_PASSWORD`, `APPLE_DEV_ID`, `APPLE_DEV_TEAM_ID`, `APPLE_DEV_APP_ID`. These secrets are stored in the example above in the Github secrets for repositories. The names of the secrets have to match the names of the secrets you use for your action. For more on this, read the [Creating secrets for a repository](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository) article from Github.
+And, we provide some new fixed-point types that mirror the built-in Godot types,
+for example:
 
-These secrets are then passed down to the `godotengine/godot-cpp-template/.github/actions/sign@main` action that signs the binary.
+ - `SGFixedVector2` replaces `Vector2`
+ - `SGFixedTransform2D` replaces `Transform2D`
+ - `SGFixedRect2` replaces `Rect2`
 
-In order to configure these secrets, you will need:
+Complete API documentation will be coming soon.
 
-- A Mac
-- An Apple ID enrolled in Apple Developer Program (99 USD per year)
-- A `Resources/Info.plist` in the `framework` folder. Take the one in this project as an example. Be careful to set CFBundleExecutable to the **EXACT** lib name, otherwise it won't work. Also, don't put strange names in the CFBundleName and other such places. Try to only use letters and spaces. Errors will be extremly vague if not impossible to debug.
+### Avoiding overflow ###
 
-For the actions you will need to set the following inputs. Store them as secrets in GitHub:
+If the result of a math operation will produce a number outside the range of
+values that we can represent, that's called an "overflow".
 
-- APPLE_CERT_BASE64
-- APPLE_CERT_PASSWORD
-- APPLE_DEV_ID
-- APPLE_DEV_TEAM_ID
-- APPLE_DEV_PASSWORD
-- APPLE_DEV_APP_ID
+If an overflow happens, you're not going to the result you're looking for, or
+your game may even crash.
 
-You will find here a guide on how to create all of them. Go to [developer.apple.com](developer.apple.com):
+**To prevent overflow, any `SGFixedVector2` shouldn't have an X or Y component
+outside the range `-1966080000` to `1966080000` (which is `-30000.0` to `30000.0` in
+"real world" numbers)!**
 
-- Create an Apple ID if you don’t have one already.
-- Use your Apple ID to register in the Apple Developer Program.
-- Accept all agreements from the Apple Developer Page.
+Even though we can represent much bigger numbers, once you start performing any
+math on that vector, the physics engine will need to use intermediate numbers
+that are several times larger than the input you gave it, which can lead to
+overflow - and things just not working.
 
-### APPLE_DEV_ID - Apple ID
+So, this means any 2D scene you create can only be up to 60,000 pixels by 60,000
+pixels. This is fine for many games, but if you need to have bigger scenes,
+then, unfortunately, SG Physics 2D won't work for you.
 
-- Your email used for your Apple ID.
+Collision objects and shapes
+----------------------------
 
-- APPLE_DEV_ID = email@provider.com
+SG Physics 2D is used in a very similar way to Godot's built-in physics, and
+provides Nodes and Resources that mirror the built-in Godot ones.
 
-### APPLE_DEV_TEAM_ID - Apple Team ID
+![Screenshot of the "Create New Node" dialog showing the additional nodes](assets/screenshots/nodes.png)
 
-- Go to [developer.apple.com](https://developer.apple.com). Go to account.
-- Go to membership details. Copy Team ID.
+At the moment, the follow collision objects are supported:
 
-- APPLE_DEV_TEAM_ID = `1ABCD23EFG`
+ - `SGArea2D`
+ - `SGStaticBody2D`
+ - `SGKinematicBody2D`
+ - `SGRayCast2D`
 
-### APPLE_DEV_PASSWORD - Apple App-Specific Password
+So, there is no rigid body node yet! This technically means this is a "collision
+engine" rather than a "physics engine", but proper rigid body physics is
+something could (and probably will) be added at some point.
 
-- Create [Apple App-Specific Password](https://support.apple.com/en-us/102654). Copy the password.
+And, we currently support the following shapes:
 
-- APPLE_DEV_PASSWORD = `abcd-abcd-abcd-abcd`
+ - Rectangles
+ - Circles
+ - Capsules
+ - Convex polygons (via the `SGCollisionPolygon2D` node)
 
-### APPLE_CERT_BASE64 and APPLE_CERT_PASSWORD and APPLE_DEV_APP_ID
+These nodes and resources can be created and edited in the Godot editor in much
+the same way as their built-in counterparts.
 
-- Go to [developer.apple.com](https://developer.apple.com). Go to account.
-- Go to certificates.
-- Click on + at Certificates tab. Create Developer ID Application. Click Continue.
-- Leave profile type as is. [Create a certificate signing request from a mac](https://developer.apple.com/help/account/create-certificates/create-a-certificate-signing-request). You can use your own name and email address. Save the file to disk. You will get a file called `CertificateSigningRequest.certSigningRequest`. Upload it to the Developer ID Application request. Click Continue.
-- Download the certificate. You will get a file `developerID_application.cer`.
-- On a Mac, right click and select open. Add it to the login keychain. In the Keychain Access app that opened, login Keychain tab, go to Keys, sort by date modified, expand your key (the key should have name you entered at common name `Common Name`), right click the expanded certificate, get info, and copy the text at Details -> Subject Name -> Common Name.
-Eg.
-- APPLE_DEV_APP_ID = `Developer ID Application: Common Name (1ABCD23EFG)`
+The `SGFixedNode2D` node provides the base for all of the "fixed-point nodes",
+and provides special `fixed_position`, `fixed_rotation` and `fixed_scale`
+properties. Updating any of those properties will update their built-in
+counterparts (ie. `position`, `rotation` and `scale`) which control the visual
+representation of your node.
 
-- Then, select the certificate, right click and click export. At file format select p12. When exporting, set a password for the certificate. This will be APPLE_CERT_PASSWORD. You will get a `Certificates.p12` file.
+When in the editor, updating the built-in properties, like `position`, will also
+update the fixed-point version (`fixed_position` in this case). But in game,
+this is not the case, and your gameplay code should only update the fixed-point
+properties.
 
-Eg.
-- APPLE_CERT_PASSWORD = `<password_set_when_exporting_p12>`
+`SGFixedNode2D`s will only inherit their "true" position from parents that are
+also `SGFixedNode2D`s. So, if you have a `Node2D` that's a parent of a
+`SGFixedNode2D` and you move the `Node2D`, the visual representation of the
+`SGFixedNode2D` will move, but its position according the physics engine won't.
 
-- Then you need to make a base64 file out of it, by running:
-```
-base64 -i Certificates.p12 -o Certificates.base64
-```
+### The physics engine won't do anything until you ask! ###
 
-- Copy the contents of the generated file:
-Eg.
-- `APPLE_CERT_BASE64` = `...`(A long text file)
+Godot's builtin physics engine does a whole bunch of things automatically:
 
-After these secrets are obtained, all that remains is to set them in Github secrets and then use them in the Github action, eg. in the above Github action usage example, this part:
+ 1. After `_physics_process()` it sync's the node's position information into
+    the physics engine.
+ 2. It does all the physics calculations, and sync's any changes back from the
+    physics engine into the nodes.
+ 3. It emits a bunch of signals if certain collisions have occured (for example,
+    a body entering an area).
+ 4. Then it calls `_physics_process()`, and starts over again.
+
+_However, SG Physics 2D won't do anything until you ask it to!_
+
+So, for example, if you change the `fixed_position` on a physics node (ie.
+`SGKinematicBody2D` or `SGArea2D`), you need to manually call its
+`sync_to_physics_engine()` method so the physics engine knows about its new
+position. The same goes for changing its rotation, scale or any of its shapes.
+
+> **Note:** if you are also using the [Godot Rollback Netcode addon](https://gitlab.com/snopek-games/godot-rollback-netcode), you will need to call `sync_to_physics_engine()` at the end of any `_load_state` implementation that loads physics-related state!
+
+And no signals will be emitted in the case of a body entering an area! Instead,
+you need to explicitly call `area.get_overlapping_bodies()`.
+
+By allowing the developer to fully control when and how physics happens, you can
+make your game logic fully deterministic.
+
+(BTW, just using a deterministic physics engine won't automatically make your
+whole game deterministic! You will need to make sure that all the rest of your
+game logic is deterministic too.)
+
+There is only one tiny piece of automation: `sync_to_physics_engine()` is called
+automatically in the `_ready()` method of any of the physics objects, so the
+physics engine will have it's starting info when it's first added to the scene.
+This is most helpful for `SGStaticBody2D`s or `SGArea2D`s that don't ever move
+or change shape/size.
+
+### Don't convert floats to fixed-point in game! ###
+
+Any floating point calculation you do in game could give a non-determistic
+result.
+
+So, any math with a fractional component that is important to your game logic
+will need to be done in fixed-point. You'll need to get very used to the look of
+fixed-point numbers. :-)
+
+One tip: Godot can evaluate math expressions in the editor. So, you can type in
+`16*65536`, select it, and then press Ctrl+Shift+E, and Godot will turn that
+into `1048576`.
+
+Follow up tip: Use `const` variables for magic numbers. I've gotten in the habit
+of writing code like:
 
 ```
-- name: Mac Sign
-  if: ${{ matrix.platform == 'macos' && env.APPLE_CERT_BASE64 }}
-  env:
-    APPLE_CERT_BASE64: ${{ secrets.APPLE_CERT_BASE64 }}
-  uses: godotengine/godot-cpp-template/.github/actions/sign@main
-  with:
-    FRAMEWORK_PATH: bin/macos/macos.framework
-    APPLE_CERT_BASE64: ${{ secrets.APPLE_CERT_BASE64 }}
-    APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
-    APPLE_DEV_PASSWORD: ${{ secrets.APPLE_DEV_PASSWORD }}
-    APPLE_DEV_ID: ${{ secrets.APPLE_DEV_ID }}
-    APPLE_DEV_TEAM_ID: ${{ secrets.APPLE_DEV_TEAM_ID }}
+const ONE_POINT_FIVE = 98304
+
+func _physics_process(delta: float) -> void:
+	var some_var = vector.mul(ONE_POINT_FIVE)
 ```
+
+However, if you have parts of the game that are purely cosmetic, you're safe to
+use normal floating-point math for those.
+
+Other nodes (Godot 3 only)
+--------------------------
+- `SGYSort` provides the same functionality as `YSort`, and inherits its parent's `fixed_position`.
+- `SGPath2D` and `SGPathFollow2D` provide the same functionality as `Path2D` and `PathFollow2D`, replacing the use of floating point numbers by fixed point numbers.
+- `SGTween` provides similar functionality to `Tween`, replacing the use of floating point numbers by fixed point numbers. The only type that can be interpolated is int, representing a fixed point value.
+- `SGAStar2D` provides the same functionality as `AStar2D`, replacing the use of floating point numbers by fixed point numbers.
+
+What about tile maps?
+---------------------
+
+SG Physics 2D doesn't include a special node for tile maps. If you want to add
+collision shapes to a `TileMap` node, you'd do it in code, rather than in the
+editor.
+
+Creating a thousands of `SGStaticBody2D` and `SGCollisionShape2D` nodes can
+cause performance problems, so instead of creating nodes, you can create
+resources using the `SGPhysics2DServer`.
+
+There's a demo in the code base demonstrating how to do this:
+
+[https://gitlab.com/snopek-games/sg-physics-2d/-/blob/main/projects/godot-4/demos/tilemap/Main.gd](https://gitlab.com/snopek-games/sg-physics-2d/-/blob/main/projects/godot-4/demos/tilemap/Main.gd)
+
+Compiling from source
+---------------------
+
+### Godot 4 ###
+
+In Godot 4, SG Physics 2D is implemented as a GDExtension.
+
+You can download prebuilt binaries for several platforms from the "Releases" page:
+
+[https://gitlab.com/snopek-games/sg-physics-2d/-/releases](https://gitlab.com/snopek-games/sg-physics-2d/-/releases)
+
+However, if you'd like to build it from source yourself, you can follow these steps:
+
+ 1. Download this repository and extract it.
+
+ 2. If you used Git, make sure that all the Git submodule are checked out too:
+    ```bash
+		git submodule update --init --recursive
+    ```
+
+ 3. Build both the debug and release version for your platform:
+   ```bash
+   scons target=template_debug
+   scons target=template_release
+   ```
+
+### Godot 3 ###
+
+In Godot 3, SG Physics 2D is implemented as a Godot module, which (unlike a
+GDNative plugin) must be compiled into Godot.
+
+**But you don't have to be the one who does the compiling!**
+
+You can download pre-compiled binaries for Windows, Linux, MacOS and HTML5
+from the releases page:
+
+[https://gitlab.com/snopek-games/sg-physics-2d/-/releases](https://gitlab.com/snopek-games/sg-physics-2d/-/releases)
+
+However, if are targeting a platform that doesn't have pre-compiled binaries,
+or need to include another module, or just want to compile it yourself, you
+can follow these steps:
+
+ 1. Download this repository and extract it.
+
+ 2. Download the source code for the Godot 3.x version that you are targeting. If you cloned the source code, you must switch to the 3.x branch before continuing.
+
+ 3. Using the command-line, switch to the directory containing the Godot
+    source code and run:
+
+	```
+	scons platform=PLATFORM tools=yes target=release_debug custom_modules=/PATH/sg-physics-2d/src
+	```
+
+	... replacing `PLATFORM` with your desired platform (ex. windows, osx,
+	x11) and `PATH` with the full path to the directory containing the source
+	code for SG Physics 2D.
+
+The instructions above will compile the Godot editor. If you want to compile
+the debug export templates instead, replace the command in the 3rd step with:
+
+```
+scons platform=PLATFORM tools=no target=debug custom_modules=/PATH/sg-physics-2d/src
+```
+
+... or for the release export templates:
+
+```
+scons platform=PLATFORM tools=no target=release production=yes custom_modules=/PATH/sg-physics-2d/src
+```
+
+For more information about compiling Godot, see [the official
+documentation](https://docs.godotengine.org/en/stable/development/compiling/index.html#toc-devel-compiling).
+
+Exporting your game (Godot 3)
+-----------------------------
+
+As mentioned above, the Godot 3 version of SG Physics 2D is implemented as
+a module.
+
+This means that when you export your game, you need to use an export template
+that is built with SG Physics 2D. If you don't, your game will crash with an
+error like:
+
+```
+SCRIPT ERROR: Parse Error: Unknown class: "SGKinematicBody2D"
+```
+
+**NOTE: This doesn't apply to Godot 4! You can use the standard export templates with Godot 4.**
+
+Each [release build](https://gitlab.com/snopek-games/sg-physics-2d/-/releases)
+includes not only the Godot editor, but also debug and release export templates
+for that platform. Alternatively, you can compile the export templates yourself
+as described in the previous section.
+
+When setting up your export preset (under **Project** -> **Export...**) you
+need put the path to each export template in the "Custom Template" section.
+
+This screenshot shows configuring an export to run on Linux systems:
+
+![Configuring "Custom Template" when exporting for Linux](assets/screenshots/export-templates.png)
+
+License
+-------
+
+Copyright 2021-2023 David Snopek.
+
+Licensed under the [MIT License](LICENSE.txt).
+
