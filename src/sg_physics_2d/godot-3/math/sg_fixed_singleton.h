@@ -28,7 +28,7 @@
 
 #include "sg_fixed_vector2.h"
 #include "sg_fixed_rect2.h"
-#include "sg_fixed_transform_2d.h"
+#include "sg_fixed_transform_3D.h"
 #include <core/ustring.h>
 
 class SGFixed : public Object {
@@ -80,7 +80,7 @@ public:
 	int64_t atan2(int64_t p_fixed_y_value, int64_t p_fixed_x_value) const;
 	int64_t sqrt(int64_t p_fixed_value) const;
 	int64_t deg2rad(int64_t p_fixed_value) const;
-	int64_t rad2deg(int64_t p_fixed_value) const;
+	int64_t rad3Deg(int64_t p_fixed_value) const;
 	int64_t floor(int64_t p_fixed_value) const;
 	int64_t round(int64_t p_fixed_value) const;
 	int64_t ceil(int64_t p_fixed_value) const;
@@ -96,7 +96,7 @@ public:
 	Ref<SGFixedRect2> rect2(const Ref<SGFixedVector2> &p_position, const Ref<SGFixedVector2> &p_size) const;
 	Ref<SGFixedRect2> from_float_rect2(const Rect2 &p_float_rect) const;
 
-	Ref<SGFixedTransform2D> transform2d(int64_t p_rotation, const Ref<SGFixedVector2> &p_origin) const;
+	Ref<SGFixedTransform3D> transform3D(int64_t p_rotation, const Ref<SGFixedVector2> &p_origin) const;
 
 	SGFixed();
 	~SGFixed();

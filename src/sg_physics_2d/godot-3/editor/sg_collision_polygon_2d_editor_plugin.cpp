@@ -21,22 +21,22 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "sg_collision_polygon_2d_editor_plugin.h"
+#include "sg_collision_polygon_3D_editor_plugin.h"
 
-Node2D *SGCollisionPolygon2DEditor::_get_node() const {
+Node3D *SGCollisionPolygon3DEditor::_get_node() const {
 	return node;
 }
 
-void SGCollisionPolygon2DEditor::_set_node(Node *p_polygon) {
+void SGCollisionPolygon3DEditor::_set_node(Node *p_polygon) {
 
-	node = Object::cast_to<SGCollisionPolygon2D>(p_polygon);
+	node = Object::cast_to<SGCollisionPolygon3D>(p_polygon);
 }
 
-SGCollisionPolygon2DEditor::SGCollisionPolygon2DEditor(EditorNode *p_editor) :
-		AbstractPolygon2DEditor(p_editor) {
+SGCollisionPolygon3DEditor::SGCollisionPolygon3DEditor(EditorNode *p_editor) :
+		AbstractPolygon3DEditor(p_editor) {
 	node = NULL;
 }
 
-SGCollisionPolygon2DEditorPlugin::SGCollisionPolygon2DEditorPlugin(EditorNode *p_node) :
-		AbstractPolygon2DEditorPlugin(p_node, memnew(SGCollisionPolygon2DEditor(p_node)), "SGCollisionPolygon2D") {
+SGCollisionPolygon3DEditorPlugin::SGCollisionPolygon3DEditorPlugin(EditorNode *p_node) :
+		AbstractPolygon3DEditorPlugin(p_node, memnew(SGCollisionPolygon3DEditor(p_node)), "SGCollisionPolygon3D") {
 }

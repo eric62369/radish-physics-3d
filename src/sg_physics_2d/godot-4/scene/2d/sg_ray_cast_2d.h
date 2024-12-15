@@ -21,18 +21,18 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_RAY_CAST_2D_H
-#define SG_RAY_CAST_2D_H
+#ifndef SG_RAY_CAST_3D_H
+#define SG_RAY_CAST_3D_H
 
 #include <godot_cpp/classes/object.hpp>
 
-#include "sg_fixed_node_2d.h"
+#include "sg_fixed_node_3D.h"
 
-#include "../../../internal/sg_bodies_2d_internal.h"
+#include "../../../internal/sg_bodies_3D_internal.h"
 #include "../../math/sg_fixed_vector2.h"
 
-class SGRayCast2D : public SGFixedNode2D {
-	GDCLASS(SGRayCast2D, SGFixedNode2D);
+class SGRayCast3D : public SGFixedNode3D {
+	GDCLASS(SGRayCast3D, SGFixedNode3D);
 
 	RID world_rid;
 
@@ -89,8 +89,8 @@ public:
 	RID get_world() const { return world_rid; }
 	void set_world(RID p_world);
 
-	SGRayCast2D();
-	~SGRayCast2D();
+	SGRayCast3D();
+	~SGRayCast3D();
 };
 
 #endif

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SGPhysics2DServer" inherits="Object" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="SGPhysics3DServer" inherits="Object" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
-		Server to access low-level objects from SG Physics 2D.
+		Server to access low-level objects from SG Physics 3D.
 	</brief_description>
 	<description>
-		SGPhysics2DServer can be used to create and manipulate low-level objects from SG Physics 2D without having to use nodes.
+		SGPhysics3DServer can be used to create and manipulate low-level objects from SG Physics 3D without having to use nodes.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -13,7 +13,7 @@
 			<return type="Array" />
 			<argument index="0" name="area" type="RID" />
 			<description>
-				Returns a list of [SGAreaCollision2D]s for the overlapping areas.
+				Returns a list of [SGAreaCollision3D]s for the overlapping areas.
 			</description>
 		</method>
 		<method name="area_get_overlapping_area_count" qualifiers="const">
@@ -27,21 +27,21 @@
 			<return type="Array" />
 			<argument index="0" name="area" type="RID" />
 			<description>
-				Returns a list of overlapping [SGArea2D]s or [RID]s.
+				Returns a list of overlapping [SGArea3D]s or [RID]s.
 			</description>
 		</method>
 		<method name="area_get_overlapping_bodies" qualifiers="const">
 			<return type="Array" />
 			<argument index="0" name="area" type="RID" />
 			<description>
-				Returns a list of overlapping [SGStaticBody2D]s, [SGKinematicBody2D]s or [RID]s.
+				Returns a list of overlapping [SGStaticBody3D]s, [SGKinematicBody3D]s or [RID]s.
 			</description>
 		</method>
 		<method name="area_get_overlapping_body_collisions" qualifiers="const">
 			<return type="Array" />
 			<argument index="0" name="area" type="RID" />
 			<description>
-				Returns a list of [SGAreaCollision2D]s for the overlapping bodies.
+				Returns a list of [SGAreaCollision3D]s for the overlapping bodies.
 			</description>
 		</method>
 		<method name="area_get_overlapping_body_count" qualifiers="const">
@@ -59,14 +59,14 @@
 			</description>
 		</method>
 		<method name="body_get_type" qualifiers="const">
-			<return type="int" enum="SGPhysics2DServer.BodyType" />
+			<return type="int" enum="SGPhysics3DServer.BodyType" />
 			<argument index="0" name="body" type="RID" />
 			<description>
 				Returns the type of the collision body.
 			</description>
 		</method>
 		<method name="body_move_and_collide" qualifiers="const">
-			<return type="SGKinematicCollision2D" />
+			<return type="SGKinematicCollision3D" />
 			<argument index="0" name="body" type="RID" />
 			<argument index="1" name="linear_velocity" type="SGFixedVector2" />
 			<description>
@@ -114,8 +114,8 @@
 		</method>
 		<method name="collision_object_create">
 			<return type="RID" />
-			<argument index="0" name="object_type" type="int" enum="SGPhysics2DServer.CollisionObjectType" />
-			<argument index="1" name="body_type" type="int" enum="SGPhysics2DServer.BodyType" default="-1" />
+			<argument index="0" name="object_type" type="int" enum="SGPhysics3DServer.CollisionObjectType" />
+			<argument index="1" name="body_type" type="int" enum="SGPhysics3DServer.BodyType" default="-1" />
 			<description>
 				Creates a collision object.
 			</description>
@@ -149,14 +149,14 @@
 			</description>
 		</method>
 		<method name="collision_object_get_transform" qualifiers="const">
-			<return type="SGFixedTransform2D" />
+			<return type="SGFixedTransform3D" />
 			<argument index="0" name="object" type="RID" />
 			<description>
 				Returns the transform of the collision object.
 			</description>
 		</method>
 		<method name="collision_object_get_type">
-			<return type="int" enum="SGPhysics2DServer.CollisionObjectType" />
+			<return type="int" enum="SGPhysics3DServer.CollisionObjectType" />
 			<argument index="0" name="object" type="RID" />
 			<description>
 				Returns the type of the collision object.
@@ -205,7 +205,7 @@
 		<method name="collision_object_set_transform">
 			<return type="void" />
 			<argument index="0" name="object" type="RID" />
-			<argument index="1" name="transform" type="SGFixedTransform2D" />
+			<argument index="1" name="transform" type="SGFixedTransform3D" />
 			<description>
 				Returns the transform of the collision object.
 			</description>
@@ -255,7 +255,7 @@
 		</method>
 		<method name="shape_create">
 			<return type="RID" />
-			<argument index="0" name="shape_type" type="int" enum="SGPhysics2DServer.ShapeType" />
+			<argument index="0" name="shape_type" type="int" enum="SGPhysics3DServer.ShapeType" />
 			<description>
 				Creates a shape.
 			</description>
@@ -268,14 +268,14 @@
 			</description>
 		</method>
 		<method name="shape_get_transform" qualifiers="const">
-			<return type="SGFixedTransform2D" />
+			<return type="SGFixedTransform3D" />
 			<argument index="0" name="shape" type="RID" />
 			<description>
 				Returns the shape's transform.
 			</description>
 		</method>
 		<method name="shape_get_type" qualifiers="const">
-			<return type="int" enum="SGPhysics2DServer.ShapeType" />
+			<return type="int" enum="SGPhysics3DServer.ShapeType" />
 			<argument index="0" name="shape" type="RID" />
 			<description>
 				Returns the type of the shape.
@@ -292,7 +292,7 @@
 		<method name="shape_set_transform">
 			<return type="void" />
 			<argument index="0" name="shape" type="RID" />
-			<argument index="1" name="transform" type="SGFixedTransform2D" />
+			<argument index="1" name="transform" type="SGFixedTransform3D" />
 			<description>
 				Sets the shape's transform.
 			</description>

@@ -32,98 +32,98 @@
 #include "./math/sg_fixed_singleton.h"
 #include "./math/sg_fixed_vector2.h"
 #include "./math/sg_fixed_rect2.h"
-#include "./math/sg_fixed_transform_2d.h"
-#include "./scene/2d/sg_fixed_position_2d.h"
-#include "./scene/2d/sg_area_2d.h"
-#include "./scene/2d/sg_static_body_2d.h"
-#include "./scene/2d/sg_character_body_2d.h"
-#include "./scene/2d/sg_ray_cast_2d.h"
-#include "./scene/2d/sg_collision_shape_2d.h"
-#include "./scene/2d/sg_collision_polygon_2d.h"
-#include "./scene/resources/sg_shapes_2d.h"
-#include "./servers/sg_physics_2d_server.h"
-#include "../internal/sg_world_2d_internal.h"
+#include "./math/sg_fixed_transform_3D.h"
+#include "./scene/3D/sg_fixed_position_3D.h"
+#include "./scene/3D/sg_area_3D.h"
+#include "./scene/3D/sg_static_body_3D.h"
+#include "./scene/3D/sg_character_body_3D.h"
+#include "./scene/3D/sg_ray_cast_3D.h"
+#include "./scene/3D/sg_collision_shape_3D.h"
+#include "./scene/3D/sg_collision_polygon_3D.h"
+#include "./scene/resources/sg_shapes_3D.h"
+#include "./servers/sg_physics_3D_server.h"
+#include "../internal/sg_world_3D_internal.h"
 
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
-#include "./editor/sg_collision_shape_2d_editor_plugin.h"
-#include "./editor/sg_collision_polygon_2d_editor_plugin.h"
+#include "./editor/sg_collision_shape_3D_editor_plugin.h"
+#include "./editor/sg_collision_polygon_3D_editor_plugin.h"
 #endif
 
 using namespace godot;
 
 static SGFixed *fixed_singleton;
-static SGPhysics2DServer *server_singleton;
+static SGPhysics3DServer *server_singleton;
 
-void register_sg_physics_2d_extension_types(ModuleInitializationLevel p_level) {
+void register_sg_physics_3D_extension_types(ModuleInitializationLevel p_level) {
 	if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE) {
 		GDREGISTER_CLASS(SGFixed);
 		GDREGISTER_CLASS(SGFixedVector2);
 		GDREGISTER_CLASS(SGFixedRect2);
-		GDREGISTER_CLASS(SGFixedTransform2D);
+		GDREGISTER_CLASS(SGFixedTransform3D);
 
-		GDREGISTER_CLASS(SGFixedNode2D);
-		GDREGISTER_CLASS(SGFixedPosition2D);
-		GDREGISTER_CLASS(SGPhysics2DServer);
-		GDREGISTER_VIRTUAL_CLASS(SGCollisionObject2D);
-		GDREGISTER_CLASS(SGArea2D);
-		GDREGISTER_CLASS(SGAreaCollision2D);
-		GDREGISTER_CLASS(SGPhysicsBody2D);
-		GDREGISTER_CLASS(SGStaticBody2D);
-		GDREGISTER_CLASS(SGCharacterBody2D);
-		GDREGISTER_CLASS(SGKinematicCollision2D);
-		GDREGISTER_CLASS(SGRayCast2D);
-		GDREGISTER_CLASS(SGRayCastCollision2D);
+		GDREGISTER_CLASS(SGFixedNode3D);
+		GDREGISTER_CLASS(SGFixedPosition3D);
+		GDREGISTER_CLASS(SGPhysics3DServer);
+		GDREGISTER_VIRTUAL_CLASS(SGCollisionObject3D);
+		GDREGISTER_CLASS(SGArea3D);
+		GDREGISTER_CLASS(SGAreaCollision3D);
+		GDREGISTER_CLASS(SGPhysicsBody3D);
+		GDREGISTER_CLASS(SGStaticBody3D);
+		GDREGISTER_CLASS(SGCharacterBody3D);
+		GDREGISTER_CLASS(SGKinematicCollision3D);
+		GDREGISTER_CLASS(SGRayCast3D);
+		GDREGISTER_CLASS(SGRayCastCollision3D);
 
-		GDREGISTER_CLASS(SGCollisionShape2D);
-		GDREGISTER_CLASS(SGCollisionPolygon2D);
+		GDREGISTER_CLASS(SGCollisionShape3D);
+		GDREGISTER_CLASS(SGCollisionPolygon3D);
 
-		GDREGISTER_VIRTUAL_CLASS(SGShape2D);
-		GDREGISTER_CLASS(SGRectangleShape2D);
-		GDREGISTER_CLASS(SGCircleShape2D);
-		GDREGISTER_CLASS(SGCapsuleShape2D);
+		GDREGISTER_VIRTUAL_CLASS(SGShape3D);
+		GDREGISTER_CLASS(SGRectangleShape3D);
+		GDREGISTER_CLASS(SGCircleShape3D);
+		GDREGISTER_CLASS(SGCapsuleShape3D);
 
 		fixed_singleton = memnew(SGFixed);
 		Engine::get_singleton()->register_singleton("SGFixed", SGFixed::get_singleton());
 
-		server_singleton = memnew(SGPhysics2DServer);
-		Engine::get_singleton()->register_singleton("SGPhysics2DServer", SGPhysics2DServer::get_singleton());
+		server_singleton = memnew(SGPhysics3DServer);
+		Engine::get_singleton()->register_singleton("SGPhysics3DServer", SGPhysics3DServer::get_singleton());
 	}
 
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (p_level == MODULE_INITIALIZATION_LEVEL_EDITOR) {
-		GDREGISTER_CLASS(SGCollisionShape2DEditorPlugin);
-		GDREGISTER_CLASS(SGCollisionPolygon2DEditor);
-		GDREGISTER_CLASS(SGCollisionPolygon2DEditorPlugin);
+		GDREGISTER_CLASS(SGCollisionShape3DEditorPlugin);
+		GDREGISTER_CLASS(SGCollisionPolygon3DEditor);
+		GDREGISTER_CLASS(SGCollisionPolygon3DEditorPlugin);
 
-		EditorPlugins::add_by_type<SGCollisionShape2DEditorPlugin>();
-		EditorPlugins::add_by_type<SGCollisionPolygon2DEditorPlugin>();
+		EditorPlugins::add_by_type<SGCollisionShape3DEditorPlugin>();
+		EditorPlugins::add_by_type<SGCollisionPolygon3DEditorPlugin>();
 	}
 #endif
 }
 
-void unregister_sg_physics_2d_extension_types(ModuleInitializationLevel p_level) {
+void unregister_sg_physics_3D_extension_types(ModuleInitializationLevel p_level) {
 	if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE) {
 		Engine::get_singleton()->unregister_singleton("SGFixed");
 		memdelete(fixed_singleton);
 
-		Engine::get_singleton()->unregister_singleton("SGPhysics2DServer");
+		Engine::get_singleton()->unregister_singleton("SGPhysics3DServer");
 		memdelete(server_singleton);
 	}
 
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (p_level == MODULE_INITIALIZATION_LEVEL_EDITOR) {
-		EditorPlugins::remove_by_type<SGCollisionShape2DEditorPlugin>();
+		EditorPlugins::remove_by_type<SGCollisionShape3DEditorPlugin>();
 	}
 #endif
 
 }
 
 extern "C" {
-GDExtensionBool GDE_EXPORT sg_physics_2d_extension_init(GDExtensionInterfaceGetProcAddress p_interface, const GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
+GDExtensionBool GDE_EXPORT sg_physics_3D_extension_init(GDExtensionInterfaceGetProcAddress p_interface, const GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
 	GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
 
-	init_obj.register_initializer(register_sg_physics_2d_extension_types);
-	init_obj.register_terminator(unregister_sg_physics_2d_extension_types);
+	init_obj.register_initializer(register_sg_physics_3D_extension_types);
+	init_obj.register_terminator(unregister_sg_physics_3D_extension_types);
 	init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
 
 	return init_obj.init();

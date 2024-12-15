@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SGArea2D" inherits="SGCollisionObject2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="SGArea3D" inherits="SGCollisionObject3D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
-		2D area for detection of other areas and physics bodies.
+		3D area for detection of other areas and physics bodies.
 	</brief_description>
 	<description>
-		2D area that can detect overlapping [SGCollisionObject2D]s or other [SGArea2D]s.
+		3D area that can detect overlapping [SGCollisionObject3D]s or other [SGArea3D]s.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,7 +12,7 @@
 		<method name="get_overlapping_area_collisions" qualifiers="const">
 			<return type="Array" />
 			<description>
-				Returns a list of [SGAreaCollision2D]s for the overlapping areas.
+				Returns a list of [SGAreaCollision3D]s for the overlapping areas.
 			</description>
 		</method>
 		<method name="get_overlapping_area_count" qualifiers="const">
@@ -24,19 +24,19 @@
 		<method name="get_overlapping_areas" qualifiers="const">
 			<return type="Array" />
 			<description>
-				Returns a list of overlapping [SGArea2D]s or [RID]s.
+				Returns a list of overlapping [SGArea3D]s or [RID]s.
 			</description>
 		</method>
 		<method name="get_overlapping_bodies" qualifiers="const">
 			<return type="Array" />
 			<description>
-				Returns a list of overlapping [SGStaticBody2D]s, [SGKinematicBody2D]s or [RID]s.
+				Returns a list of overlapping [SGStaticBody3D]s, [SGKinematicBody3D]s or [RID]s.
 			</description>
 		</method>
 		<method name="get_overlapping_body_collisions" qualifiers="const">
 			<return type="Array" />
 			<description>
-				Returns a list of [SGAreaCollision2D]s for the overlapping [SGStaticBody2D]s and [SGKinematicBody2D]s.
+				Returns a list of [SGAreaCollision3D]s for the overlapping [SGStaticBody3D]s and [SGKinematicBody3D]s.
 			</description>
 		</method>
 		<method name="get_overlapping_body_count" qualifiers="const">

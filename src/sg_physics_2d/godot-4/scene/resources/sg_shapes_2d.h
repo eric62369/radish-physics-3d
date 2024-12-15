@@ -21,36 +21,36 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_SHAPES_2D_H
-#define SG_SHAPES_2D_H
+#ifndef SG_SHAPES_3D_H
+#define SG_SHAPES_3D_H
 
 #include <godot_cpp/classes/resource.hpp>
 
 #include "../../math/sg_fixed_vector2.h"
 
-class SGCollisionShape2D;
+class SGCollisionShape3D;
 
-class SGShape2D : public Resource {
-	GDCLASS(SGShape2D, Resource);
+class SGShape3D : public Resource {
+	GDCLASS(SGShape3D, Resource);
 
-	friend class SGCollisionShape2D;
+	friend class SGCollisionShape3D;
 
 protected:
 	static void _bind_methods();
 
 	virtual RID create_internal_shape() const { return RID(); }
 
-	SGShape2D();
+	SGShape3D();
 public:
 	virtual void sync_to_physics_engine(RID p_internal_shape) const {}
 
 	virtual void draw(const RID &p_to_rid, const Color &p_color) {}
 
-	virtual ~SGShape2D();
+	virtual ~SGShape3D();
 };
 
-class SGRectangleShape2D : public SGShape2D, public SGFixedVector2Watcher {
-	GDCLASS(SGRectangleShape2D, SGShape2D);
+class SGRectangleShape3D : public SGShape3D, public SGFixedVector2Watcher {
+	GDCLASS(SGRectangleShape3D, SGShape3D);
 
 	Ref<SGFixedVector2> extents;
 
@@ -74,12 +74,12 @@ public:
 
 	virtual void draw(const RID &p_to_rid, const Color &p_color) override;
 
-	SGRectangleShape2D();
-	~SGRectangleShape2D();
+	SGRectangleShape3D();
+	~SGRectangleShape3D();
 };
 
-class SGCircleShape2D : public SGShape2D {
-	GDCLASS(SGCircleShape2D, SGShape2D);
+class SGCircleShape3D : public SGShape3D {
+	GDCLASS(SGCircleShape3D, SGShape3D);
 
 	int64_t radius;
 
@@ -96,12 +96,12 @@ public:
 
 	virtual void draw(const RID &p_to_rid, const Color &p_color) override;
 
-	SGCircleShape2D();
-	~SGCircleShape2D();
+	SGCircleShape3D();
+	~SGCircleShape3D();
 };
 
-class SGCapsuleShape2D : public SGShape2D {
-	GDCLASS(SGCapsuleShape2D, SGShape2D);
+class SGCapsuleShape3D : public SGShape3D {
+	GDCLASS(SGCapsuleShape3D, SGShape3D);
 
 	int64_t radius;
 	int64_t height;
@@ -121,8 +121,8 @@ public:
 
 	virtual void draw(const RID& p_to_rid, const Color& p_color) override;
 
-	SGCapsuleShape2D();
-	~SGCapsuleShape2D();
+	SGCapsuleShape3D();
+	~SGCapsuleShape3D();
 };
 
 #endif

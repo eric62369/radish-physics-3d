@@ -21,25 +21,25 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "sg_physics_body_2d.h"
+#include "sg_physics_body_3D.h"
 
-#include "../../servers/sg_physics_2d_server.h"
-#include "../../../internal/sg_bodies_2d_internal.h"
+#include "../../servers/sg_physics_3D_server.h"
+#include "../../../internal/sg_bodies_3D_internal.h"
 
-void SGPhysicsBody2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("move_and_collide", "linear_velocity"), &SGPhysicsBody2D::move_and_collide);
+void SGPhysicsBody3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("move_and_collide", "linear_velocity"), &SGPhysicsBody3D::move_and_collide);
 }
 
-SGPhysicsBody2D::SGPhysicsBody2D() : SGCollisionObject2D() {
+SGPhysicsBody3D::SGPhysicsBody3D() : SGCollisionObject3D() {
 }
 
-SGPhysicsBody2D::SGPhysicsBody2D(RID p_rid) : SGCollisionObject2D(p_rid) {
+SGPhysicsBody3D::SGPhysicsBody3D(RID p_rid) : SGCollisionObject3D(p_rid) {
 }
 
-Ref<SGKinematicCollision2D> SGPhysicsBody2D::move_and_collide(const Ref<SGFixedVector2> &p_linear_velocity) {
-	ERR_FAIL_COND_V(!p_linear_velocity.is_valid(), Ref<SGKinematicCollision2D>());
-	SGPhysics2DServer *physics_server = SGPhysics2DServer::get_singleton();
-	Ref<SGKinematicCollision2D> ret = physics_server->body_move_and_collide(rid, p_linear_velocity);
+Ref<SGKinematicCollision3D> SGPhysicsBody3D::move_and_collide(const Ref<SGFixedVector2> &p_linear_velocity) {
+	ERR_FAIL_COND_V(!p_linear_velocity.is_valid(), Ref<SGKinematicCollision3D>());
+	SGPhysics3DServer *physics_server = SGPhysics3DServer::get_singleton();
+	Ref<SGKinematicCollision3D> ret = physics_server->body_move_and_collide(rid, p_linear_velocity);
 	// Sync only position from physics server to prevent precision loss.
 	set_global_fixed_position_internal(physics_server->collision_object_get_internal(rid)->get_transform().get_origin());
 	return ret;

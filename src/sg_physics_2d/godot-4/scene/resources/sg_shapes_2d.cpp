@@ -21,29 +21,29 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "sg_shapes_2d.h"
+#include "sg_shapes_3D.h"
 
 #include <godot_cpp/classes/rendering_server.hpp>
 #include <godot_cpp/templates/vector.hpp>
 
-#include "../../servers/sg_physics_2d_server.h"
+#include "../../servers/sg_physics_3D_server.h"
 
-void SGShape2D::_bind_methods() {
+void SGShape3D::_bind_methods() {
 }
 
-SGShape2D::SGShape2D() {
+SGShape3D::SGShape3D() {
 }
 
-SGShape2D::~SGShape2D() {
+SGShape3D::~SGShape3D() {
 }
 
-void SGRectangleShape2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_extents"), &SGRectangleShape2D::get_extents);
-	ClassDB::bind_method(D_METHOD("set_extents", "extents"), &SGRectangleShape2D::set_extents);
-	ClassDB::bind_method(D_METHOD("_get_extents_x"), &SGRectangleShape2D::_get_extents_x);
-	ClassDB::bind_method(D_METHOD("_set_extents_x", "x"), &SGRectangleShape2D::_set_extents_x);
-	ClassDB::bind_method(D_METHOD("_get_extents_y"), &SGRectangleShape2D::_get_extents_y);
-	ClassDB::bind_method(D_METHOD("_set_extents_y", "y"), &SGRectangleShape2D::_set_extents_y);
+void SGRectangleShape3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_extents"), &SGRectangleShape3D::get_extents);
+	ClassDB::bind_method(D_METHOD("set_extents", "extents"), &SGRectangleShape3D::set_extents);
+	ClassDB::bind_method(D_METHOD("_get_extents_x"), &SGRectangleShape3D::_get_extents_x);
+	ClassDB::bind_method(D_METHOD("_set_extents_x", "x"), &SGRectangleShape3D::_set_extents_x);
+	ClassDB::bind_method(D_METHOD("_get_extents_y"), &SGRectangleShape3D::_get_extents_y);
+	ClassDB::bind_method(D_METHOD("_set_extents_y", "y"), &SGRectangleShape3D::_set_extents_y);
 
 	// For editor and storage.
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "extents_x"), "_set_extents_x", "_get_extents_x");
@@ -53,87 +53,87 @@ void SGRectangleShape2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "extents", PROPERTY_HINT_NONE, "", 0), "set_extents", "get_extents");
 }
 
-void SGRectangleShape2D::set_extents(const Ref<SGFixedVector2>& p_extents) {
+void SGRectangleShape3D::set_extents(const Ref<SGFixedVector2>& p_extents) {
 	ERR_FAIL_COND(!p_extents.is_valid());
 
 	extents->set_internal(p_extents->get_internal());
 	emit_changed();
 }
 
-Ref<SGFixedVector2> SGRectangleShape2D::get_extents() {
+Ref<SGFixedVector2> SGRectangleShape3D::get_extents() {
 	return extents;
 }
 
-void SGRectangleShape2D::fixed_vector2_changed(SGFixedVector2 *p_vector) {
+void SGRectangleShape3D::fixed_vector2_changed(SGFixedVector2 *p_vector) {
 	emit_changed();
 }
 
-RID SGRectangleShape2D::create_internal_shape() const {
-	return SGPhysics2DServer::get_singleton()->shape_create(SGPhysics2DServer::SHAPE_RECTANGLE);
+RID SGRectangleShape3D::create_internal_shape() const {
+	return SGPhysics3DServer::get_singleton()->shape_create(SGPhysics3DServer::SHAPE_RECTANGLE);
 }
 
-int64_t SGRectangleShape2D::_get_extents_x() const {
+int64_t SGRectangleShape3D::_get_extents_x() const {
 	return extents->get_x();
 }
 
-void SGRectangleShape2D::_set_extents_x(int64_t p_x) {
+void SGRectangleShape3D::_set_extents_x(int64_t p_x) {
 	extents->set_x(p_x);
 }
 
-int64_t SGRectangleShape2D::_get_extents_y() const {
+int64_t SGRectangleShape3D::_get_extents_y() const {
 	return extents->get_y();
 }
 
-void SGRectangleShape2D::_set_extents_y(int64_t p_y) {
+void SGRectangleShape3D::_set_extents_y(int64_t p_y) {
 	extents->set_y(p_y);
 }
 
-void SGRectangleShape2D::sync_to_physics_engine(RID p_internal_shape) const {
-	SGPhysics2DServer::get_singleton()->rectangle_set_extents(p_internal_shape, extents);
+void SGRectangleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
+	SGPhysics3DServer::get_singleton()->rectangle_set_extents(p_internal_shape, extents);
 }
 
-void SGRectangleShape2D::draw(const RID &p_to_rid, const Color &p_color) {
+void SGRectangleShape3D::draw(const RID &p_to_rid, const Color &p_color) {
 	Size2 float_extents = extents->to_float();
 
 	RenderingServer::get_singleton()->canvas_item_add_rect(p_to_rid, Rect2(-float_extents, float_extents * 2.0), p_color);
 }
 
-SGRectangleShape2D::SGRectangleShape2D() : SGShape2D(),
+SGRectangleShape3D::SGRectangleShape3D() : SGShape3D(),
 	extents(Ref<SGFixedVector2>(memnew(SGFixedVector2(SGFixedVector2Internal(fixed(655360), fixed(655360))))))
 {
 	extents->set_watcher(this);
 }
 
-SGRectangleShape2D::~SGRectangleShape2D() {
+SGRectangleShape3D::~SGRectangleShape3D() {
 	extents->set_watcher(nullptr);
 }
 
 
-void SGCircleShape2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_radius"), &SGCircleShape2D::get_radius);
-	ClassDB::bind_method(D_METHOD("set_radius", "radius"), &SGCircleShape2D::set_radius);
+void SGCircleShape3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_radius"), &SGCircleShape3D::get_radius);
+	ClassDB::bind_method(D_METHOD("set_radius", "radius"), &SGCircleShape3D::set_radius);
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "radius"), "set_radius", "get_radius");
 }
 
-void SGCircleShape2D::set_radius(int64_t p_radius) {
+void SGCircleShape3D::set_radius(int64_t p_radius) {
 	radius = p_radius;
 	emit_changed();
 }
 
-int64_t SGCircleShape2D::get_radius() const {
+int64_t SGCircleShape3D::get_radius() const {
 	return radius;
 }
 
-RID SGCircleShape2D::create_internal_shape() const {
-	return SGPhysics2DServer::get_singleton()->shape_create(SGPhysics2DServer::SHAPE_CIRCLE);
+RID SGCircleShape3D::create_internal_shape() const {
+	return SGPhysics3DServer::get_singleton()->shape_create(SGPhysics3DServer::SHAPE_CIRCLE);
 }
 
-void SGCircleShape2D::sync_to_physics_engine(RID p_internal_shape) const {
-	SGPhysics2DServer::get_singleton()->circle_set_radius(p_internal_shape, radius);
+void SGCircleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
+	SGPhysics3DServer::get_singleton()->circle_set_radius(p_internal_shape, radius);
 }
 
-void SGCircleShape2D::draw(const RID &p_to_rid, const Color &p_color) {
+void SGCircleShape3D::draw(const RID &p_to_rid, const Color &p_color) {
 	float float_radius = fixed(radius).to_float();
 
 	PackedVector2Array points;
@@ -147,54 +147,54 @@ void SGCircleShape2D::draw(const RID &p_to_rid, const Color &p_color) {
 	RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
 }
 
-SGCircleShape2D::SGCircleShape2D() : SGShape2D(),
+SGCircleShape3D::SGCircleShape3D() : SGShape3D(),
 	radius(655360)
 {
 }
 
-SGCircleShape2D::~SGCircleShape2D() {
+SGCircleShape3D::~SGCircleShape3D() {
 }
 
 
-void SGCapsuleShape2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_radius"), &SGCapsuleShape2D::get_radius);
-	ClassDB::bind_method(D_METHOD("set_radius", "radius"), &SGCapsuleShape2D::set_radius);
-	ClassDB::bind_method(D_METHOD("get_height"), &SGCapsuleShape2D::get_height);
-	ClassDB::bind_method(D_METHOD("set_height", "height"), &SGCapsuleShape2D::set_height);
+void SGCapsuleShape3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_radius"), &SGCapsuleShape3D::get_radius);
+	ClassDB::bind_method(D_METHOD("set_radius", "radius"), &SGCapsuleShape3D::set_radius);
+	ClassDB::bind_method(D_METHOD("get_height"), &SGCapsuleShape3D::get_height);
+	ClassDB::bind_method(D_METHOD("set_height", "height"), &SGCapsuleShape3D::set_height);
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "radius"), "set_radius", "get_radius");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "height"), "set_height", "get_height");
 }
 
-void SGCapsuleShape2D::set_radius(int p_radius) {
+void SGCapsuleShape3D::set_radius(int p_radius) {
 	radius = p_radius;
 	emit_changed();
 }
 
-int64_t SGCapsuleShape2D::get_radius() const {
+int64_t SGCapsuleShape3D::get_radius() const {
 	return radius;
 }
 
-void SGCapsuleShape2D::set_height(int p_height) {
+void SGCapsuleShape3D::set_height(int p_height) {
 	height = p_height;
 	emit_changed();
 }
 
-int64_t SGCapsuleShape2D::get_height() const {
+int64_t SGCapsuleShape3D::get_height() const {
 	return height;
 }
 
-RID SGCapsuleShape2D::create_internal_shape() const {
-	return SGPhysics2DServer::get_singleton()->shape_create(SGPhysics2DServer::SHAPE_CAPSULE);
+RID SGCapsuleShape3D::create_internal_shape() const {
+	return SGPhysics3DServer::get_singleton()->shape_create(SGPhysics3DServer::SHAPE_CAPSULE);
 }
 
-void SGCapsuleShape2D::sync_to_physics_engine(RID p_internal_shape) const {
-	SGPhysics2DServer *physics_server = SGPhysics2DServer::get_singleton();
+void SGCapsuleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
+	SGPhysics3DServer *physics_server = SGPhysics3DServer::get_singleton();
 	physics_server->capsule_set_radius(p_internal_shape, radius);
 	physics_server->capsule_set_height(p_internal_shape, height);
 }
 
-void SGCapsuleShape2D::draw(const RID& p_to_rid, const Color& p_color) {
+void SGCapsuleShape3D::draw(const RID& p_to_rid, const Color& p_color) {
 	float float_height = fixed(height).to_float();
 	float float_radius = fixed(radius).to_float();
 
@@ -211,11 +211,11 @@ void SGCapsuleShape2D::draw(const RID& p_to_rid, const Color& p_color) {
 	RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
 }
 
-SGCapsuleShape2D::SGCapsuleShape2D() : SGShape2D(),
+SGCapsuleShape3D::SGCapsuleShape3D() : SGShape3D(),
 radius(655360),
 height(655360)
 {
 }
 
-SGCapsuleShape2D::~SGCapsuleShape2D() {
+SGCapsuleShape3D::~SGCapsuleShape3D() {
 }

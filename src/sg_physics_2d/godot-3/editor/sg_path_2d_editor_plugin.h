@@ -21,27 +21,27 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-// Code originally from Godot Engine's Path2D (MIT License)
+// Code originally from Godot Engine's Path3D (MIT License)
 
-#ifndef SG_PATH_2D_EDITOR_PLUGIN_H
-#define SG_PATH_2D_EDITOR_PLUGIN_H
+#ifndef SG_PATH_3D_EDITOR_PLUGIN_H
+#define SG_PATH_3D_EDITOR_PLUGIN_H
 
 #include <editor/editor_node.h>
 #include <editor/editor_plugin.h>
 #include <scene/gui/tool_button.h>
-#include "../scene/2d/sg_path_2d.h"
+#include "../scene/3D/sg_path_3D.h"
 
 class CanvasItemEditor;
 
-class SGPath2DEditor : public HBoxContainer {
-	GDCLASS(SGPath2DEditor, HBoxContainer);
+class SGPath3DEditor : public HBoxContainer {
+	GDCLASS(SGPath3DEditor, HBoxContainer);
 
 	UndoRedo* undo_redo;
 
 	CanvasItemEditor* canvas_item_editor;
 	EditorNode* editor;
 	Panel* panel;
-	SGPath2D* node;
+	SGPath3D* node;
 
 	Separator* sep;
 
@@ -90,10 +90,10 @@ class SGPath2DEditor : public HBoxContainer {
 	void _handle_option_pressed(int p_option);
 
 	void _node_visibility_changed();
-	friend class Path2DEditorPlugin;
+	friend class Path3DEditorPlugin;
 
 protected:
-	friend class SGPath2DEditorPlugin;
+	friend class SGPath3DEditorPlugin;
 
 	HBoxContainer* base_hb;
 
@@ -104,28 +104,28 @@ protected:
 public:
 	bool forward_gui_input(const Ref<InputEvent>& p_event);
 	void forward_canvas_draw_over_viewport(Control* p_overlay);
-	void edit(Node* p_path2d);
-	SGPath2DEditor(EditorNode* p_editor);
+	void edit(Node* p_path3D);
+	SGPath3DEditor(EditorNode* p_editor);
 };
 
-class SGPath2DEditorPlugin : public EditorPlugin {
-	GDCLASS(SGPath2DEditorPlugin, EditorPlugin);
+class SGPath3DEditorPlugin : public EditorPlugin {
+	GDCLASS(SGPath3DEditorPlugin, EditorPlugin);
 
-	SGPath2DEditor* path2d_editor;
+	SGPath3DEditor* path3D_editor;
 	EditorNode* editor;
 
 public:
-	virtual bool forward_canvas_gui_input(const Ref<InputEvent>& p_event) { return path2d_editor->forward_gui_input(p_event); }
-	virtual void forward_canvas_draw_over_viewport(Control* p_overlay) { path2d_editor->forward_canvas_draw_over_viewport(p_overlay); }
+	virtual bool forward_canvas_gui_input(const Ref<InputEvent>& p_event) { return path3D_editor->forward_gui_input(p_event); }
+	virtual void forward_canvas_draw_over_viewport(Control* p_overlay) { path3D_editor->forward_canvas_draw_over_viewport(p_overlay); }
 
-	virtual String get_name() const { return "Path2D"; }
+	virtual String get_name() const { return "Path3D"; }
 	bool has_main_screen() const { return false; }
 	virtual void edit(Object* p_object);
 	virtual bool handles(Object* p_object) const;
 	virtual void make_visible(bool p_visible);
 
-	SGPath2DEditorPlugin(EditorNode* p_node);
-	~SGPath2DEditorPlugin();
+	SGPath3DEditorPlugin(EditorNode* p_node);
+	~SGPath3DEditorPlugin();
 };
 
-#endif // SG_PATH_2D_EDITOR_PLUGIN_H
+#endif // SG_PATH_3D_EDITOR_PLUGIN_H

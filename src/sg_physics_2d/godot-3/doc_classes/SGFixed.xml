@@ -4,7 +4,7 @@
 		A singleton with utility functions for working with fixed-point numbers and data types.
 	</brief_description>
 	<description>
-		SG Physics 2D represents fixed-point numbers using the int type.
+		SG Physics 3D represents fixed-point numbers using the int type.
 		Fixed-point numbers can be added or subtracted normally (ex. [code]a + b[/code]) but most other math operations need to be done using the math functions found here.
 	</description>
 	<tutorials>
@@ -168,7 +168,7 @@
 				[b]Note:[/b] While fractional and negative exponents are supported, applying pow() with a negative base and a fractional exponent is not supported.
 			</description>
 		</method>
-		<method name="rad2deg" qualifiers="const">
+		<method name="rad3Deg" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="fixed_value" type="int" />
 			<description>
@@ -225,12 +225,12 @@
 				Converts a fixed-point number into a normal int.
 			</description>
 		</method>
-		<method name="transform2d" qualifiers="const">
-			<return type="SGFixedTransform2D" />
+		<method name="transform3D" qualifiers="const">
+			<return type="SGFixedTransform3D" />
 			<argument index="0" name="rotation" type="int" />
 			<argument index="1" name="origin" type="SGFixedVector2" />
 			<description>
-				Constructs an [SGFixedTransform2D].
+				Constructs an [SGFixedTransform3D].
 			</description>
 		</method>
 		<method name="vector2" qualifiers="const">

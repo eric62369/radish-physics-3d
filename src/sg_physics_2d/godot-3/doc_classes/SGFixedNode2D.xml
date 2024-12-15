@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SGFixedNode2D" inherits="Node2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="SGFixedNode3D" inherits="Node3D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
-		A 2D game object, with its position, rotation and scale represented as fixed-point numbers, from which all other fixed-point nodes descend.
+		A 3D game object, with its position, rotation and scale represented as fixed-point numbers, from which all other fixed-point nodes descend.
 	</brief_description>
 	<description>
-		A 2D game object with a fixed-point transform (position, rotation and scale). All 2D fixed-point nodes descend from SGFixedNode2D.
+		A 3D game object with a fixed-point transform (position, rotation and scale). All 3D fixed-point nodes descend from SGFixedNode3D.
 		Updating the fixed-point transform properties (like [code]fixed_postion[/code]) will update the corresponding floating-point properties (like [code]position[/code]), but not right away. They'll be updated just before [code]_process()[/code] is called.
 		The floating-point transform properties are used for the visual representation of the node. Updating the floating-point properties won't have any affect on the fixed-point versions.
-		SGFixedNode2D's will be offset by the transform of their parent node, if it is also an SGFixedNode2D (or one of descendents). If a plain [Node2D] is the parent of an SGFixedNode2D, its floating-point properties will be offset by the floating-point transform of its parent, but its fixed-point transform will be unaffected, possibly leading to unexpected behavior.
+		SGFixedNode3D's will be offset by the transform of their parent node, if it is also an SGFixedNode3D (or one of descendents). If a plain [Node3D] is the parent of an SGFixedNode3D, its floating-point properties will be offset by the floating-point transform of its parent, but its fixed-point transform will be unaffected, possibly leading to unexpected behavior.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -23,7 +23,7 @@
 			</description>
 		</method>
 		<method name="get_global_fixed_transform" qualifiers="const">
-			<return type="SGFixedTransform2D" />
+			<return type="SGFixedTransform3D" />
 			<description>
 			</description>
 		</method>
@@ -41,7 +41,7 @@
 		</method>
 		<method name="set_global_fixed_transform">
 			<return type="void" />
-			<argument index="0" name="fixed_transform" type="SGFixedTransform2D" />
+			<argument index="0" name="fixed_transform" type="SGFixedTransform3D" />
 			<description>
 			</description>
 		</method>
@@ -76,7 +76,7 @@
 		<member name="fixed_scale_y" type="int" setter="_set_fixed_scale_y" getter="_get_fixed_scale_y" default="65536">
 			[b]Do not use this property![/b] It only exists to serialize the [code]fixed_scale[/code] property to scene files. Use [code]fixed_scale[/code] directly instead.
 		</member>
-		<member name="fixed_transform" type="SGFixedTransform2D" setter="set_fixed_transform" getter="get_fixed_transform">
+		<member name="fixed_transform" type="SGFixedTransform3D" setter="set_fixed_transform" getter="get_fixed_transform">
 			The full fixed-point transform (includes position, rotation and scale).:w
 		</member>
 	</members>

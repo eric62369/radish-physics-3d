@@ -21,18 +21,18 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_COLLISION_OBJECT_2D_H
-#define SG_COLLISION_OBJECT_2D_H
+#ifndef SG_COLLISION_OBJECT_3D_H
+#define SG_COLLISION_OBJECT_3D_H
 
-#include "sg_fixed_node_2d.h"
+#include "sg_fixed_node_3D.h"
 
 #include "../../math/sg_fixed_vector2.h"
 
-class SGCollisionObject2D : public SGFixedNode2D {
-	GDCLASS(SGCollisionObject2D, SGFixedNode2D);
+class SGCollisionObject3D : public SGFixedNode3D {
+	GDCLASS(SGCollisionObject3D, SGFixedNode3D);
 
-	friend class SGCollisionShape2D;
-	friend class SGCollisionPolygon2D;
+	friend class SGCollisionShape3D;
+	friend class SGCollisionPolygon3D;
 
 	uint32_t collision_layer;
 	uint32_t collision_mask;
@@ -46,7 +46,7 @@ protected:
 
 	void sync_from_physics_engine();
 
-	SGCollisionObject2D(RID p_rid);
+	SGCollisionObject3D(RID p_rid);
 
 public:
 	virtual PackedStringArray _get_configuration_warnings() const override;
@@ -70,8 +70,8 @@ public:
 	void set_collision_mask_bit(int p_bit, bool p_value);
 	bool get_collision_mask_bit(int p_bit) const;
 
-	SGCollisionObject2D();
-	~SGCollisionObject2D();
+	SGCollisionObject3D();
+	~SGCollisionObject3D();
 };
 
 #endif

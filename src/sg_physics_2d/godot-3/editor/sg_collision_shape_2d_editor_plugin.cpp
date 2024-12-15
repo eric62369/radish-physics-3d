@@ -21,17 +21,17 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "sg_collision_shape_2d_editor_plugin.h"
+#include "sg_collision_shape_3D_editor_plugin.h"
 
 #include <editor/editor_node.h>
 #include <editor/plugins/canvas_item_editor_plugin.h>
-#include "../scene/2d/sg_collision_shape_2d.h"
-#include "../scene/resources/sg_shapes_2d.h"
+#include "../scene/3D/sg_collision_shape_3D.h"
+#include "../scene/resources/sg_shapes_3D.h"
 
-Variant SGCollisionShape2DEditor::get_handle_value(int idx) const {
+Variant SGCollisionShape3DEditor::get_handle_value(int idx) const {
 	switch (shape_type) {
 		case RECTANGLE_SHAPE: {
-			Ref<SGRectangleShape2D> rectangle = node->get_shape();
+			Ref<SGRectangleShape3D> rectangle = node->get_shape();
 
 			if (idx < 3) {
 				return rectangle->get_extents()->abs();
@@ -39,7 +39,7 @@ Variant SGCollisionShape2DEditor::get_handle_value(int idx) const {
 		} break;
 
 		case CIRCLE_SHAPE: {
-			Ref<SGCircleShape2D> circle = node->get_shape();
+			Ref<SGCircleShape3D> circle = node->get_shape();
 
 			if (idx == 0) {
 				return circle->get_radius();
@@ -47,7 +47,7 @@ Variant SGCollisionShape2DEditor::get_handle_value(int idx) const {
 		} break;
 
 		case CAPSULE_SHAPE: {
-			Ref<SGCapsuleShape2D> capsule = node->get_shape();
+			Ref<SGCapsuleShape3D> capsule = node->get_shape();
 
 			if (idx == 0) {
 				return capsule->get_radius();
@@ -61,10 +61,10 @@ Variant SGCollisionShape2DEditor::get_handle_value(int idx) const {
 	return Variant();
 }
 
-void SGCollisionShape2DEditor::set_handle(int idx, Point2 &p_point) {
+void SGCollisionShape3DEditor::set_handle(int idx, Point2 &p_point) {
 	switch (shape_type) {
 		case RECTANGLE_SHAPE: {
-			Ref<SGRectangleShape2D> rectangle = node->get_shape();
+			Ref<SGRectangleShape3D> rectangle = node->get_shape();
 
 			Ref<SGFixedVector2> extents = rectangle->get_extents();
 			switch (idx) {
@@ -84,14 +84,14 @@ void SGCollisionShape2DEditor::set_handle(int idx, Point2 &p_point) {
 		} break;
 
 		case CIRCLE_SHAPE: {
-			Ref<SGCircleShape2D> circle = node->get_shape();
+			Ref<SGCircleShape3D> circle = node->get_shape();
 			circle->set_radius(fixed::from_float(p_point.length()).value);
 
 			canvas_item_editor->update_viewport();
 		} break;
 
 		case CAPSULE_SHAPE: {
-			Ref<SGCapsuleShape2D> capsule = node->get_shape();
+			Ref<SGCapsuleShape3D> capsule = node->get_shape();
 			switch (idx) {
 				case 0:
 					capsule->set_radius(fixed::from_float(p_point.length()).value);
@@ -106,12 +106,12 @@ void SGCollisionShape2DEditor::set_handle(int idx, Point2 &p_point) {
 	}
 }
 
-void SGCollisionShape2DEditor::commit_handle(int idx, Variant &p_org) {
+void SGCollisionShape3DEditor::commit_handle(int idx, Variant &p_org) {
 	undo_redo->create_action(TTR("Set Handle"));
 
 	switch (shape_type) {
 		case RECTANGLE_SHAPE: {
-			Ref<SGRectangleShape2D> rectangle = node->get_shape();
+			Ref<SGRectangleShape3D> rectangle = node->get_shape();
 
 			undo_redo->add_do_method(rectangle.ptr(), "set_extents", rectangle->get_extents());
 			undo_redo->add_do_method(canvas_item_editor, "update_viewport");
@@ -120,7 +120,7 @@ void SGCollisionShape2DEditor::commit_handle(int idx, Variant &p_org) {
 		} break;
 
 		case CIRCLE_SHAPE: {
-			Ref<SGCircleShape2D> circle = node->get_shape();
+			Ref<SGCircleShape3D> circle = node->get_shape();
 
 			undo_redo->add_do_method(circle.ptr(), "set_radius", circle->get_radius());
 			undo_redo->add_do_method(canvas_item_editor, "update_viewport");
@@ -129,7 +129,7 @@ void SGCollisionShape2DEditor::commit_handle(int idx, Variant &p_org) {
 		} break;
 
 		case CAPSULE_SHAPE: {
-			Ref<SGCapsuleShape2D> capsule = node->get_shape();
+			Ref<SGCapsuleShape3D> capsule = node->get_shape();
 
 			undo_redo->add_do_method(capsule.ptr(), "set_radius", capsule->get_radius());
 			undo_redo->add_do_method(canvas_item_editor, "update_viewport");
@@ -141,24 +141,24 @@ void SGCollisionShape2DEditor::commit_handle(int idx, Variant &p_org) {
 	undo_redo->commit_action();
 }
 
-void SGCollisionShape2DEditor::_get_current_shape_type() {
+void SGCollisionShape3DEditor::_get_current_shape_type() {
 	if (!node) {
 		return;
 	}
 
-	Ref<SGShape2D> shape = node->get_shape();
+	Ref<SGShape3D> shape = node->get_shape();
 
 	if (!shape.is_valid()) {
 		return;
 	}
 
-	if (Object::cast_to<SGRectangleShape2D>(*shape)) {
+	if (Object::cast_to<SGRectangleShape3D>(*shape)) {
 		shape_type = RECTANGLE_SHAPE;
 	}
-	else if (Object::cast_to<SGCircleShape2D>(*shape)) {
+	else if (Object::cast_to<SGCircleShape3D>(*shape)) {
 		shape_type = CIRCLE_SHAPE;
 	}
-	else if (Object::cast_to<SGCapsuleShape2D>(*shape)) {
+	else if (Object::cast_to<SGCapsuleShape3D>(*shape)) {
 		shape_type = CAPSULE_SHAPE;
 	}
 	else {
@@ -168,7 +168,7 @@ void SGCollisionShape2DEditor::_get_current_shape_type() {
 	canvas_item_editor->update_viewport();
 }
 
-void SGCollisionShape2DEditor::_notification(int p_what) {
+void SGCollisionShape3DEditor::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
 			get_tree()->connect("node_removed", this, "_node_removed");
@@ -180,18 +180,18 @@ void SGCollisionShape2DEditor::_notification(int p_what) {
 	}
 }
 
-void SGCollisionShape2DEditor::_node_removed(Node *p_node) {
+void SGCollisionShape3DEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {
 		node = nullptr;
 	}
 }
 
-void SGCollisionShape2DEditor::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("_get_current_shape_type"), &SGCollisionShape2DEditor::_get_current_shape_type);
-	ClassDB::bind_method(D_METHOD("_node_removed"), &SGCollisionShape2DEditor::_node_removed);
+void SGCollisionShape3DEditor::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("_get_current_shape_type"), &SGCollisionShape3DEditor::_get_current_shape_type);
+	ClassDB::bind_method(D_METHOD("_node_removed"), &SGCollisionShape3DEditor::_node_removed);
 }
 
-bool SGCollisionShape2DEditor::forward_canvas_gui_input(const Ref<InputEvent> &p_event) {
+bool SGCollisionShape3DEditor::forward_canvas_gui_input(const Ref<InputEvent> &p_event) {
 	if (!node) {
 		return false;
 	}
@@ -205,7 +205,7 @@ bool SGCollisionShape2DEditor::forward_canvas_gui_input(const Ref<InputEvent> &p
 	}
 
 	Ref<InputEventMouseButton> mb = p_event;
-	Transform2D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
+	Transform3D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
 
 	if (mb.is_valid()) {
 		Vector2 gpoint = mb->get_position();
@@ -262,7 +262,7 @@ bool SGCollisionShape2DEditor::forward_canvas_gui_input(const Ref<InputEvent> &p
 	return false;
 }
 
-void SGCollisionShape2DEditor::forward_canvas_draw_over_viewport(Control *p_overlay) {
+void SGCollisionShape3DEditor::forward_canvas_draw_over_viewport(Control *p_overlay) {
 	if (!node) {
 		return;
 	}
@@ -277,7 +277,7 @@ void SGCollisionShape2DEditor::forward_canvas_draw_over_viewport(Control *p_over
 		return;
 	}
 
-	Transform2D gt = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
+	Transform3D gt = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
 
 	Ref<Texture> h = get_icon("EditorHandle", "EditorIcons");
 	Vector2 size = h->get_size() * 0.5;
@@ -286,7 +286,7 @@ void SGCollisionShape2DEditor::forward_canvas_draw_over_viewport(Control *p_over
 
 	switch (shape_type) {
 		case RECTANGLE_SHAPE: {
-			Ref<SGRectangleShape2D> shape = node->get_shape();
+			Ref<SGRectangleShape3D> shape = node->get_shape();
 
 			handles.resize(3);
 			Vector2 ext = shape->get_extents()->to_float();
@@ -300,7 +300,7 @@ void SGCollisionShape2DEditor::forward_canvas_draw_over_viewport(Control *p_over
 		} break;
 
 		case CIRCLE_SHAPE: {
-			Ref<SGCircleShape2D> shape = node->get_shape();
+			Ref<SGCircleShape3D> shape = node->get_shape();
 
 			handles.resize(1);
 			handles.write[0] = Point2(fixed(shape->get_radius()).to_float(), 0);
@@ -309,7 +309,7 @@ void SGCollisionShape2DEditor::forward_canvas_draw_over_viewport(Control *p_over
 		} break;
 
 		case CAPSULE_SHAPE: {
-			Ref<SGCapsuleShape2D> shape = node->get_shape();
+			Ref<SGCapsuleShape3D> shape = node->get_shape();
 
 			handles.resize(2);
 			float height = fixed(shape->get_height()).to_float();
@@ -323,13 +323,13 @@ void SGCollisionShape2DEditor::forward_canvas_draw_over_viewport(Control *p_over
 	}
 }
 
-void SGCollisionShape2DEditor::edit(Node *p_node) {
+void SGCollisionShape3DEditor::edit(Node *p_node) {
 	if (!canvas_item_editor) {
 		canvas_item_editor = CanvasItemEditor::get_singleton();
 	}
 
 	if (p_node) {
-		node = Object::cast_to<SGCollisionShape2D>(p_node);
+		node = Object::cast_to<SGCollisionShape3D>(p_node);
 
 		_get_current_shape_type();
 	}
@@ -343,7 +343,7 @@ void SGCollisionShape2DEditor::edit(Node *p_node) {
 	canvas_item_editor->update_viewport();
 }
 
-SGCollisionShape2DEditor::SGCollisionShape2DEditor(EditorNode *p_editor) {
+SGCollisionShape3DEditor::SGCollisionShape3DEditor(EditorNode *p_editor) {
 	node = nullptr;
 	canvas_item_editor = nullptr;
 	editor = p_editor;
@@ -354,28 +354,28 @@ SGCollisionShape2DEditor::SGCollisionShape2DEditor(EditorNode *p_editor) {
 	pressed = false;
 }
 
-bool SGCollisionShape2DEditorPlugin::handles(Object *p_obj) const {
-	SGCollisionShape2D *node = Object::cast_to<SGCollisionShape2D>(p_obj);
+bool SGCollisionShape3DEditorPlugin::handles(Object *p_obj) const {
+	SGCollisionShape3D *node = Object::cast_to<SGCollisionShape3D>(p_obj);
 	return (bool)node;
 }
 
-void SGCollisionShape2DEditorPlugin::edit(Object *p_obj) {
-	collision_shape2d_editor->edit(Object::cast_to<Node>(p_obj));
+void SGCollisionShape3DEditorPlugin::edit(Object *p_obj) {
+	collision_shape3D_editor->edit(Object::cast_to<Node>(p_obj));
 }
 
-void SGCollisionShape2DEditorPlugin::make_visible(bool visible) {
+void SGCollisionShape3DEditorPlugin::make_visible(bool visible) {
 	if (!visible) {
 		edit(nullptr);
 	}
 }
 
-SGCollisionShape2DEditorPlugin::SGCollisionShape2DEditorPlugin(EditorNode *p_editor)
+SGCollisionShape3DEditorPlugin::SGCollisionShape3DEditorPlugin(EditorNode *p_editor)
 {
 	editor = p_editor;
-	collision_shape2d_editor = memnew(SGCollisionShape2DEditor(p_editor));
-	p_editor->get_gui_base()->add_child(collision_shape2d_editor);
+	collision_shape3D_editor = memnew(SGCollisionShape3DEditor(p_editor));
+	p_editor->get_gui_base()->add_child(collision_shape3D_editor);
 }
 
-SGCollisionShape2DEditorPlugin::~SGCollisionShape2DEditorPlugin() {
+SGCollisionShape3DEditorPlugin::~SGCollisionShape3DEditorPlugin() {
 
 }

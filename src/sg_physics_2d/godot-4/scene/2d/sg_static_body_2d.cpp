@@ -21,17 +21,17 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "sg_static_body_2d.h"
+#include "sg_static_body_3D.h"
 
-#include "../../servers/sg_physics_2d_server.h"
+#include "../../servers/sg_physics_3D_server.h"
 
-void SGStaticBody2D::_bind_methods() {
+void SGStaticBody3D::_bind_methods() {
 }
 
-SGStaticBody2D::SGStaticBody2D()
-	: SGPhysicsBody2D(SGPhysics2DServer::get_singleton()->collision_object_create(SGPhysics2DServer::OBJECT_BODY, SGPhysics2DServer::BODY_STATIC))
+SGStaticBody3D::SGStaticBody3D()
+	: SGPhysicsBody3D(SGPhysics3DServer::get_singleton()->collision_object_create(SGPhysics3DServer::OBJECT_BODY, SGPhysics3DServer::BODY_STATIC))
 {
 }
 
-SGStaticBody2D::~SGStaticBody2D() {
+SGStaticBody3D::~SGStaticBody3D() {
 }

@@ -7,7 +7,7 @@ index 8648a2a1d9..8c28f48cab 100644
  #include "editor/editor_settings.h"
  #include "editor/script_editor_debugger.h"
 +#include <string>
-+#include "src/sg_physics_2d/godot-3/math/sg_fixed_singleton.h"
++#include "src/sg_physics_3D/godot-3/math/sg_fixed_singleton.h"
  
  void ConnectionInfoDialog::ok_pressed() {
  }

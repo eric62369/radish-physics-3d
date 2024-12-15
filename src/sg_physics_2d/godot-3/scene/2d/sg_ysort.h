@@ -26,10 +26,10 @@
 #ifndef SG_YSORT_H
 #define SG_YSORT_H
 
-#include "sg_fixed_node_2d.h"
+#include "sg_fixed_node_3D.h"
 
-class SGYSort : public SGFixedNode2D {
-	GDCLASS(SGYSort, SGFixedNode2D);
+class SGYSort : public SGFixedNode3D {
+	GDCLASS(SGYSort, SGFixedNode3D);
 	bool sort_enabled;
 	static void _bind_methods();
 

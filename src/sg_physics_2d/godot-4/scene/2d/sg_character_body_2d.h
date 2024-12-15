@@ -21,20 +21,20 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_CHARACTER_BODY_2D_H
-#define SG_CHARACTER_BODY_2D_H
+#ifndef SG_CHARACTER_BODY_3D_H
+#define SG_CHARACTER_BODY_3D_H
 
 #include <godot_cpp/templates/vector.hpp>
 
-#include "sg_physics_body_2d.h"
+#include "sg_physics_body_3D.h"
 
-class SGKinematicCollision2D;
+class SGKinematicCollision3D;
 
-class SGCharacterBody2D : public SGPhysicsBody2D {
-	GDCLASS(SGCharacterBody2D, SGPhysicsBody2D);
+class SGCharacterBody3D : public SGPhysicsBody3D {
+	GDCLASS(SGCharacterBody3D, SGPhysicsBody3D);
 
 protected:
-	Vector<Ref<SGKinematicCollision2D>> slide_colliders;
+	Vector<Ref<SGKinematicCollision3D>> slide_colliders;
 	Ref<SGFixedVector2> floor_normal;
 	bool on_floor;
 	bool on_ceiling;
@@ -70,14 +70,14 @@ public:
 	bool is_on_wall() const;
 
 	int get_slide_count() const;
-	Ref<SGKinematicCollision2D> get_slide_collision(int p_slide_idx);
-	Ref<SGKinematicCollision2D> get_last_slide_collision();
+	Ref<SGKinematicCollision3D> get_slide_collision(int p_slide_idx);
+	Ref<SGKinematicCollision3D> get_last_slide_collision();
 
 	bool move_and_slide();
 	bool rotate_and_slide(int64_t p_rotation);
 
-	SGCharacterBody2D();
-	~SGCharacterBody2D();
+	SGCharacterBody3D();
+	~SGCharacterBody3D();
 };
 
 #endif

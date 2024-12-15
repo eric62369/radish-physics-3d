@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SGRayCast2D" inherits="SGFixedNode2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="SGRayCast3D" inherits="SGFixedNode3D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
 		Node for finding the closest object intersecting a line segment.
 	</brief_description>
 	<description>
-		An SGRayCast2D represents a line segment from its origin to its [code]cast_to[/code] point. It is used to find the closest object interesect this line segment.
+		An SGRayCast3D represents a line segment from its origin to its [code]cast_to[/code] point. It is used to find the closest object interesect this line segment.
 	</description>
 	<tutorials>
 	</tutorials>

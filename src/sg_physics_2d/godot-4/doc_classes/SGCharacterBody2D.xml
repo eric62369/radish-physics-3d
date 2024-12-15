@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SGCharacterBody2D" inherits="SGCollisionObject2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="SGCharacterBody3D" inherits="SGCollisionObject3D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
-		Character physics body for SG Physics 2D.
+		Character physics body for SG Physics 3D.
 	</brief_description>
 	<description>
 		Character bodies are intended to be controlled directly by code (rather than physics forces).
@@ -25,16 +25,16 @@
 			</description>
 		</method>
 		<method name="get_last_slide_collision">
-			<return type="SGKinematicCollision2D" />
+			<return type="SGKinematicCollision3D" />
 			<description>
-				Gets the [SGKinematicCollision2D] which contains information about the latest collision that occurred during the last call to [method move_and_slide].
+				Gets the [SGKinematicCollision3D] which contains information about the latest collision that occurred during the last call to [method move_and_slide].
 			</description>
 		</method>
 		<method name="get_slide_collision">
-			<return type="SGKinematicCollision2D" />
+			<return type="SGKinematicCollision3D" />
 			<argument index="0" name="slide_idx" type="int" />
 			<description>
-				Gets a [SGKinematicCollision2D] which contains information about a collision that occurred during the last call to [method move_and_slide].
+				Gets a [SGKinematicCollision3D] which contains information about a collision that occurred during the last call to [method move_and_slide].
 				Since the body can collide several times in a single call to [method move_and_slide], you must specify the index of the collision in the range 0 to ([method get_slide_count] - 1).
 				[b]Example usage:[/b]
 				[codeblock]
@@ -66,7 +66,7 @@
 			</description>
 		</method>
 		<method name="move_and_collide">
-			<return type="SGKinematicCollision2D" />
+			<return type="SGKinematicCollision3D" />
 			<argument index="0" name="linear_velocity" type="SGFixedVector2" />
 			<description>
 			</description>

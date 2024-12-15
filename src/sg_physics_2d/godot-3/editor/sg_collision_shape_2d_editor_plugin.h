@@ -21,16 +21,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_COLLISION_SHAPE_2D_EDITOR_PLUGIN_H
-#define SG_COLLISION_SHAPE_2D_EDITOR_PLUGIN_H
+#ifndef SG_COLLISION_SHAPE_3D_EDITOR_PLUGIN_H
+#define SG_COLLISION_SHAPE_3D_EDITOR_PLUGIN_H
 
 #include <editor/editor_plugin.h>
 
 class CanvasItemEditor;
-class SGCollisionShape2D;
+class SGCollisionShape3D;
 
-class SGCollisionShape2DEditor : public Control {
-	GDCLASS(SGCollisionShape2DEditor, Control);
+class SGCollisionShape3DEditor : public Control {
+	GDCLASS(SGCollisionShape3DEditor, Control);
 
 	enum ShapeType {
 		RECTANGLE_SHAPE,
@@ -41,7 +41,7 @@ class SGCollisionShape2DEditor : public Control {
 	EditorNode *editor;
 	UndoRedo *undo_redo;
 	CanvasItemEditor *canvas_item_editor = NULL;
-	SGCollisionShape2D *node = NULL;
+	SGCollisionShape3D *node = NULL;
 
 	Vector<Point2> handles;
 
@@ -66,27 +66,27 @@ public:
 	void forward_canvas_draw_over_viewport(Control *p_overlay);
 	void edit(Node *p_node);
 
-	SGCollisionShape2DEditor(EditorNode *p_editor);
+	SGCollisionShape3DEditor(EditorNode *p_editor);
 };
 
-class SGCollisionShape2DEditorPlugin : public EditorPlugin {
-	GDCLASS(SGCollisionShape2DEditorPlugin, EditorPlugin);
+class SGCollisionShape3DEditorPlugin : public EditorPlugin {
+	GDCLASS(SGCollisionShape3DEditorPlugin, EditorPlugin);
 
 	EditorNode *editor;
-	SGCollisionShape2DEditor *collision_shape2d_editor;
+	SGCollisionShape3DEditor *collision_shape3D_editor;
 
 public:
-	virtual bool forward_canvas_gui_input(const Ref<InputEvent> &p_event) { return collision_shape2d_editor->forward_canvas_gui_input(p_event); }
-	virtual void forward_canvas_draw_over_viewport(Control *p_overlay) { collision_shape2d_editor->forward_canvas_draw_over_viewport(p_overlay); }
+	virtual bool forward_canvas_gui_input(const Ref<InputEvent> &p_event) { return collision_shape3D_editor->forward_canvas_gui_input(p_event); }
+	virtual void forward_canvas_draw_over_viewport(Control *p_overlay) { collision_shape3D_editor->forward_canvas_draw_over_viewport(p_overlay); }
 
-	virtual String get_name() const override { return "SGCollisionShape2D"; }
+	virtual String get_name() const override { return "SGCollisionShape3D"; }
 	bool has_main_screen() const override { return false; }
 	virtual bool handles(Object *p_obj) const override;
 	virtual void edit(Object *p_obj) override;
 	virtual void make_visible(bool visible) override;
 
-	SGCollisionShape2DEditorPlugin(EditorNode *p_editor);
-	~SGCollisionShape2DEditorPlugin();
+	SGCollisionShape3DEditorPlugin(EditorNode *p_editor);
+	~SGCollisionShape3DEditorPlugin();
 };
 
 #endif

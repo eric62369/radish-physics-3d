@@ -21,33 +21,33 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_COLLISION_POLYGON_2D_EDITOR_PLUGIN_H
-#define SG_COLLISION_POLYGON_2D_EDITOR_PLUGIN_H
+#ifndef SG_COLLISION_POLYGON_3D_EDITOR_PLUGIN_H
+#define SG_COLLISION_POLYGON_3D_EDITOR_PLUGIN_H
 
-#include <editor/plugins/abstract_polygon_2d_editor.h>
+#include <editor/plugins/abstract_polygon_3D_editor.h>
 
-#include "../scene/2d/sg_collision_polygon_2d.h"
+#include "../scene/3D/sg_collision_polygon_3D.h"
 
-class SGCollisionPolygon2DEditor : public AbstractPolygon2DEditor {
+class SGCollisionPolygon3DEditor : public AbstractPolygon3DEditor {
 
-	GDCLASS(SGCollisionPolygon2DEditor, AbstractPolygon2DEditor);
+	GDCLASS(SGCollisionPolygon3DEditor, AbstractPolygon3DEditor);
 
-	SGCollisionPolygon2D *node;
+	SGCollisionPolygon3D *node;
 
 protected:
-	virtual Node2D *_get_node() const;
+	virtual Node3D *_get_node() const;
 	virtual void _set_node(Node *p_polygon);
 
 public:
-	SGCollisionPolygon2DEditor(EditorNode *p_editor);
+	SGCollisionPolygon3DEditor(EditorNode *p_editor);
 };
 
-class SGCollisionPolygon2DEditorPlugin : public AbstractPolygon2DEditorPlugin {
+class SGCollisionPolygon3DEditorPlugin : public AbstractPolygon3DEditorPlugin {
 
-	GDCLASS(SGCollisionPolygon2DEditorPlugin, AbstractPolygon2DEditorPlugin);
+	GDCLASS(SGCollisionPolygon3DEditorPlugin, AbstractPolygon3DEditorPlugin);
 
 public:
-	SGCollisionPolygon2DEditorPlugin(EditorNode *p_node);
+	SGCollisionPolygon3DEditorPlugin(EditorNode *p_node);
 };
 
 #endif

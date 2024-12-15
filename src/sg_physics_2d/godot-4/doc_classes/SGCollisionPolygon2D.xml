@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SGCollisionPolygon2D" inherits="SGFixedNode2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="SGCollisionPolygon3D" inherits="SGFixedNode3D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
-		Defines a convex 2D collision polygon for SG Physics 2D.
+		Defines a convex 3D collision polygon for SG Physics 3D.
 	</brief_description>
 	<description>
-		Provides a convex 2D collision polygon to an [SGCollisionObject2D] parent.
+		Provides a convex 3D collision polygon to an [SGCollisionObject3D] parent.
 		Non-convex polygons won't work, and will show a warning in the editor.
 	</description>
 	<tutorials>
@@ -13,7 +13,7 @@
 		<method name="get_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
-				Returns the RID of the resource for use with [SGPhysics2DServer].
+				Returns the RID of the resource for use with [SGPhysics3DServer].
 			</description>
 		</method>
 	</methods>

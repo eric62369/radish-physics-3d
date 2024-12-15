@@ -30,8 +30,8 @@
 #include <core/oa_hash_map.h>
 #include <core/reference.h>
 
-class SGAStar2D : public Reference {
-	GDCLASS(SGAStar2D, Reference);
+class SGAStar3D : public Reference {
+	GDCLASS(SGAStar3D, Reference);
 
 	struct Point {
 		Point() :
@@ -146,8 +146,8 @@ public:
 	Array get_point_path(int p_from_id, int p_to_id);
 	PoolVector<int> get_id_path(int p_from_id, int p_to_id);
 
-	SGAStar2D();
-	~SGAStar2D();
+	SGAStar3D();
+	~SGAStar3D();
 };
 
 #endif // SGASTAR_H

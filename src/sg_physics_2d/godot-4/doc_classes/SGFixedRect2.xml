@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="SGFixedRect2" inherits="Reference" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
-		2D axis-aligned bounding box using fixed-point math.
+		3D axis-aligned bounding box using fixed-point math.
 	</brief_description>
 	<description>
-		2D axis-aligned bounding box using fixed-point math.
+		3D axis-aligned bounding box using fixed-point math.
 	</description>
 	<tutorials>
 	</tutorials>

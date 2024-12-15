@@ -21,22 +21,22 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_FIXED_NODE_2D_H
-#define SG_FIXED_NODE_2D_H
+#ifndef SG_FIXED_NODE_3D_H
+#define SG_FIXED_NODE_3D_H
 
-#include <godot_cpp/classes/node2d.hpp>
+#include <godot_cpp/classes/node3D.hpp>
 
 #include "../../math/sg_fixed_vector2.h"
-#include "../../math/sg_fixed_transform_2d.h"
+#include "../../math/sg_fixed_transform_3D.h"
 
-class SGCollisionObject2D;
+class SGCollisionObject3D;
 
-class SGFixedNode2D : public Node2D, public SGFixedVector2Watcher {
-	GDCLASS(SGFixedNode2D, Node2D);
+class SGFixedNode3D : public Node3D, public SGFixedVector2Watcher {
+	GDCLASS(SGFixedNode3D, Node3D);
 
-	friend SGCollisionObject2D;
+	friend SGCollisionObject3D;
 
-	Ref<SGFixedTransform2D> fixed_transform;
+	Ref<SGFixedTransform3D> fixed_transform;
 	Ref<SGFixedVector2> fixed_scale;
 	int64_t fixed_rotation;
 	bool fixed_xform_dirty;
@@ -55,11 +55,11 @@ protected:
 
 	void _update_fixed_transform_rotation_and_scale();
 
-	_FORCE_INLINE_ SGFixedTransform2DInternal get_fixed_transform_internal() const { return fixed_transform->get_internal(); }
-	SGFixedTransform2DInternal get_global_fixed_transform_internal() const;
+	_FORCE_INLINE_ SGFixedTransform3DInternal get_fixed_transform_internal() const { return fixed_transform->get_internal(); }
+	SGFixedTransform3DInternal get_global_fixed_transform_internal() const;
 
-	void update_fixed_transform_internal(const SGFixedTransform2DInternal &p_transform);
-	void update_global_fixed_transform_internal(const SGFixedTransform2DInternal &p_global_transform);
+	void update_fixed_transform_internal(const SGFixedTransform3DInternal &p_transform);
+	void update_global_fixed_transform_internal(const SGFixedTransform3DInternal &p_global_transform);
 
 
 	int64_t _get_fixed_position_x() const;
@@ -75,8 +75,8 @@ protected:
 	void transform_changed();
 
 public:
-	void set_fixed_transform(const Ref<SGFixedTransform2D> &p_transform);
-	Ref<SGFixedTransform2D> get_fixed_transform() const;
+	void set_fixed_transform(const Ref<SGFixedTransform3D> &p_transform);
+	Ref<SGFixedTransform3D> get_fixed_transform() const;
 
 	void set_fixed_position(const Ref<SGFixedVector2> &p_fixed_position);
 	Ref<SGFixedVector2> get_fixed_position() const;
@@ -87,8 +87,8 @@ public:
 	void set_fixed_rotation(int64_t p_fixed_rotation);
 	int64_t get_fixed_rotation() const;
 
-	void set_global_fixed_transform(const Ref<SGFixedTransform2D> &p_global_transform);
-	Ref<SGFixedTransform2D> get_global_fixed_transform() const;
+	void set_global_fixed_transform(const Ref<SGFixedTransform3D> &p_global_transform);
+	Ref<SGFixedTransform3D> get_global_fixed_transform() const;
 
 	void set_global_fixed_position(const Ref<SGFixedVector2> &p_fixed_position);
 	Ref<SGFixedVector2> get_global_fixed_position();
@@ -103,8 +103,8 @@ public:
 
 	void fixed_vector2_changed(SGFixedVector2 *p_vector);
 
-	SGFixedNode2D();
-	~SGFixedNode2D();
+	SGFixedNode3D();
+	~SGFixedNode3D();
 };
 
 #endif

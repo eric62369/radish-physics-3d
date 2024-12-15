@@ -26,10 +26,10 @@
  * It has to be at the top-level for technical reasons.
  */
 
-#ifndef SG_PHYSICS_2D_REGISTER_TYPES_H
-#define SG_PHYSICS_2D_REGISTER_TYPES_H
+#ifndef SG_PHYSICS_3D_REGISTER_TYPES_H
+#define SG_PHYSICS_3D_REGISTER_TYPES_H
 
-void register_sg_physics_2d_types();
-void unregister_sg_physics_2d_types();
+void register_sg_physics_3D_types();
+void unregister_sg_physics_3D_types();
 
 #endif

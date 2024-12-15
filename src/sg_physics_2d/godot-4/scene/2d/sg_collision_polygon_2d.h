@@ -21,16 +21,16 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_COLLISION_POLYGON_2D_H
-#define SG_COLLISION_POLYGON_2D_H
+#ifndef SG_COLLISION_POLYGON_3D_H
+#define SG_COLLISION_POLYGON_3D_H
 
 #include <godot_cpp/templates/vector.hpp>
 
-#include "sg_fixed_node_2d.h"
+#include "sg_fixed_node_3D.h"
 
-class SGCollisionPolygon2D : public SGFixedNode2D {
+class SGCollisionPolygon3D : public SGFixedNode3D {
 
-	GDCLASS(SGCollisionPolygon2D, SGFixedNode2D);
+	GDCLASS(SGCollisionPolygon3D, SGFixedNode3D);
 	Color debug_color = Color(0.0, 0.6, 0.7, 0.42);
 
 protected:
@@ -85,8 +85,8 @@ public:
 
 	virtual PackedStringArray _get_configuration_warnings() const override;
 
-	SGCollisionPolygon2D();
-	~SGCollisionPolygon2D();
+	SGCollisionPolygon3D();
+	~SGCollisionPolygon3D();
 };
 
 #endif

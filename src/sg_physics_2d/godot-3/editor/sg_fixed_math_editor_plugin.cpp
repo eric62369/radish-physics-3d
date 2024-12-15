@@ -23,7 +23,7 @@
 
 #include "sg_fixed_math_editor_plugin.h"
 
-#include "../scene/resources/sg_shapes_2d.h"
+#include "../scene/resources/sg_shapes_3D.h"
 #include <core/math/expression.h>
 
 class TooltipPanel : public PanelContainer {

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SGCollisionObject2D" inherits="SGFixedNode2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="SGCollisionObject3D" inherits="SGFixedNode3D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
-		Base class for all physics nodes in SG Physics 2D.
+		Base class for all physics nodes in SG Physics 3D.
 	</brief_description>
 	<description>
-		SGCollisionObject2D is the base class for all physics nodes in SG Physics 2D. It can hold any number of [SGCollisionShape2D]s or [SGCollisionPolygon2D]s.
+		SGCollisionObject3D is the base class for all physics nodes in SG Physics 3D. It can hold any number of [SGCollisionShape3D]s or [SGCollisionPolygon3D]s.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -24,7 +24,7 @@
 		<method name="get_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
-				Returns the RID of the resource for use with [SGPhysics2DServer].
+				Returns the RID of the resource for use with [SGPhysics3DServer].
 			</description>
 		</method>
 		<method name="set_collision_layer_bit">

@@ -63,7 +63,7 @@ void SGFixed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("atan2", "fixed_y_value", "fixed_x_value"), &SGFixed::atan2);
 	ClassDB::bind_method(D_METHOD("sqrt", "fixed_value"), &SGFixed::sqrt);
 	ClassDB::bind_method(D_METHOD("deg2rad", "fixed_value"), &SGFixed::deg2rad);
-	ClassDB::bind_method(D_METHOD("rad2deg", "fixed_value"), &SGFixed::rad2deg);
+	ClassDB::bind_method(D_METHOD("rad3Deg", "fixed_value"), &SGFixed::rad3Deg);
 	ClassDB::bind_method(D_METHOD("floor", "fixed_value"), &SGFixed::floor);
 	ClassDB::bind_method(D_METHOD("round", "fixed_value"), &SGFixed::round);
 	ClassDB::bind_method(D_METHOD("ceil", "fixed_value"), &SGFixed::ceil);
@@ -79,7 +79,7 @@ void SGFixed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("rect2", "position", "size"), &SGFixed::rect2);
 	ClassDB::bind_method(D_METHOD("from_float_rect2", "float_rect"), &SGFixed::from_float_rect2);
 
-	ClassDB::bind_method(D_METHOD("transform2d", "rotation", "origin"), &SGFixed::transform2d);
+	ClassDB::bind_method(D_METHOD("transform3D", "rotation", "origin"), &SGFixed::transform3D);
 
 	BIND_CONSTANT(ONE);
 	BIND_CONSTANT(HALF);
@@ -196,8 +196,8 @@ int64_t SGFixed::deg2rad(int64_t p_fixed_value) const {
 	return fixed(p_fixed_value).deg2rad().value;
 }
 
-int64_t SGFixed::rad2deg(int64_t p_fixed_value) const {
-	return fixed(p_fixed_value).rad2deg().value;
+int64_t SGFixed::rad3Deg(int64_t p_fixed_value) const {
+	return fixed(p_fixed_value).rad3Deg().value;
 }
 
 int64_t SGFixed::div_rounded(int64_t p_fixed_one, int64_t p_fixed_two) const {
@@ -255,8 +255,8 @@ Ref<SGFixedRect2> SGFixed::from_float_rect2(const Rect2 &p_float_rect) const {
 	return ret;
 }
 
-Ref<SGFixedTransform2D> SGFixed::transform2d(int64_t p_rotation, const Ref<SGFixedVector2> &p_origin) const {
-	Ref<SGFixedTransform2D> ret(memnew(SGFixedTransform2D));
-	ret->set_internal(SGFixedTransform2DInternal(fixed(p_rotation), p_origin->get_internal()));
+Ref<SGFixedTransform3D> SGFixed::transform3D(int64_t p_rotation, const Ref<SGFixedVector2> &p_origin) const {
+	Ref<SGFixedTransform3D> ret(memnew(SGFixedTransform3D));
+	ret->set_internal(SGFixedTransform3DInternal(fixed(p_rotation), p_origin->get_internal()));
 	return ret;
 }

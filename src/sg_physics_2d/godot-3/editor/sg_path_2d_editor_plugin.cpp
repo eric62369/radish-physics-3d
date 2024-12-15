@@ -21,9 +21,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-// Code originally from Godot Engine's Path2D (MIT License)
+// Code originally from Godot Engine's Path3D (MIT License)
 
-#include "sg_path_2d_editor_plugin.h"
+#include "sg_path_3D_editor_plugin.h"
 #include "../math/sg_fixed_singleton.h"
 
 #include <editor/plugins/canvas_item_editor_plugin.h>
@@ -32,7 +32,7 @@
 #include <editor/editor_scale.h>
 #include <editor/editor_settings.h>
 
-void SGPath2DEditor::_notification(int p_what) {
+void SGPath3DEditor::_notification(int p_what) {
 	switch (p_what) {
 	case NOTIFICATION_READY: {
 		//button_create->set_icon( get_icon("Edit","EditorIcons"));
@@ -45,14 +45,14 @@ void SGPath2DEditor::_notification(int p_what) {
 	} break;
 	}
 }
-void SGPath2DEditor::_node_removed(Node* p_node) {
+void SGPath3DEditor::_node_removed(Node* p_node) {
 	if (p_node == node) {
 		node = nullptr;
 		hide();
 	}
 }
 
-bool SGPath2DEditor::forward_gui_input(const Ref<InputEvent>& p_event) {
+bool SGPath3DEditor::forward_gui_input(const Ref<InputEvent>& p_event) {
 	if (!node) {
 		return false;
 	}
@@ -70,13 +70,13 @@ bool SGPath2DEditor::forward_gui_input(const Ref<InputEvent>& p_event) {
 
 	Ref<InputEventMouseButton> mb = p_event;
 	if (mb.is_valid()) {
-		Transform2D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
+		Transform3D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
 
 		Vector2 gpoint = mb->get_position();
 		Vector2 cpoint = node->get_global_transform().affine_inverse().xform(canvas_item_editor->snap_point(canvas_item_editor->get_canvas_transform().affine_inverse().xform(mb->get_position())));
 
 		if (mb->is_pressed() && action == ACTION_NONE) {
-			Ref<SGCurve2D> curve = node->get_curve();
+			Ref<SGCurve3D> curve = node->get_curve();
 
 			for (int i = 0; i < curve->get_point_count(); i++) {
 				real_t dist_to_p = gpoint.distance_to(xform.xform(curve->get_point_position(i)->to_float()));
@@ -150,7 +150,7 @@ bool SGPath2DEditor::forward_gui_input(const Ref<InputEvent>& p_event) {
 
 		// Check for point creation.
 		if (mb->is_pressed() && mb->get_button_index() == BUTTON_LEFT && ((mb->get_command() && mode == MODE_EDIT) || mode == MODE_CREATE)) {
-			Ref<SGCurve2D> curve = node->get_curve();
+			Ref<SGCurve3D> curve = node->get_curve();
 
 			undo_redo->create_action(TTR("Add Point to Curve"));
 			undo_redo->add_do_method(curve.ptr(), "add_point", fixed_singleton->from_float_vector2(cpoint));
@@ -172,7 +172,7 @@ bool SGPath2DEditor::forward_gui_input(const Ref<InputEvent>& p_event) {
 		// Check for segment split.
 		if (mb->is_pressed() && mb->get_button_index() == BUTTON_LEFT && mode == MODE_EDIT && on_edge) {
 			Vector2 gpoint2 = mb->get_position();
-			Ref<SGCurve2D> curve = node->get_curve();
+			Ref<SGCurve3D> curve = node->get_curve();
 
 			int insertion_point = -1;
 			float mbLength = fixed(curve->get_closest_offset(fixed_singleton->from_float_vector2(xform.affine_inverse().xform(gpoint2)))).to_float();
@@ -208,7 +208,7 @@ bool SGPath2DEditor::forward_gui_input(const Ref<InputEvent>& p_event) {
 
 		// Check for point movement completion.
 		if (!mb->is_pressed() && mb->get_button_index() == BUTTON_LEFT && action != ACTION_NONE) {
-			Ref<SGCurve2D> curve = node->get_curve();
+			Ref<SGCurve3D> curve = node->get_curve();
 
 			Vector2 new_pos = moving_from + xform.affine_inverse().basis_xform(gpoint - moving_screen_from);
 			switch (action) {
@@ -270,10 +270,10 @@ bool SGPath2DEditor::forward_gui_input(const Ref<InputEvent>& p_event) {
 			// Handle Edge Follow
 			bool old_edge = on_edge;
 
-			Transform2D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
+			Transform3D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
 			Vector2 gpoint = mm->get_position();
 
-			Ref<SGCurve2D> curve = node->get_curve();
+			Ref<SGCurve3D> curve = node->get_curve();
 			if (curve == nullptr) {
 				return true;
 			}
@@ -315,11 +315,11 @@ bool SGPath2DEditor::forward_gui_input(const Ref<InputEvent>& p_event) {
 
 		if (action != ACTION_NONE) {
 			// Handle point/control movement.
-			Transform2D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
+			Transform3D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
 			Vector2 gpoint = mm->get_position();
 			Vector2 cpoint = node->get_global_transform().affine_inverse().xform(canvas_item_editor->snap_point(canvas_item_editor->get_canvas_transform().affine_inverse().xform(mm->get_position())));
 
-			Ref<SGCurve2D> curve = node->get_curve();
+			Ref<SGCurve3D> curve = node->get_curve();
 
 			Vector2 new_pos = moving_from + xform.affine_inverse().basis_xform(gpoint - moving_screen_from);
 
@@ -357,12 +357,12 @@ bool SGPath2DEditor::forward_gui_input(const Ref<InputEvent>& p_event) {
 	return false;
 }
 
-void SGPath2DEditor::forward_canvas_draw_over_viewport(Control* p_overlay) {
+void SGPath3DEditor::forward_canvas_draw_over_viewport(Control* p_overlay) {
 	if (!node || !node->is_visible_in_tree() || !node->get_curve().is_valid()) {
 		return;
 	}
 
-	Transform2D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
+	Transform3D xform = canvas_item_editor->get_canvas_transform() * node->get_global_transform();
 
 	const Ref<Texture> path_sharp_handle = get_icon("EditorPathSharpHandle", "EditorIcons");
 	const Ref<Texture> path_smooth_handle = get_icon("EditorPathSmoothHandle", "EditorIcons");
@@ -372,7 +372,7 @@ void SGPath2DEditor::forward_canvas_draw_over_viewport(Control* p_overlay) {
 	const Ref<Texture> curve_handle = get_icon("EditorCurveHandle", "EditorIcons");
 	const Size2 curve_handle_size = curve_handle->get_size();
 
-	Ref<SGCurve2D> curve = node->get_curve();
+	Ref<SGCurve3D> curve = node->get_curve();
 
 	int len = curve->get_point_count();
 	Control* vpc = canvas_item_editor->get_viewport_control();
@@ -416,7 +416,7 @@ void SGPath2DEditor::forward_canvas_draw_over_viewport(Control* p_overlay) {
 	}
 }
 
-void SGPath2DEditor::_node_visibility_changed() {
+void SGPath3DEditor::_node_visibility_changed() {
 	if (!node) {
 		return;
 	}
@@ -424,13 +424,13 @@ void SGPath2DEditor::_node_visibility_changed() {
 	canvas_item_editor->update_viewport();
 }
 
-void SGPath2DEditor::edit(Node* p_path2d) {
+void SGPath3DEditor::edit(Node* p_path3D) {
 	if (!canvas_item_editor) {
 		canvas_item_editor = CanvasItemEditor::get_singleton();
 	}
 
-	if (p_path2d) {
-		node = Object::cast_to<SGPath2D>(p_path2d);
+	if (p_path3D) {
+		node = Object::cast_to<SGPath3D>(p_path3D);
 		if (!node->is_connected("visibility_changed", this, "_node_visibility_changed")) {
 			node->connect("visibility_changed", this, "_node_visibility_changed");
 		}
@@ -445,14 +445,14 @@ void SGPath2DEditor::edit(Node* p_path2d) {
 	}
 }
 
-void SGPath2DEditor::_bind_methods() {
-	//ClassDB::bind_method(D_METHOD("_menu_option"),&Path2DEditor::_menu_option);
-	ClassDB::bind_method(D_METHOD("_node_visibility_changed"), &SGPath2DEditor::_node_visibility_changed);
-	ClassDB::bind_method(D_METHOD("_mode_selected"), &SGPath2DEditor::_mode_selected);
-	ClassDB::bind_method(D_METHOD("_handle_option_pressed"), &SGPath2DEditor::_handle_option_pressed);
+void SGPath3DEditor::_bind_methods() {
+	//ClassDB::bind_method(D_METHOD("_menu_option"),&Path3DEditor::_menu_option);
+	ClassDB::bind_method(D_METHOD("_node_visibility_changed"), &SGPath3DEditor::_node_visibility_changed);
+	ClassDB::bind_method(D_METHOD("_mode_selected"), &SGPath3DEditor::_mode_selected);
+	ClassDB::bind_method(D_METHOD("_handle_option_pressed"), &SGPath3DEditor::_handle_option_pressed);
 }
 
-void SGPath2DEditor::_mode_selected(int p_mode) {
+void SGPath3DEditor::_mode_selected(int p_mode) {
 	if (p_mode == MODE_CREATE) {
 		curve_create->set_pressed(true);
 		curve_edit->set_pressed(false);
@@ -506,7 +506,7 @@ void SGPath2DEditor::_mode_selected(int p_mode) {
 	mode = Mode(p_mode);
 }
 
-void SGPath2DEditor::_handle_option_pressed(int p_option) {
+void SGPath3DEditor::_handle_option_pressed(int p_option) {
 	PopupMenu* pm;
 	pm = handle_menu->get_popup();
 
@@ -525,7 +525,7 @@ void SGPath2DEditor::_handle_option_pressed(int p_option) {
 	}
 }
 
-SGPath2DEditor::SGPath2DEditor(EditorNode* p_editor) {
+SGPath3DEditor::SGPath3DEditor(EditorNode* p_editor) {
 	canvas_item_editor = nullptr;
 	editor = p_editor;
 	undo_redo = editor->get_undo_redo();
@@ -594,33 +594,33 @@ SGPath2DEditor::SGPath2DEditor(EditorNode* p_editor) {
 	curve_edit->set_pressed(true);
 }
 
-void SGPath2DEditorPlugin::edit(Object* p_object) {
-	path2d_editor->edit(Object::cast_to<Node>(p_object));
+void SGPath3DEditorPlugin::edit(Object* p_object) {
+	path3D_editor->edit(Object::cast_to<Node>(p_object));
 }
 
-bool SGPath2DEditorPlugin::handles(Object* p_object) const {
-	return p_object->is_class("SGPath2D");
+bool SGPath3DEditorPlugin::handles(Object* p_object) const {
+	return p_object->is_class("SGPath3D");
 }
 
-void SGPath2DEditorPlugin::make_visible(bool p_visible) {
+void SGPath3DEditorPlugin::make_visible(bool p_visible) {
 	if (p_visible) {
-		path2d_editor->show();
-		path2d_editor->base_hb->show();
+		path3D_editor->show();
+		path3D_editor->base_hb->show();
 
 	}
 	else {
-		path2d_editor->hide();
-		path2d_editor->base_hb->hide();
-		path2d_editor->edit(nullptr);
+		path3D_editor->hide();
+		path3D_editor->base_hb->hide();
+		path3D_editor->edit(nullptr);
 	}
 }
 
-SGPath2DEditorPlugin::SGPath2DEditorPlugin(EditorNode* p_node) {
+SGPath3DEditorPlugin::SGPath3DEditorPlugin(EditorNode* p_node) {
 	editor = p_node;
-	path2d_editor = memnew(SGPath2DEditor(p_node));
-	CanvasItemEditor::get_singleton()->add_control_to_menu_panel(path2d_editor);
-	path2d_editor->hide();
+	path3D_editor = memnew(SGPath3DEditor(p_node));
+	CanvasItemEditor::get_singleton()->add_control_to_menu_panel(path3D_editor);
+	path3D_editor->hide();
 }
 
-SGPath2DEditorPlugin::~SGPath2DEditorPlugin() {
+SGPath3DEditorPlugin::~SGPath3DEditorPlugin() {
 }

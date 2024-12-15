@@ -29,7 +29,7 @@
 
 #include "sg_fixed_vector2.h"
 #include "sg_fixed_rect2.h"
-#include "sg_fixed_transform_2d.h"
+#include "sg_fixed_transform_3D.h"
 
 class SGFixed : public Object {
 
@@ -96,7 +96,7 @@ public:
 	Ref<SGFixedRect2> rect2(const Ref<SGFixedVector2> &p_position, const Ref<SGFixedVector2> &p_size) const;
 	Ref<SGFixedRect2> from_float_rect2(const Rect2 &p_float_rect) const;
 
-	Ref<SGFixedTransform2D> transform2d(int64_t p_rotation, const Ref<SGFixedVector2> &p_origin) const;
+	Ref<SGFixedTransform3D> transform3D(int64_t p_rotation, const Ref<SGFixedVector2> &p_origin) const;
 
 	SGFixed();
 	~SGFixed();

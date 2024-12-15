@@ -21,39 +21,39 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "sg_collision_object_2d.h"
+#include "sg_collision_object_3D.h"
 
 #define TTR(m) m
 
-#include "sg_collision_shape_2d.h"
-#include "sg_collision_polygon_2d.h"
-#include "../../servers/sg_physics_2d_server.h"
+#include "sg_collision_shape_3D.h"
+#include "sg_collision_polygon_3D.h"
+#include "../../servers/sg_physics_3D_server.h"
 
-#include "../../../internal/sg_bodies_2d_internal.h"
+#include "../../../internal/sg_bodies_3D_internal.h"
 
-void SGCollisionObject2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("sync_to_physics_engine"), &SGCollisionObject2D::sync_to_physics_engine);
-	ClassDB::bind_method(D_METHOD("get_rid"), &SGCollisionObject2D::get_rid);
+void SGCollisionObject3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("sync_to_physics_engine"), &SGCollisionObject3D::sync_to_physics_engine);
+	ClassDB::bind_method(D_METHOD("get_rid"), &SGCollisionObject3D::get_rid);
 
-	ClassDB::bind_method(D_METHOD("get_collision_layer"), &SGCollisionObject2D::get_collision_layer);
-	ClassDB::bind_method(D_METHOD("set_collision_layer", "collision_layer"), &SGCollisionObject2D::set_collision_layer);
-	ClassDB::bind_method(D_METHOD("get_collision_mask"), &SGCollisionObject2D::get_collision_mask);
-	ClassDB::bind_method(D_METHOD("set_collision_mask", "collision_mask"), &SGCollisionObject2D::set_collision_mask);
+	ClassDB::bind_method(D_METHOD("get_collision_layer"), &SGCollisionObject3D::get_collision_layer);
+	ClassDB::bind_method(D_METHOD("set_collision_layer", "collision_layer"), &SGCollisionObject3D::set_collision_layer);
+	ClassDB::bind_method(D_METHOD("get_collision_mask"), &SGCollisionObject3D::get_collision_mask);
+	ClassDB::bind_method(D_METHOD("set_collision_mask", "collision_mask"), &SGCollisionObject3D::set_collision_mask);
 
-	ClassDB::bind_method(D_METHOD("set_collision_layer_bit", "bit", "value"), &SGCollisionObject2D::set_collision_layer_bit);
-	ClassDB::bind_method(D_METHOD("get_collision_layer_bit"), &SGCollisionObject2D::get_collision_layer_bit);
-	ClassDB::bind_method(D_METHOD("set_collision_mask_bit", "bit", "value"), &SGCollisionObject2D::set_collision_mask_bit);
-	ClassDB::bind_method(D_METHOD("get_collision_mask_bit"), &SGCollisionObject2D::get_collision_mask_bit);
+	ClassDB::bind_method(D_METHOD("set_collision_layer_bit", "bit", "value"), &SGCollisionObject3D::set_collision_layer_bit);
+	ClassDB::bind_method(D_METHOD("get_collision_layer_bit"), &SGCollisionObject3D::get_collision_layer_bit);
+	ClassDB::bind_method(D_METHOD("set_collision_mask_bit", "bit", "value"), &SGCollisionObject3D::set_collision_mask_bit);
+	ClassDB::bind_method(D_METHOD("get_collision_mask_bit"), &SGCollisionObject3D::get_collision_mask_bit);
 
 	ADD_GROUP("Collision", "collision_");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_2D_PHYSICS), "set_collision_layer", "get_collision_layer");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_2D_PHYSICS), "set_collision_mask", "get_collision_mask");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_layer", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_layer", "get_collision_layer");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "collision_mask", PROPERTY_HINT_LAYERS_3D_PHYSICS), "set_collision_mask", "get_collision_mask");
 }
 
-void SGCollisionObject2D::_notification(int p_what) {
+void SGCollisionObject3D::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE:
-			SGPhysics2DServer::get_singleton()->world_add_collision_object(world_rid, rid);
+			SGPhysics3DServer::get_singleton()->world_add_collision_object(world_rid, rid);
 			sync_to_physics_engine();
 			break;
 
@@ -62,57 +62,57 @@ void SGCollisionObject2D::_notification(int p_what) {
 			break;
 
 		case NOTIFICATION_EXIT_CANVAS:
-			SGPhysics2DServer::get_singleton()->world_remove_collision_object(world_rid, rid);
+			SGPhysics3DServer::get_singleton()->world_remove_collision_object(world_rid, rid);
 			break;
 	}
 }
 
-PackedStringArray SGCollisionObject2D::_get_configuration_warnings() const {
-	PackedStringArray warnings = SGFixedNode2D::_get_configuration_warnings();
+PackedStringArray SGCollisionObject3D::_get_configuration_warnings() const {
+	PackedStringArray warnings = SGFixedNode3D::_get_configuration_warnings();
 
 	bool has_shape_child = false;
 	for (int i = 0; i < get_child_count(); i++) {
-		if (Object::cast_to<SGCollisionShape2D>(get_child(i))) {
+		if (Object::cast_to<SGCollisionShape3D>(get_child(i))) {
 			has_shape_child = true;
 			break;
 		}
-		if (Object::cast_to<SGCollisionPolygon2D>(get_child(i))) {
+		if (Object::cast_to<SGCollisionPolygon3D>(get_child(i))) {
 			has_shape_child = true;
 			break;
 		}
 	}
 	if (!has_shape_child) {
-		warnings.push_back(TTR("This node needs at least one SGCollisionShape2D as a child."));
+		warnings.push_back(TTR("This node needs at least one SGCollisionShape3D as a child."));
 	}
 
 	return warnings;
 }
 
-void SGCollisionObject2D::sync_from_physics_engine() {
+void SGCollisionObject3D::sync_from_physics_engine() {
 	ERR_FAIL_COND(!rid.is_valid());
 
-	SGFixedTransform2DInternal physics_transform = SGPhysics2DServer::get_singleton()->collision_object_get_internal(rid)->get_transform();
+	SGFixedTransform3DInternal physics_transform = SGPhysics3DServer::get_singleton()->collision_object_get_internal(rid)->get_transform();
 
-	SGFixedNode2D *fixed_parent = Object::cast_to<SGFixedNode2D>(get_parent());
+	SGFixedNode3D *fixed_parent = Object::cast_to<SGFixedNode3D>(get_parent());
 	if (!fixed_parent) {
 		update_fixed_transform_internal(physics_transform);
 		return;
 	}
 
-	SGFixedTransform2DInternal parent_transform = fixed_parent->get_global_fixed_transform_internal();
+	SGFixedTransform3DInternal parent_transform = fixed_parent->get_global_fixed_transform_internal();
 	update_fixed_transform_internal(parent_transform.affine_inverse() * physics_transform);
 }
 
-void SGCollisionObject2D::sync_to_physics_engine() const {
+void SGCollisionObject3D::sync_to_physics_engine() const {
 	ERR_FAIL_COND(!rid.is_valid());
 
 	for (int i = 0; i < get_child_count(); i++) {
-		SGCollisionShape2D *shape = Object::cast_to<SGCollisionShape2D>(get_child(i));
+		SGCollisionShape3D *shape = Object::cast_to<SGCollisionShape3D>(get_child(i));
 		if (shape) {
 			shape->sync_to_physics_engine();
 		}
 		else {
-			SGCollisionPolygon2D *polygon = Object::cast_to<SGCollisionPolygon2D>(get_child(i));
+			SGCollisionPolygon3D *polygon = Object::cast_to<SGCollisionPolygon3D>(get_child(i));
 			if (polygon) {
 				polygon->sync_to_physics_engine();
 			}
@@ -121,42 +121,42 @@ void SGCollisionObject2D::sync_to_physics_engine() const {
 
 	// Update the body last, because then the shape info will be all setup to
 	// be used for updating the body's broadphase element.
-	SGPhysics2DServer::get_singleton()->collision_object_set_transform(rid, get_global_fixed_transform());
+	SGPhysics3DServer::get_singleton()->collision_object_set_transform(rid, get_global_fixed_transform());
 }
 
-void SGCollisionObject2D::set_world(RID p_world) {
+void SGCollisionObject3D::set_world(RID p_world) {
 	if (world_rid != p_world) {
 		if (is_inside_tree()) {
-			SGPhysics2DServer::get_singleton()->world_remove_collision_object(world_rid, rid);
+			SGPhysics3DServer::get_singleton()->world_remove_collision_object(world_rid, rid);
 		}
 
 		world_rid = p_world;
 
 		if (is_inside_tree()) {
-			SGPhysics2DServer::get_singleton()->world_add_collision_object(world_rid, rid);
+			SGPhysics3DServer::get_singleton()->world_add_collision_object(world_rid, rid);
 		}
 	}
 }
 
-uint32_t SGCollisionObject2D::get_collision_layer() const {
+uint32_t SGCollisionObject3D::get_collision_layer() const {
 	return collision_layer;
 }
 
-void SGCollisionObject2D::set_collision_layer(uint32_t p_collision_layer) {
+void SGCollisionObject3D::set_collision_layer(uint32_t p_collision_layer) {
 	collision_layer = p_collision_layer;
-	SGPhysics2DServer::get_singleton()->collision_object_set_collision_layer(rid, collision_layer);
+	SGPhysics3DServer::get_singleton()->collision_object_set_collision_layer(rid, collision_layer);
 }
 
-uint32_t SGCollisionObject2D::get_collision_mask() const {
+uint32_t SGCollisionObject3D::get_collision_mask() const {
 	return collision_mask;
 }
 
-void SGCollisionObject2D::set_collision_mask(uint32_t p_collision_mask) {
+void SGCollisionObject3D::set_collision_mask(uint32_t p_collision_mask) {
 	collision_mask = p_collision_mask;
-	SGPhysics2DServer::get_singleton()->collision_object_set_collision_mask(rid, collision_mask);
+	SGPhysics3DServer::get_singleton()->collision_object_set_collision_mask(rid, collision_mask);
 }
 
-void SGCollisionObject2D::set_collision_layer_bit(int p_bit, bool p_value) {
+void SGCollisionObject3D::set_collision_layer_bit(int p_bit, bool p_value) {
 	uint32_t l = collision_layer;
 	if (p_value) {
 		l |= (1 << p_bit);
@@ -167,11 +167,11 @@ void SGCollisionObject2D::set_collision_layer_bit(int p_bit, bool p_value) {
 	set_collision_layer(l);
 }
 
-bool SGCollisionObject2D::get_collision_layer_bit(int p_bit) const {
+bool SGCollisionObject3D::get_collision_layer_bit(int p_bit) const {
 	return get_collision_layer() & (1 << p_bit);
 }
 
-void SGCollisionObject2D::set_collision_mask_bit(int p_bit, bool p_value) {
+void SGCollisionObject3D::set_collision_mask_bit(int p_bit, bool p_value) {
 	uint32_t m = collision_mask;
 	if (p_value) {
 		m |= (1 << p_bit);
@@ -182,12 +182,12 @@ void SGCollisionObject2D::set_collision_mask_bit(int p_bit, bool p_value) {
 	set_collision_mask(m);
 }
 
-bool SGCollisionObject2D::get_collision_mask_bit(int p_bit) const {
+bool SGCollisionObject3D::get_collision_mask_bit(int p_bit) const {
 	return get_collision_mask() & (1 << p_bit);
 }
 
-SGCollisionObject2D::SGCollisionObject2D(RID p_rid) {
-	SGPhysics2DServer *physics_server = SGPhysics2DServer::get_singleton();
+SGCollisionObject3D::SGCollisionObject3D(RID p_rid) {
+	SGPhysics3DServer *physics_server = SGPhysics3DServer::get_singleton();
 
 	rid = p_rid;
 	// Invalid when GDExtension is initializing and has to create an instance of every registered class.
@@ -200,11 +200,11 @@ SGCollisionObject2D::SGCollisionObject2D(RID p_rid) {
 	collision_mask = 1;
 }
 
-SGCollisionObject2D::SGCollisionObject2D() : SGCollisionObject2D(RID()) {
+SGCollisionObject3D::SGCollisionObject3D() : SGCollisionObject3D(RID()) {
 }
 
-SGCollisionObject2D::~SGCollisionObject2D() {
+SGCollisionObject3D::~SGCollisionObject3D() {
 	if (rid.is_valid()) {
-		SGPhysics2DServer::get_singleton()->free_rid(rid);
+		SGPhysics3DServer::get_singleton()->free_rid(rid);
 	}
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="SGCollisionShape2D" inherits="SGFixedNode2D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
+<class name="SGCollisionShape3D" inherits="SGFixedNode3D" version="3.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../doc/class.xsd">
 	<brief_description>
-		Defines a simple 2D collision shape for SG Physics 2D.
+		Defines a simple 3D collision shape for SG Physics 3D.
 	</brief_description>
 	<description>
-		Provides a simple 2D collision shape to an [SGCollisionObject2D] parent.
+		Provides a simple 3D collision shape to an [SGCollisionObject3D] parent.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -12,14 +12,14 @@
 		<method name="get_rid" qualifiers="const">
 			<return type="RID" />
 			<description>
-				Returns the RID of the resource for use with [SGPhysics2DServer].
+				Returns the RID of the resource for use with [SGPhysics3DServer].
 			</description>
 		</method>
 	</methods>
 	<members>
 		<member name="disabled" type="bool" setter="set_disabled" getter="get_disabled" default="false">
 		</member>
-		<member name="shape" type="SGShape2D" setter="set_shape" getter="get_shape">
+		<member name="shape" type="SGShape3D" setter="set_shape" getter="get_shape">
 		</member>
 	</members>
 	<constants>

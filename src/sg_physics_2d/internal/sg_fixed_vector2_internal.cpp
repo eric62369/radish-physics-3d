@@ -221,7 +221,7 @@ SGFixedVector2Internal SGFixedVector2Internal::cubic_interpolate(const SGFixedVe
 	return out;
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::get_closest_point_to_segment_2d(const SGFixedVector2Internal &p_point, const SGFixedVector2Internal *p_segment) {
+SGFixedVector2Internal SGFixedVector2Internal::get_closest_point_to_segment_3D(const SGFixedVector2Internal &p_point, const SGFixedVector2Internal *p_segment) {
 	SGFixedVector2Internal p = p_point - p_segment[0];
 	SGFixedVector2Internal n = p_segment[1] - p_segment[0];
 	fixed l2 = n.length();

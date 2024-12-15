@@ -21,21 +21,21 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_STATIC_BODY_2D_H
-#define SG_STATIC_BODY_2D_H
+#ifndef SG_STATIC_BODY_3D_H
+#define SG_STATIC_BODY_3D_H
 
-#include "sg_physics_body_2d.h"
+#include "sg_physics_body_3D.h"
 
-class SGStaticBody2D : public SGPhysicsBody2D {
-	GDCLASS(SGStaticBody2D, SGPhysicsBody2D);
+class SGStaticBody3D : public SGPhysicsBody3D {
+	GDCLASS(SGStaticBody3D, SGPhysicsBody3D);
 
 protected:
 	static void _bind_methods();
 
 public:
 
-	SGStaticBody2D();
-	~SGStaticBody2D();
+	SGStaticBody3D();
+	~SGStaticBody3D();
 
 };
 

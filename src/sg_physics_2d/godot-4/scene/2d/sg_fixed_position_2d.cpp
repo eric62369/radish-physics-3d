@@ -21,14 +21,14 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "sg_fixed_position_2d.h"
+#include "sg_fixed_position_3D.h"
 
 #include <godot_cpp/classes/engine.hpp>
 
 #define DEFAULT_EXTENTS_FIXED 655360
 #define DEFAULT_EXTENTS_FLOAT 10.0
 
-void SGFixedPosition2D::_notification(int p_what) {
+void SGFixedPosition3D::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
 			queue_redraw();
@@ -44,8 +44,8 @@ void SGFixedPosition2D::_notification(int p_what) {
 	}
 }
 
-void SGFixedPosition2D::_bind_methods() {
+void SGFixedPosition3D::_bind_methods() {
 }
 
-SGFixedPosition2D::SGFixedPosition2D() {
+SGFixedPosition3D::SGFixedPosition3D() {
 }

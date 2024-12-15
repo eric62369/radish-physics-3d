@@ -29,7 +29,7 @@
 #include "core/script_language.h"
 #include "scene/scene_string_names.h"
 
-int SGAStar2D::get_available_point_id() const {
+int SGAStar3D::get_available_point_id() const {
 	if (points.has(last_free_id)) {
 		int cur_new_id = last_free_id + 1;
 		while (points.has(cur_new_id)) {
@@ -41,7 +41,7 @@ int SGAStar2D::get_available_point_id() const {
 	return last_free_id;
 }
 
-void SGAStar2D::add_point(int p_id, const Ref<SGFixedVector2> &p_pos, int64_t p_weight_scale) {
+void SGAStar3D::add_point(int p_id, const Ref<SGFixedVector2> &p_pos, int64_t p_weight_scale) {
 	ERR_FAIL_COND_MSG(p_id < 0, vformat("Can't add a point with negative id: %d.", p_id));
 	ERR_FAIL_COND_MSG(p_weight_scale < fixed::ONE.value, vformat("Can't add a point with weight scale less than one: %d.", p_weight_scale));
 	ERR_FAIL_COND_MSG(!p_pos.is_valid(), "The point reference is not valid");
@@ -65,7 +65,7 @@ void SGAStar2D::add_point(int p_id, const Ref<SGFixedVector2> &p_pos, int64_t p_
 	}
 }
 
-Ref<SGFixedVector2> SGAStar2D::get_point_position(int p_id) const {
+Ref<SGFixedVector2> SGAStar3D::get_point_position(int p_id) const {
 	Point *p;
 	bool p_exists = points.lookup(p_id, p);
 	ERR_FAIL_COND_V_MSG(!p_exists, SGFixedVector2::from_internal(SGFixedVector2Internal()), vformat("Can't get point's position. Point with id: %d doesn't exist.", p_id));
@@ -73,7 +73,7 @@ Ref<SGFixedVector2> SGAStar2D::get_point_position(int p_id) const {
 	return SGFixedVector2::from_internal(p->pos);
 }
 
-void SGAStar2D::set_point_position(int p_id, const Ref<SGFixedVector2> &p_pos) {
+void SGAStar3D::set_point_position(int p_id, const Ref<SGFixedVector2> &p_pos) {
 	ERR_FAIL_COND_MSG(!p_pos.is_valid(), "The point reference is not valid");
 
 	Point *p;
@@ -83,7 +83,7 @@ void SGAStar2D::set_point_position(int p_id, const Ref<SGFixedVector2> &p_pos) {
 	p->pos = p_pos->get_internal();
 }
 
-int64_t SGAStar2D::get_point_weight_scale(int p_id) const {
+int64_t SGAStar3D::get_point_weight_scale(int p_id) const {
 	Point *p;
 	bool p_exists = points.lookup(p_id, p);
 	ERR_FAIL_COND_V_MSG(!p_exists, 0, vformat("Can't get point's weight scale. Point with id: %d doesn't exist.", p_id));
@@ -91,7 +91,7 @@ int64_t SGAStar2D::get_point_weight_scale(int p_id) const {
 	return p->weight_scale.value;
 }
 
-void SGAStar2D::set_point_weight_scale(int p_id, int64_t p_weight_scale) {
+void SGAStar3D::set_point_weight_scale(int p_id, int64_t p_weight_scale) {
 	Point *p;
 	bool p_exists = points.lookup(p_id, p);
 	ERR_FAIL_COND_MSG(!p_exists, vformat("Can't set point's weight scale. Point with id: %d doesn't exist.", p_id));
@@ -100,7 +100,7 @@ void SGAStar2D::set_point_weight_scale(int p_id, int64_t p_weight_scale) {
 	p->weight_scale = fixed(p_weight_scale);
 }
 
-void SGAStar2D::remove_point(int p_id) {
+void SGAStar3D::remove_point(int p_id) {
 	Point *p;
 	bool p_exists = points.lookup(p_id, p);
 	ERR_FAIL_COND_MSG(!p_exists, vformat("Can't remove point. Point with id: %d doesn't exist.", p_id));
@@ -126,7 +126,7 @@ void SGAStar2D::remove_point(int p_id) {
 	last_free_id = p_id;
 }
 
-void SGAStar2D::connect_points(int p_id, int p_with_id, bool bidirectional) {
+void SGAStar3D::connect_points(int p_id, int p_with_id, bool bidirectional) {
 	ERR_FAIL_COND_MSG(p_id == p_with_id, vformat("Can't connect point with id: %d to itself.", p_id));
 
 	Point *a;
@@ -164,7 +164,7 @@ void SGAStar2D::connect_points(int p_id, int p_with_id, bool bidirectional) {
 	segments.insert(s);
 }
 
-void SGAStar2D::disconnect_points(int p_id, int p_with_id, bool bidirectional) {
+void SGAStar3D::disconnect_points(int p_id, int p_with_id, bool bidirectional) {
 	Point *a;
 	bool a_exists = points.lookup(p_id, a);
 	ERR_FAIL_COND_MSG(!a_exists, vformat("Can't disconnect points. Point with id: %d doesn't exist.", p_id));
@@ -204,11 +204,11 @@ void SGAStar2D::disconnect_points(int p_id, int p_with_id, bool bidirectional) {
 	}
 }
 
-bool SGAStar2D::has_point(int p_id) const {
+bool SGAStar3D::has_point(int p_id) const {
 	return points.has(p_id);
 }
 
-Array SGAStar2D::get_points() {
+Array SGAStar3D::get_points() {
 	Array point_list;
 
 	for (OAHashMap<int, Point *>::Iterator it = points.iter(); it.valid; it = points.next_iter(it)) {
@@ -218,7 +218,7 @@ Array SGAStar2D::get_points() {
 	return point_list;
 }
 
-PoolVector<int> SGAStar2D::get_point_connections(int p_id) {
+PoolVector<int> SGAStar3D::get_point_connections(int p_id) {
 	Point *p;
 	bool p_exists = points.lookup(p_id, p);
 	ERR_FAIL_COND_V_MSG(!p_exists, PoolVector<int>(), vformat("Can't get point's connections. Point with id: %d doesn't exist.", p_id));
@@ -232,7 +232,7 @@ PoolVector<int> SGAStar2D::get_point_connections(int p_id) {
 	return point_list;
 }
 
-bool SGAStar2D::are_points_connected(int p_id, int p_with_id, bool bidirectional) const {
+bool SGAStar3D::are_points_connected(int p_id, int p_with_id, bool bidirectional) const {
 	Segment s(p_id, p_with_id);
 	const Set<Segment>::Element *element = segments.find(s);
 
@@ -240,7 +240,7 @@ bool SGAStar2D::are_points_connected(int p_id, int p_with_id, bool bidirectional
 			(bidirectional || (element->get().direction & s.direction) == s.direction);
 }
 
-void SGAStar2D::clear() {
+void SGAStar3D::clear() {
 	last_free_id = 0;
 	for (OAHashMap<int, Point *>::Iterator it = points.iter(); it.valid; it = points.next_iter(it)) {
 		memdelete(*(it.value));
@@ -249,21 +249,21 @@ void SGAStar2D::clear() {
 	points.clear();
 }
 
-int SGAStar2D::get_point_count() const {
+int SGAStar3D::get_point_count() const {
 	return points.get_num_elements();
 }
 
-int SGAStar2D::get_point_capacity() const {
+int SGAStar3D::get_point_capacity() const {
 	return points.get_capacity();
 }
 
-void SGAStar2D::reserve_space(int p_num_nodes) {
+void SGAStar3D::reserve_space(int p_num_nodes) {
 	ERR_FAIL_COND_MSG(p_num_nodes <= 0, vformat("New capacity must be greater than 0, new was: %d.", p_num_nodes));
 	ERR_FAIL_COND_MSG((uint32_t)p_num_nodes < points.get_capacity(), vformat("New capacity must be greater than current capacity: %d, new was: %d.", points.get_capacity(), p_num_nodes));
 	points.reserve(p_num_nodes);
 }
 
-int SGAStar2D::get_closest_point(const Ref<SGFixedVector2> &p_point, bool p_include_disabled) const {
+int SGAStar3D::get_closest_point(const Ref<SGFixedVector2> &p_point, bool p_include_disabled) const {
 	ERR_FAIL_COND_V_MSG(!p_point.is_valid(), -1, "The point reference is not valid");
 
     SGFixedVector2Internal p_point_internal = p_point->get_internal();
@@ -291,7 +291,7 @@ int SGAStar2D::get_closest_point(const Ref<SGFixedVector2> &p_point, bool p_incl
 	return closest_id;
 }
 
-Ref<SGFixedVector2> SGAStar2D::get_closest_position_in_segment(const Ref<SGFixedVector2> &p_point) const {
+Ref<SGFixedVector2> SGAStar3D::get_closest_position_in_segment(const Ref<SGFixedVector2> &p_point) const {
 	ERR_FAIL_COND_V_MSG(!p_point.is_valid(), SGFixedVector2::from_internal(SGFixedVector2Internal()), "The point reference is not valid");
 
     SGFixedVector2Internal p_point_internal = p_point->get_internal();
@@ -312,7 +312,7 @@ Ref<SGFixedVector2> SGAStar2D::get_closest_position_in_segment(const Ref<SGFixed
 			to_point->pos,
 		};
 
-		SGFixedVector2Internal p = SGFixedVector2Internal::get_closest_point_to_segment_2d(p_point_internal, segment);
+		SGFixedVector2Internal p = SGFixedVector2Internal::get_closest_point_to_segment_3D(p_point_internal, segment);
 		fixed d = p_point_internal.distance_to(p);
 		if (d < closest_dist) {
 			closest_point = p;
@@ -323,7 +323,7 @@ Ref<SGFixedVector2> SGAStar2D::get_closest_position_in_segment(const Ref<SGFixed
 	return SGFixedVector2::from_internal(closest_point);
 }
 
-bool SGAStar2D::_solve(Point *begin_point, Point *end_point) {
+bool SGAStar3D::_solve(Point *begin_point, Point *end_point) {
 	pass++;
 
 	if (!end_point->enabled) {
@@ -385,7 +385,7 @@ bool SGAStar2D::_solve(Point *begin_point, Point *end_point) {
 	return found_route;
 }
 
-int64_t SGAStar2D::_estimate_cost(int p_from_id, int p_to_id) {
+int64_t SGAStar3D::_estimate_cost(int p_from_id, int p_to_id) {
 	if (get_script_instance() && get_script_instance()->has_method(SceneStringNames::get_singleton()->_estimate_cost)) {
 		return get_script_instance()->call(SceneStringNames::get_singleton()->_estimate_cost, p_from_id, p_to_id);
 	}
@@ -401,7 +401,7 @@ int64_t SGAStar2D::_estimate_cost(int p_from_id, int p_to_id) {
 	return from_point->pos.distance_to(to_point->pos).value;
 }
 
-int64_t SGAStar2D::_compute_cost(int p_from_id, int p_to_id) {
+int64_t SGAStar3D::_compute_cost(int p_from_id, int p_to_id) {
 	if (get_script_instance() && get_script_instance()->has_method(SceneStringNames::get_singleton()->_compute_cost)) {
 		return get_script_instance()->call(SceneStringNames::get_singleton()->_compute_cost, p_from_id, p_to_id);
 	}
@@ -417,7 +417,7 @@ int64_t SGAStar2D::_compute_cost(int p_from_id, int p_to_id) {
 	return from_point->pos.distance_to(to_point->pos).value;
 }
 
-Array SGAStar2D::get_point_path(int p_from_id, int p_to_id) {
+Array SGAStar3D::get_point_path(int p_from_id, int p_to_id) {
 	Point *a;
 	bool from_exists = points.lookup(p_from_id, a);
 	ERR_FAIL_COND_V_MSG(!from_exists, Array(), vformat("Can't get point path. Point with id: %d doesn't exist.", p_from_id));
@@ -464,7 +464,7 @@ Array SGAStar2D::get_point_path(int p_from_id, int p_to_id) {
 	return path;
 }
 
-PoolVector<int> SGAStar2D::get_id_path(int p_from_id, int p_to_id) {
+PoolVector<int> SGAStar3D::get_id_path(int p_from_id, int p_to_id) {
 	Point *a;
 	bool from_exists = points.lookup(p_from_id, a);
 	ERR_FAIL_COND_V_MSG(!from_exists, PoolVector<int>(), vformat("Can't get id path. Point with id: %d doesn't exist.", p_from_id));
@@ -513,7 +513,7 @@ PoolVector<int> SGAStar2D::get_id_path(int p_from_id, int p_to_id) {
 	return path;
 }
 
-void SGAStar2D::set_point_disabled(int p_id, bool p_disabled) {
+void SGAStar3D::set_point_disabled(int p_id, bool p_disabled) {
 	Point *p;
 	bool p_exists = points.lookup(p_id, p);
 	ERR_FAIL_COND_MSG(!p_exists, vformat("Can't set if point is disabled. Point with id: %d doesn't exist.", p_id));
@@ -521,7 +521,7 @@ void SGAStar2D::set_point_disabled(int p_id, bool p_disabled) {
 	p->enabled = !p_disabled;
 }
 
-bool SGAStar2D::is_point_disabled(int p_id) const {
+bool SGAStar3D::is_point_disabled(int p_id) const {
 	Point *p;
 	bool p_exists = points.lookup(p_id, p);
 	ERR_FAIL_COND_V_MSG(!p_exists, false, vformat("Can't get if point is disabled. Point with id: %d doesn't exist.", p_id));
@@ -529,45 +529,45 @@ bool SGAStar2D::is_point_disabled(int p_id) const {
 	return !p->enabled;
 }
 
-void SGAStar2D::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_available_point_id"), &SGAStar2D::get_available_point_id);
-	ClassDB::bind_method(D_METHOD("add_point", "id", "position", "weight_scale"), &SGAStar2D::add_point, DEFVAL(65536));
-	ClassDB::bind_method(D_METHOD("get_point_position", "id"), &SGAStar2D::get_point_position);
-	ClassDB::bind_method(D_METHOD("set_point_position", "id", "position"), &SGAStar2D::set_point_position);
-	ClassDB::bind_method(D_METHOD("get_point_weight_scale", "id"), &SGAStar2D::get_point_weight_scale);
-	ClassDB::bind_method(D_METHOD("set_point_weight_scale", "id", "weight_scale"), &SGAStar2D::set_point_weight_scale);
-	ClassDB::bind_method(D_METHOD("remove_point", "id"), &SGAStar2D::remove_point);
-	ClassDB::bind_method(D_METHOD("has_point", "id"), &SGAStar2D::has_point);
-	ClassDB::bind_method(D_METHOD("get_point_connections", "id"), &SGAStar2D::get_point_connections);
-	ClassDB::bind_method(D_METHOD("get_points"), &SGAStar2D::get_points);
+void SGAStar3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_available_point_id"), &SGAStar3D::get_available_point_id);
+	ClassDB::bind_method(D_METHOD("add_point", "id", "position", "weight_scale"), &SGAStar3D::add_point, DEFVAL(65536));
+	ClassDB::bind_method(D_METHOD("get_point_position", "id"), &SGAStar3D::get_point_position);
+	ClassDB::bind_method(D_METHOD("set_point_position", "id", "position"), &SGAStar3D::set_point_position);
+	ClassDB::bind_method(D_METHOD("get_point_weight_scale", "id"), &SGAStar3D::get_point_weight_scale);
+	ClassDB::bind_method(D_METHOD("set_point_weight_scale", "id", "weight_scale"), &SGAStar3D::set_point_weight_scale);
+	ClassDB::bind_method(D_METHOD("remove_point", "id"), &SGAStar3D::remove_point);
+	ClassDB::bind_method(D_METHOD("has_point", "id"), &SGAStar3D::has_point);
+	ClassDB::bind_method(D_METHOD("get_point_connections", "id"), &SGAStar3D::get_point_connections);
+	ClassDB::bind_method(D_METHOD("get_points"), &SGAStar3D::get_points);
 
-	ClassDB::bind_method(D_METHOD("set_point_disabled", "id", "disabled"), &SGAStar2D::set_point_disabled, DEFVAL(true));
-	ClassDB::bind_method(D_METHOD("is_point_disabled", "id"), &SGAStar2D::is_point_disabled);
+	ClassDB::bind_method(D_METHOD("set_point_disabled", "id", "disabled"), &SGAStar3D::set_point_disabled, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("is_point_disabled", "id"), &SGAStar3D::is_point_disabled);
 
-	ClassDB::bind_method(D_METHOD("connect_points", "id", "to_id", "bidirectional"), &SGAStar2D::connect_points, DEFVAL(true));
-	ClassDB::bind_method(D_METHOD("disconnect_points", "id", "to_id", "bidirectional"), &SGAStar2D::disconnect_points, DEFVAL(true));
-	ClassDB::bind_method(D_METHOD("are_points_connected", "id", "to_id", "bidirectional"), &SGAStar2D::are_points_connected, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("connect_points", "id", "to_id", "bidirectional"), &SGAStar3D::connect_points, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("disconnect_points", "id", "to_id", "bidirectional"), &SGAStar3D::disconnect_points, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("are_points_connected", "id", "to_id", "bidirectional"), &SGAStar3D::are_points_connected, DEFVAL(true));
 
-	ClassDB::bind_method(D_METHOD("get_point_count"), &SGAStar2D::get_point_count);
-	ClassDB::bind_method(D_METHOD("get_point_capacity"), &SGAStar2D::get_point_capacity);
-	ClassDB::bind_method(D_METHOD("reserve_space", "num_nodes"), &SGAStar2D::reserve_space);
-	ClassDB::bind_method(D_METHOD("clear"), &SGAStar2D::clear);
+	ClassDB::bind_method(D_METHOD("get_point_count"), &SGAStar3D::get_point_count);
+	ClassDB::bind_method(D_METHOD("get_point_capacity"), &SGAStar3D::get_point_capacity);
+	ClassDB::bind_method(D_METHOD("reserve_space", "num_nodes"), &SGAStar3D::reserve_space);
+	ClassDB::bind_method(D_METHOD("clear"), &SGAStar3D::clear);
 
-	ClassDB::bind_method(D_METHOD("get_closest_point", "to_position", "include_disabled"), &SGAStar2D::get_closest_point, DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("get_closest_position_in_segment", "to_position"), &SGAStar2D::get_closest_position_in_segment);
+	ClassDB::bind_method(D_METHOD("get_closest_point", "to_position", "include_disabled"), &SGAStar3D::get_closest_point, DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("get_closest_position_in_segment", "to_position"), &SGAStar3D::get_closest_position_in_segment);
 
-	ClassDB::bind_method(D_METHOD("get_point_path", "from_id", "to_id"), &SGAStar2D::get_point_path);
-	ClassDB::bind_method(D_METHOD("get_id_path", "from_id", "to_id"), &SGAStar2D::get_id_path);
+	ClassDB::bind_method(D_METHOD("get_point_path", "from_id", "to_id"), &SGAStar3D::get_point_path);
+	ClassDB::bind_method(D_METHOD("get_id_path", "from_id", "to_id"), &SGAStar3D::get_id_path);
 
 	BIND_VMETHOD(MethodInfo(Variant::INT, "_estimate_cost", PropertyInfo(Variant::INT, "from_id"), PropertyInfo(Variant::INT, "to_id")));
 	BIND_VMETHOD(MethodInfo(Variant::INT, "_compute_cost", PropertyInfo(Variant::INT, "from_id"), PropertyInfo(Variant::INT, "to_id")));
 }
 
-SGAStar2D::SGAStar2D() {
+SGAStar3D::SGAStar3D() {
 	last_free_id = 0;
 	pass = 1;
 }
 
-SGAStar2D::~SGAStar2D() {
+SGAStar3D::~SGAStar3D() {
 	clear();
 }

@@ -34,81 +34,81 @@
 #include "./godot-3/math/sg_fixed_singleton.h"
 #include "./godot-3/math/sg_fixed_vector2.h"
 #include "./godot-3/math/sg_fixed_rect2.h"
-#include "./godot-3/math/sg_fixed_transform_2d.h"
+#include "./godot-3/math/sg_fixed_transform_3D.h"
 #include "./godot-3/math/sg_a_star.h"
-#include "./godot-3/scene/2d/sg_fixed_position_2d.h"
-#include "./godot-3/scene/2d/sg_area_2d.h"
-#include "./godot-3/scene/2d/sg_static_body_2d.h"
-#include "./godot-3/scene/2d/sg_kinematic_body_2d.h"
-#include "./godot-3/scene/2d/sg_ray_cast_2d.h"
-#include "./godot-3/scene/2d/sg_collision_shape_2d.h"
-#include "./godot-3/scene/2d/sg_collision_polygon_2d.h"
-#include "./godot-3/scene/2d/sg_ysort.h"
-#include "./godot-3/scene/resources/sg_shapes_2d.h"
-#include "./godot-3/scene/resources/sg_curve_2d.h"
-#include "./godot-3/scene/2d/sg_path_2d.h"
+#include "./godot-3/scene/3D/sg_fixed_position_3D.h"
+#include "./godot-3/scene/3D/sg_area_3D.h"
+#include "./godot-3/scene/3D/sg_static_body_3D.h"
+#include "./godot-3/scene/3D/sg_kinematic_body_3D.h"
+#include "./godot-3/scene/3D/sg_ray_cast_3D.h"
+#include "./godot-3/scene/3D/sg_collision_shape_3D.h"
+#include "./godot-3/scene/3D/sg_collision_polygon_3D.h"
+#include "./godot-3/scene/3D/sg_ysort.h"
+#include "./godot-3/scene/resources/sg_shapes_3D.h"
+#include "./godot-3/scene/resources/sg_curve_3D.h"
+#include "./godot-3/scene/3D/sg_path_3D.h"
 #include "./godot-3/scene/animation/sg_tween.h"
-#include "./godot-3/servers/sg_physics_2d_server.h"
-#include "./internal/sg_world_2d_internal.h"
+#include "./godot-3/servers/sg_physics_3D_server.h"
+#include "./internal/sg_world_3D_internal.h"
 
 #ifdef TOOLS_ENABLED
 #include "./godot-3/editor/sg_fixed_math_editor_plugin.h"
-#include "./godot-3/editor/sg_collision_shape_2d_editor_plugin.h"
-#include "./godot-3/editor/sg_collision_polygon_2d_editor_plugin.h"
-#include "./godot-3/editor/sg_path_2d_editor_plugin.h"
+#include "./godot-3/editor/sg_collision_shape_3D_editor_plugin.h"
+#include "./godot-3/editor/sg_collision_polygon_3D_editor_plugin.h"
+#include "./godot-3/editor/sg_path_3D_editor_plugin.h"
 #endif
 
 static SGFixed *fixed_singleton;
-static SGPhysics2DServer *server_singleton;
+static SGPhysics3DServer *server_singleton;
 
-void register_sg_physics_2d_types() {
+void register_sg_physics_3D_types() {
 	ClassDB::register_class<SGFixed>();
 	ClassDB::register_class<SGFixedVector2>();
 	ClassDB::register_class<SGFixedRect2>();
-	ClassDB::register_class<SGFixedTransform2D>();
+	ClassDB::register_class<SGFixedTransform3D>();
 
-	ClassDB::register_class<SGFixedNode2D>();
-	ClassDB::register_class<SGFixedPosition2D>();
-	ClassDB::register_class<SGPhysics2DServer>();
-	ClassDB::register_virtual_class<SGCollisionObject2D>();
-	ClassDB::register_class<SGArea2D>();
-	ClassDB::register_class<SGAreaCollision2D>();
-	ClassDB::register_class<SGStaticBody2D>();
-	ClassDB::register_class<SGKinematicBody2D>();
-	ClassDB::register_class<SGKinematicCollision2D>();
-	ClassDB::register_class<SGRayCast2D>();
+	ClassDB::register_class<SGFixedNode3D>();
+	ClassDB::register_class<SGFixedPosition3D>();
+	ClassDB::register_class<SGPhysics3DServer>();
+	ClassDB::register_virtual_class<SGCollisionObject3D>();
+	ClassDB::register_class<SGArea3D>();
+	ClassDB::register_class<SGAreaCollision3D>();
+	ClassDB::register_class<SGStaticBody3D>();
+	ClassDB::register_class<SGKinematicBody3D>();
+	ClassDB::register_class<SGKinematicCollision3D>();
+	ClassDB::register_class<SGRayCast3D>();
 	ClassDB::register_class<SGYSort>();
 
-	ClassDB::register_class<SGCollisionShape2D>();
-	ClassDB::register_class<SGCollisionPolygon2D>();
+	ClassDB::register_class<SGCollisionShape3D>();
+	ClassDB::register_class<SGCollisionPolygon3D>();
 
-	ClassDB::register_virtual_class<SGShape2D>();
-	ClassDB::register_class<SGRectangleShape2D>();
-	ClassDB::register_class<SGCircleShape2D>();
-	ClassDB::register_class<SGCapsuleShape2D>();
+	ClassDB::register_virtual_class<SGShape3D>();
+	ClassDB::register_class<SGRectangleShape3D>();
+	ClassDB::register_class<SGCircleShape3D>();
+	ClassDB::register_class<SGCapsuleShape3D>();
 
-	ClassDB::register_class<SGCurve2D>();
-	ClassDB::register_class<SGPath2D>();
-	ClassDB::register_class<SGPathFollow2D>();
+	ClassDB::register_class<SGCurve3D>();
+	ClassDB::register_class<SGPath3D>();
+	ClassDB::register_class<SGPathFollow3D>();
 
 	ClassDB::register_class<SGTween>();
-	ClassDB::register_class<SGAStar2D>();
+	ClassDB::register_class<SGAStar3D>();
 
 	fixed_singleton = memnew(SGFixed);
 	Engine::get_singleton()->add_singleton(Engine::Singleton("SGFixed", SGFixed::get_singleton()));
 
-	server_singleton = memnew(SGPhysics2DServer);
-	Engine::get_singleton()->add_singleton(Engine::Singleton("SGPhysics2DServer", SGPhysics2DServer::get_singleton()));
+	server_singleton = memnew(SGPhysics3DServer);
+	Engine::get_singleton()->add_singleton(Engine::Singleton("SGPhysics3DServer", SGPhysics3DServer::get_singleton()));
 
 #ifdef TOOLS_ENABLED
 	EditorPlugins::add_by_type<SGFixedMathEditorPlugin>();
-	EditorPlugins::add_by_type<SGCollisionShape2DEditorPlugin>();
-	EditorPlugins::add_by_type<SGCollisionPolygon2DEditorPlugin>();
-	EditorPlugins::add_by_type<SGPath2DEditorPlugin>();
+	EditorPlugins::add_by_type<SGCollisionShape3DEditorPlugin>();
+	EditorPlugins::add_by_type<SGCollisionPolygon3DEditorPlugin>();
+	EditorPlugins::add_by_type<SGPath3DEditorPlugin>();
 #endif
 }
 
-void unregister_sg_physics_2d_types() {
+void unregister_sg_physics_3D_types() {
 	memdelete(fixed_singleton);
 	memdelete(server_singleton);
 }

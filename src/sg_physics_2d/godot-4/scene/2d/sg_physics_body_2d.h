@@ -21,25 +21,25 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_PHYSICS_BODY_2D_H
-#define SG_PHYSICS_BODY_2D_H
+#ifndef SG_PHYSICS_BODY_3D_H
+#define SG_PHYSICS_BODY_3D_H
 
-#include "sg_collision_object_2d.h"
+#include "sg_collision_object_3D.h"
 
-class SGKinematicCollision2D;
+class SGKinematicCollision3D;
 
-class SGPhysicsBody2D : public SGCollisionObject2D {
-	GDCLASS(SGPhysicsBody2D, SGCollisionObject2D);
+class SGPhysicsBody3D : public SGCollisionObject3D {
+	GDCLASS(SGPhysicsBody3D, SGCollisionObject3D);
 
 protected:
 	static void _bind_methods();
 
-	SGPhysicsBody2D(RID p_rid);
+	SGPhysicsBody3D(RID p_rid);
 
 public:
-	Ref<SGKinematicCollision2D> move_and_collide(const Ref<SGFixedVector2> &p_linear_velocity);
+	Ref<SGKinematicCollision3D> move_and_collide(const Ref<SGFixedVector2> &p_linear_velocity);
 
-	SGPhysicsBody2D();
+	SGPhysicsBody3D();
 };
 
 #endif
