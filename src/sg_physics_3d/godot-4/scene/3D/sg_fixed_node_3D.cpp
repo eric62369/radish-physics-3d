@@ -24,6 +24,7 @@
 #include "sg_fixed_node_3D.h"
 
 #include <godot_cpp/classes/engine.hpp>
+#include <godot_cpp/classes/canvas_item.hpp>
 
 void SGFixedNode3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_fixed_transform"), &SGFixedNode3D::get_fixed_transform);
@@ -305,7 +306,6 @@ void SGFixedNode3D::update_float_transform() {
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 		updating_transform = true;
 #endif
-		// TODO: how to float transform?
 		Transform3D float_xform;
 		float_xform.rotate_basis(Vector3(0, 1, 0), fixed(fixed_rotation).to_float());
 		float_xform.scale(fixed_scale->to_float());
@@ -356,9 +356,9 @@ SGFixedNode3D::SGFixedNode3D() {
 
 	fixed_xform_dirty = false;
 
-	// CanvasItem::set_notify_transform(true); // TODO: no canvas item?
+	CanvasItem::set_notify_transform(true); // TODO: no canvas item?
 	// @todo Figure out how to re-implement this from GDExtension
-	//set_notify_transform(true);
+	set_notify_transform(true);
 
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	updating_transform = false;

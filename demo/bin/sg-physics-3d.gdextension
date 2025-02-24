@@ -1,6 +1,6 @@
 [configuration]
 
-entry_symbol = "rdphysics_init"
+entry_symbol = "sg_physics_3d_extension_init"
 compatibility_minimum = "4.1"
 
 [libraries]
