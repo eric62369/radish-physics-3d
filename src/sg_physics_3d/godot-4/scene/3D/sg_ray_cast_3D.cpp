@@ -81,32 +81,32 @@ void SGRayCast3D::_bind_methods() {
 
 void SGRayCast3D::_notification(int p_what) {
 	switch (p_what) {
-		case NOTIFICATION_DRAW: {
-			if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_collisions_hint())
-				break;
-			Transform3D xf;
-			Vector2 cast_to_float = cast_to->to_float();
-			xf.rotate(cast_to_float.angle());
-			// @todo Replace with .translate() if/when it exists!
-			xf = xf.translated(Vector2(cast_to_float.length(), 0));
+		// case NOTIFICATION_DRAW: {
+		// 	if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_collisions_hint())
+		// 		break;
+		// 	Transform3D xf;
+		// 	Vector3 cast_to_float = cast_to->to_float();
+		// 	xf.rotate(cast_to_float.angle());
+		// 	// @todo Replace with .translate() if/when it exists!
+		// 	xf = xf.translated(Vector3(cast_to_float.length(), 0));
 
-			// Draw an arrow indicating where the RayCast is pointing to
-			// @todo Get access to the debug collision color from GDExtension
-			//Color draw_col = get_tree()->get_debug_collisions_color();
-			Color draw_col = Color(0.0, 0.0, 1.0, 1.0);
-			draw_line(Vector2(), cast_to_float, draw_col, 2, true);
-			PackedVector2Array pts;
-			float tsize = 8;
-			pts.push_back(xf.xform(Vector2(tsize, 0)));
-			pts.push_back(xf.xform(Vector2(0, Math_SQRT12 * tsize)));
-			pts.push_back(xf.xform(Vector2(0, -Math_SQRT12 * tsize)));
-			PackedColorArray cols;
-			for (int i = 0; i < 3; i++)
-				cols.push_back(draw_col);
+		// 	// Draw an arrow indicating where the RayCast is pointing to
+		// 	// @todo Get access to the debug collision color from GDExtension
+		// 	//Color draw_col = get_tree()->get_debug_collisions_color();
+		// 	Color draw_col = Color(0.0, 0.0, 1.0, 1.0);
+		// 	draw_line(Vector2(), cast_to_float, draw_col, 2, true);
+		// 	PackedVector2Array pts;
+		// 	float tsize = 8;
+		// 	pts.push_back(xf.xform(Vector(tsize, 0)));
+		// 	pts.push_back(xf.xform(Vector2(0, Math_SQRT12 * tsize)));
+		// 	pts.push_back(xf.xform(Vector2(0, -Math_SQRT12 * tsize)));
+		// 	PackedColorArray cols;
+		// 	for (int i = 0; i < 3; i++)
+		// 		cols.push_back(draw_col);
 
-			draw_primitive(pts, cols, PackedVector2Array());
+		// 	draw_primitive(pts, cols, PackedVector2Array());
 
-		} break;
+		// } break;
 	}
 }
 
