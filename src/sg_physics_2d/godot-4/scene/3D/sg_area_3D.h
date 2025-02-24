@@ -28,7 +28,7 @@
 
 #include <godot_cpp/classes/resource.hpp>
 
-#include "../../math/sg_fixed_vector2.h"
+#include "../../math/sg_fixed_vector3.h"
 #include "../../scene/3D/sg_collision_shape_3D.h"
 
 class SGArea3D : public SGCollisionObject3D

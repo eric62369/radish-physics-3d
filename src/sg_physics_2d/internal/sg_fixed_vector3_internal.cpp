@@ -25,14 +25,14 @@
 
 const fixed SGFixedVector3Internal::FIXED_UNIT_EPSILON = fixed(65);
 
-const SGFixedVector3Internal SGFixedVector3Internal::ZERO = SGFixedVector3Internal(fixed::ZERO, fixed::ZERO);
+const SGFixedVector3Internal SGFixedVector3Internal::ZERO = SGFixedVector3Internal(fixed::ZERO, fixed::ZERO, fixed::ZERO);
 
 bool SGFixedVector3Internal::operator==(const SGFixedVector3Internal &p_v) const {
-	return x == p_v.x && y == p_v.y;
+	return x == p_v.x && y == p_v.y && z == p_v.z;
 }
 
 bool SGFixedVector3Internal::operator!=(const SGFixedVector3Internal &p_v) const {
-	return x != p_v.x || y != p_v.y;
+	return x != p_v.x || y != p_v.y || z != p_v.z;
 }
 
 fixed SGFixedVector3Internal::angle() const {
@@ -51,25 +51,35 @@ void SGFixedVector3Internal::normalize() {
 	// direction matters, we can increase the vector's magnitude.
 	fixed x_abs = x.abs();
 	fixed y_abs = y.abs();
-	if ((x.value != 0 && x_abs.value < 2048) || (y.value != 0 && y_abs.value < 2048)) {
+	fixed z_abs = z.abs();
+	if ((x.value != 0 && x_abs.value < 2048) || (y.value != 0 && y_abs.value < 2048) || (z.value != 0 && z_abs.value < 2048)) {
 		// Watch out for values that will overflow even 64 bits.
 		// 1482910 = sqrt(MAX_SIGNED_64BIT_NUMBER) / 2048
 		if (x_abs.value >= 1482910) {
 			x = x.value > 0 ? fixed::ONE : fixed::NEG_ONE;
 			y = fixed::ZERO;
+			z = fixed::ZERO;
 		}
 		else if (y_abs.value >= 1482910) {
 			x = fixed::ZERO;
 			y = y.value > 0 ? fixed::ONE : fixed::NEG_ONE;
+			z = fixed::ZERO;
+		}
+		else if (z_abs.value >= 1482910) {
+			x = fixed::ZERO;
+			y = fixed::ZERO;
+			z = z.value > 0 ? fixed::ONE : fixed::NEG_ONE;
 		}
 		else {
 			// Multiply X and Y by 2048.
 			fixed x_big = fixed(x.value << 11);
 			fixed y_big = fixed(y.value << 11);
-			fixed l = SGFixedVector3Internal(x_big, y_big).length();
+			fixed z_big = fixed(z.value << 11);
+			fixed l = SGFixedVector3Internal(x_big, y_big, z_big).length();
 			if (l != fixed::ZERO) {
 				x = x_big / l;
 				y = y_big / l;
+				z = z_big / l;
 			}
 		}
 	}
@@ -78,6 +88,7 @@ void SGFixedVector3Internal::normalize() {
 		if (l != fixed::ZERO) {
 			x /= l;
 			y /= l;
+			z /= l;
 		}
 	}
 }
@@ -102,12 +113,15 @@ SGFixedVector3Internal SGFixedVector3Internal::safe_scale(const SGFixedVector3In
 	if (ret.y == fixed::ZERO && y != fixed::ZERO) {
 		ret.y.value = y > fixed::ZERO ? 1 : -1;
 	}
+	if (ret.z == fixed::ZERO && z != fixed::ZERO) {
+		ret.z.value = z > fixed::ZERO ? 1 : -1;
+	}
 
 	return ret;
 }
 
 SGFixedVector3Internal SGFixedVector3Internal::safe_scale(fixed p_scale) const {
-	return safe_scale(SGFixedVector3Internal(p_scale, p_scale));
+	return safe_scale(SGFixedVector3Internal(p_scale, p_scale, p_scale));
 }
 
 fixed SGFixedVector3Internal::length() const {
@@ -155,7 +169,7 @@ fixed SGFixedVector3Internal::angle_to_point(const SGFixedVector3Internal &p_oth
 }
 
 fixed SGFixedVector3Internal::dot(const SGFixedVector3Internal &p_other) const {
-	return x * p_other.x + y * p_other.y;
+	return x * p_other.x + y * p_other.y + z * p_other.z;
 }
 
 fixed SGFixedVector3Internal::cross(const SGFixedVector3Internal &p_other) const {

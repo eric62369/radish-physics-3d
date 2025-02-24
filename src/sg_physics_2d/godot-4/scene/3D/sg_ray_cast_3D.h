@@ -29,7 +29,7 @@
 #include "sg_fixed_node_3D.h"
 
 #include "../../../internal/sg_bodies_3D_internal.h"
-#include "../../math/sg_fixed_vector2.h"
+#include "../../math/sg_fixed_vector3.h"
 
 class SGRayCast3D : public SGFixedNode3D {
 	GDCLASS(SGRayCast3D, SGFixedNode3D);

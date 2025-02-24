@@ -54,6 +54,7 @@ public:
 
 	_FORCE_INLINE_ int64_t get_x() const { return value.x.value; }
 	_FORCE_INLINE_ int64_t get_y() const { return value.y.value; }
+	_FORCE_INLINE_ int64_t get_z() const { return value.z.value; }
 
 	void set_x(int64_t p_x) {
 		value.x.value = p_x;
@@ -69,9 +70,17 @@ public:
 		}
 	}
 
+	void set_z(int64_t p_z) {
+		value.z.value = p_z;
+		if (watcher) {
+			watcher->fixed_vector3_changed(this);
+		}
+	}
+
 	void clear() {
 		value.x.value = 0;
 		value.y.value = 0;
+		value.z.value = 0;
 		if (watcher) {
 			watcher->fixed_vector3_changed(this);
 		}

@@ -28,7 +28,7 @@
 #include <unordered_set>
 
 #include "sg_fixed_vector3_internal.h"
-#include "sg_fixed_rect2_internal.h"
+#include "sg_fixed_rect3_internal.h"
 #include "sg_result_handler_internal.h"
 
 class SGArea3DInternal;

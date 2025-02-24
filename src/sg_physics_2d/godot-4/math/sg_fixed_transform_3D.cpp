@@ -57,6 +57,7 @@ void SGFixedTransform3D::_bind_methods() {
 Transform3D SGFixedTransform3D::to_float() const {
 	Vector3 x_float = x->to_float();
 	Vector3 y_float = y->to_float();
+	Vector3 z_float = z->to_float();
 	Vector3 origin_float = origin->to_float();
 	return Transform3D(x_float.x, x_float.y, y_float.x, y_float.y, origin_float.x, origin_float.y);
 }

@@ -28,11 +28,14 @@ void SGFixedVector3::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_x", "x"), &SGFixedVector3::set_x);
 	ClassDB::bind_method(D_METHOD("get_y"), &SGFixedVector3::get_y);
 	ClassDB::bind_method(D_METHOD("set_y", "y"), &SGFixedVector3::set_y);
+	ClassDB::bind_method(D_METHOD("get_z"), &SGFixedVector3::get_z);
+	ClassDB::bind_method(D_METHOD("set_z", "z"), &SGFixedVector3::set_z);
 
 	ClassDB::bind_method(D_METHOD("clear"), &SGFixedVector3::clear);
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "x", PROPERTY_HINT_NONE), "set_x", "get_x");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "y", PROPERTY_HINT_NONE), "set_y", "get_y");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "z", PROPERTY_HINT_NONE), "set_z", "get_z");
 
 	ClassDB::bind_method(D_METHOD("add", "value"), &SGFixedVector3::add);
 	ClassDB::bind_method(D_METHOD("iadd", "value"), &SGFixedVector3::iadd);
@@ -289,6 +292,7 @@ bool SGFixedVector3::is_equal_approx(const Ref<SGFixedVector3> &p_other) const {
 void SGFixedVector3::from_float(Vector3 p_float_vector) {
 	value.x = fixed::from_float(p_float_vector.x);
 	value.y = fixed::from_float(p_float_vector.y);
+	value.z = fixed::from_float(p_float_vector.z);
 
 	if (watcher) {
 		watcher->fixed_vector3_changed(this);

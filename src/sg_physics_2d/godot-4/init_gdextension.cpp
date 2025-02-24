@@ -30,8 +30,8 @@
 #include <godot_cpp/godot.hpp>
 
 #include "./math/sg_fixed_singleton.h"
-#include "./math/sg_fixed_vector2.h"
-#include "./math/sg_fixed_rect2.h"
+#include "./math/sg_fixed_vector3.h"
+#include "./math/sg_fixed_rect3.h"
 #include "./math/sg_fixed_transform_3D.h"
 #include "./scene/3D/sg_fixed_position_3D.h"
 #include "./scene/3D/sg_area_3D.h"

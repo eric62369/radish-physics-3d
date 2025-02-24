@@ -26,7 +26,7 @@
 
 #include "sg_fixed_node_3D.h"
 
-#include "../../math/sg_fixed_vector2.h"
+#include "../../math/sg_fixed_vector3.h"
 
 class SGCollisionObject3D : public SGFixedNode3D {
 	GDCLASS(SGCollisionObject3D, SGFixedNode3D);

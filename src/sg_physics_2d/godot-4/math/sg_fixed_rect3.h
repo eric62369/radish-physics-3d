@@ -21,8 +21,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_FIXED_RECT2_H
-#define SG_FIXED_RECT2_H
+#ifndef SG_FIXED_RECT3_H
+#define SG_FIXED_RECT3_H
 
 #include <godot_cpp/classes/ref_counted.hpp>
 

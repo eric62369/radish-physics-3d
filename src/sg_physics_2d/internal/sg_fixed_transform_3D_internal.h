@@ -94,19 +94,26 @@ struct SGFixedTransform3DInternal {
 	//_FORCE_INLINE_ SGFixedRect3Internal xform(const SGFixedRect3Internal &p_rect) const;
 	//_FORCE_INLINE_ SGFixedRect3Internal xform_inv(const SGFixedRect3Internal &p_rect) const;
 
-	SGFixedTransform3DInternal(fixed xx, fixed xy, fixed yx, fixed yy, fixed ox, fixed oy) {
+	SGFixedTransform3DInternal(fixed xx, fixed xy, fixed xz, fixed yx, fixed yy, fixed yz, fixed zx, fixed zy, fixed zz, fixed ox, fixed oy, fixed oz) {
 		elements[0][0] = xx;
 		elements[0][1] = xy;
+		elements[0][2] = xz;
 		elements[1][0] = yx;
 		elements[1][1] = yy;
-		elements[2][0] = ox;
-		elements[2][1] = oy;
+		elements[1][2] = yz;
+		elements[2][0] = zx;
+		elements[2][1] = zy;
+		elements[2][2] = zz;
+		elements[3][0] = ox;
+		elements[3][1] = oy;
+		elements[3][2] = oz;
 	}
 
 	SGFixedTransform3DInternal(fixed p_rot, const SGFixedVector3Internal &p_pos);
 	SGFixedTransform3DInternal() {
 		elements[0][0] = fixed::ONE;
 		elements[1][1] = fixed::ONE;
+		elements[2][2] = fixed::ONE;
 	}
 	/*
 	SGFixedTransform3DInternal(const SGFixedTransform3DInternal& p_other) {

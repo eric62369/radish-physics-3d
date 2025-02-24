@@ -21,8 +21,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#ifndef SG_FIXED_RECT2_INTERNAL_H
-#define SG_FIXED_RECT2_INTERNAL_H
+#ifndef SG_FIXED_RECT3_INTERNAL_H
+#define SG_FIXED_RECT3_INTERNAL_H
 
 #include "sg_fixed_vector3_internal.h"
 
@@ -48,10 +48,14 @@ struct SGFixedRect3Internal {
 			return false;
 		if (p_point.y < position.y)
 			return false;
+		if (p_point.z < position.z)
+			return false;
 
 		if (p_point.x >= (position.x + size.x))
 			return false;
 		if (p_point.y >= (position.y + size.y))
+			return false;
+		if (p_point.z >= (position.z + size.z))
 			return false;
 
 		return true;
@@ -85,8 +89,10 @@ struct SGFixedRect3Internal {
 	inline void grow_by(fixed p_by) {
 		position.x -= p_by;
 		position.y -= p_by;
+		position.z -= p_by;
 		size.width += p_by * fixed::TWO;
 		size.height += p_by * fixed::TWO;
+		size.depth += p_by * fixed::TWO;
 	}
 
 	inline void expand_to(const SGFixedVector3Internal &p_vector) {
@@ -97,11 +103,15 @@ struct SGFixedRect3Internal {
 			begin.x = p_vector.x;
 		if (p_vector.y < begin.y)
 			begin.y = p_vector.y;
+		if (p_vector.z < begin.z)
+			begin.z = p_vector.z;
 
 		if (p_vector.x > end.x)
 			end.x = p_vector.x;
 		if (p_vector.y > end.y)
 			end.y = p_vector.y;
+		if (p_vector.z > end.z)
+			end.z = p_vector.z;
 
 		position = begin;
 		size = end - begin;

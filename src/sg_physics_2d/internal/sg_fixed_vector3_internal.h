@@ -57,28 +57,28 @@ struct SGFixedVector3Internal {
 	}
 
 	_FORCE_INLINE_ SGFixedVector3Internal operator+(const SGFixedVector3Internal &p_v) const {
-		return SGFixedVector3Internal(x + p_v.x, y + p_v.y);
+		return SGFixedVector3Internal(x + p_v.x, y + p_v.y, z + p_v.z);
 	}
 	_FORCE_INLINE_ void operator+=(const SGFixedVector3Internal &p_v) {
 		x += p_v.x;
 		y += p_v.y;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator-(const SGFixedVector3Internal &p_v) const {
-		return SGFixedVector3Internal(x - p_v.x, y - p_v.y);
+		return SGFixedVector3Internal(x - p_v.x, y - p_v.y, z - p_v.z);
 	}
 	_FORCE_INLINE_ void operator-=(const SGFixedVector3Internal &p_v) {
 		x -= p_v.x;
 		y -= p_v.y;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator*(const SGFixedVector3Internal &p_v) const {
-		return SGFixedVector3Internal(x * p_v.x, y * p_v.y);
+		return SGFixedVector3Internal(x * p_v.x, y * p_v.y, z * p_v.z);
 	}
 	_FORCE_INLINE_ void operator*=(const SGFixedVector3Internal &p_v) {
 		x *= p_v.x;
 		y *= p_v.y;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator/(const SGFixedVector3Internal &p_v) const {
-		return SGFixedVector3Internal(x / p_v.x, y / p_v.y);
+		return SGFixedVector3Internal(x / p_v.x, y / p_v.y, z / p_v.z);
 	}
 	_FORCE_INLINE_ void operator/=(const SGFixedVector3Internal &p_v) {
 		x /= p_v.x;
@@ -86,28 +86,28 @@ struct SGFixedVector3Internal {
 	}
 
 	_FORCE_INLINE_ SGFixedVector3Internal operator+(const fixed &p_v) const {
-		return SGFixedVector3Internal(x + p_v, y + p_v);
+		return SGFixedVector3Internal(x + p_v, y + p_v, z + p_v);
 	}
 	_FORCE_INLINE_ void operator+=(const fixed &p_v) {
 		x += p_v;
 		y += p_v;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator-(const fixed &p_v) const {
-		return SGFixedVector3Internal(x - p_v, y - p_v);
+		return SGFixedVector3Internal(x - p_v, y - p_v, z - p_v);
 	}
 	_FORCE_INLINE_ void operator-=(const fixed &p_v) {
 		x -= p_v;
 		y -= p_v;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator*(const fixed &p_v) const {
-		return SGFixedVector3Internal(x * p_v, y * p_v);
+		return SGFixedVector3Internal(x * p_v, y * p_v, z * p_v);
 	}
 	_FORCE_INLINE_ void operator*=(const fixed &p_v) {
 		x *= p_v;
 		y *= p_v;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator/(const fixed &p_v) const {
-		return SGFixedVector3Internal(x / p_v, y / p_v);
+		return SGFixedVector3Internal(x / p_v, y / p_v, z / p_v);
 	}
 	_FORCE_INLINE_ void operator/=(const fixed &p_v) {
 		x /= p_v;
@@ -125,10 +125,10 @@ struct SGFixedVector3Internal {
 	}
 
 	_FORCE_INLINE_ SGFixedVector3Internal abs() const {
-		return SGFixedVector3Internal(x.abs(), y.abs());
+		return SGFixedVector3Internal(x.abs(), y.abs(), z.abs());
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator-() const {
-		return SGFixedVector3Internal(-x, -y);
+		return SGFixedVector3Internal(-x, -y, -z);
 	}
 
 	SGFixedVector3Internal rotated(fixed p_rotation) const;
@@ -154,9 +154,10 @@ struct SGFixedVector3Internal {
 	//fixed posmod(const fixed p_mod) const;
 	//fixed posmodv(const SGFixedVector3Internal &p_modv) const;
 	//SGFixedVector3Internal project(const SGFixedVector3Internal &p_to) const;
-	_FORCE_INLINE_ SGFixedVector3Internal tangent() const {
-		return SGFixedVector3Internal(y, -x);
-	}
+
+	// _FORCE_INLINE_ SGFixedVector3Internal tangent() const {
+	// 	return SGFixedVector3Internal(y, -x);
+	// }
 
 	_FORCE_INLINE_ static SGFixedVector3Internal linear_interpolate(const SGFixedVector3Internal &p_a, const SGFixedVector3Internal &p_b, fixed p_weight);
 
@@ -166,10 +167,10 @@ struct SGFixedVector3Internal {
 
 	bool is_equal_approx(const SGFixedVector3Internal &p_v) const;
 
-	_FORCE_INLINE_ SGFixedVector3Internal(fixed p_x, fixed p_y)
-		: x(p_x), y(p_y) {}
+	_FORCE_INLINE_ SGFixedVector3Internal(fixed p_x, fixed p_y, fixed p_z)
+		: x(p_x), y(p_y), z(p_z) {}
 	_FORCE_INLINE_ SGFixedVector3Internal()
-		: x(fixed::ZERO), y(fixed::ZERO) {}
+		: x(fixed::ZERO), y(fixed::ZERO), z(fixed::ZERO) {}
 
 	SGFixedVector3Internal cubic_interpolate(const SGFixedVector3Internal& p_b, const SGFixedVector3Internal& p_pre_a, const SGFixedVector3Internal& p_post_b, fixed p_weight) const;
 

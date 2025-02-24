@@ -26,7 +26,7 @@
 
 #include <godot_cpp/classes/resource.hpp>
 
-#include "../../math/sg_fixed_vector2.h"
+#include "../../math/sg_fixed_vector3.h"
 
 class SGCollisionShape3D;
 

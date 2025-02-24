@@ -36,6 +36,7 @@ class SGFixedTransform3D : public RefCounted {
 
 	Ref<SGFixedVector3> x;
 	Ref<SGFixedVector3> y;
+	Ref<SGFixedVector3> z;
 	Ref<SGFixedVector3> origin;
 
 protected:
@@ -48,11 +49,14 @@ public:
 	_FORCE_INLINE_ Ref<SGFixedVector3> get_y() const { return y; }
 	void set_y(const Ref<SGFixedVector3> &p_y);
 
+	_FORCE_INLINE_ Ref<SGFixedVector3> get_z() const { return z; }
+	void set_z(const Ref<SGFixedVector3> &p_z);
+
 	_FORCE_INLINE_ Ref<SGFixedVector3> get_origin() const { return origin; }
 	void set_origin(const Ref<SGFixedVector3> &p_origin);
 
 	_FORCE_INLINE_ SGFixedTransform3DInternal get_internal() const {
-		return SGFixedTransform3DInternal(fixed(x->get_x()), fixed(x->get_y()), fixed(y->get_x()), fixed(y->get_y()), fixed(origin->get_x()), fixed(origin->get_y()));
+		return SGFixedTransform3DInternal(fixed(x->get_x()), fixed(x->get_y()), fixed(x->get_z()), fixed(y->get_x()), fixed(y->get_y()), fixed(y->get_z()), fixed(z->get_x()), fixed(z->get_y()), fixed(z->get_z()), fixed(origin->get_x()), fixed(origin->get_y()), fixed(origin->get_z()));
 	}
 
 	_FORCE_INLINE_ void set_internal(const SGFixedTransform3DInternal &p_internal) {

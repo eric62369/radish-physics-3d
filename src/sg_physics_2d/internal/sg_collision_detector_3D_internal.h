@@ -27,7 +27,7 @@
 #include <vector>
 
 #include "sg_fixed_transform_3D_internal.h"
-#include "sg_fixed_rect2_internal.h"
+#include "sg_fixed_rect3_internal.h"
 #include "sg_shapes_3D_internal.h"
 
 class SGCollisionDetector3DInternal {

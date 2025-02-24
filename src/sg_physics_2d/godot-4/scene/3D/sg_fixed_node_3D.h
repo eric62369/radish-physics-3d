@@ -26,7 +26,7 @@
 
 #include <godot_cpp/classes/node3D.hpp>
 
-#include "../../math/sg_fixed_vector2.h"
+#include "../../math/sg_fixed_vector3.h"
 #include "../../math/sg_fixed_transform_3D.h"
 
 class SGCollisionObject3D;
