@@ -221,9 +221,9 @@ SG Physics 2D doesn't include a special node for tile maps. If you want to add
 collision shapes to a `TileMap` node, you'd do it in code, rather than in the
 editor.
 
-Creating a thousands of `SGStaticBody2D` and `SGCollisionShape2D` nodes can
+Creating a thousands of `SGStaticBody3D` and `SGCollisionShape3D` nodes can
 cause performance problems, so instead of creating nodes, you can create
-resources using the `SGPhysics2DServer`.
+resources using the `SGPhysics3DServer`.
 
 There's a demo in the code base demonstrating how to do this:
 

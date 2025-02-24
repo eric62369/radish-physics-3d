@@ -6,7 +6,7 @@ env = SConscript("godot-cpp/SConstruct")
 
 # Define our options
 opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'bin/'))
-opts.Add(PathVariable('target_name', 'The library name.', 'libsgphysics2d', PathVariable.PathAccept))
+opts.Add(PathVariable('target_name', 'The library name.', 'libsgphysics3d', PathVariable.PathAccept))
 
 # For the reference:
 # - CCFLAGS are compilation flags shared between C and C++
@@ -26,7 +26,7 @@ sg_physics_3d_subdirs = [
 	"internal/",
     "godot-4/math/",
     "godot-4/servers/",
-    "godot-4/scene/2d/",
+    "godot-4/scene/3d/",
     "godot-4/scene/resources/",
     "godot-4/scene/animation/",
     "godot-4/",

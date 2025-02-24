@@ -2,7 +2,7 @@ image: registry.gitlab.com/snopek-games/godot-builder-docker:latest
 
 variables:
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/precompiled-binaries/${CI_COMMIT_TAG}"
-  APPLICATION_NAME: "SG Physics 2D"
+  APPLICATION_NAME: "SG Physics 3D"
   APPLICATION_URL: "https://www.snopekgames.com"
 
 stages:

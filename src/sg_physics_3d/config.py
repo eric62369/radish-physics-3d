@@ -10,7 +10,7 @@ def configure(env):
     pass
 
 def get_doc_path():
-    return "godot-3/doc_classes"
+    return "godot-4/doc_classes"
 
 def get_doc_classes():
     return [
