@@ -25,6 +25,8 @@
 
 #define TTR(m) m
 
+#include <godot_cpp/classes/canvas_item.hpp>
+
 #include "sg_collision_shape_3D.h"
 #include "sg_collision_polygon_3D.h"
 #include "../../servers/sg_physics_3D_server.h"
@@ -61,7 +63,7 @@ void SGCollisionObject3D::_notification(int p_what) {
 			sync_to_physics_engine();
 			break;
 
-		case NOTIFICATION_EXIT_CANVAS:
+		case NOTIFICATION_EXIT_TREE: // NOTIFICATION_EXIT_CANVAS: // TODO: why was it exit canvas and why doesn't it register?
 			SGPhysics3DServer::get_singleton()->world_remove_collision_object(world_rid, rid);
 			break;
 	}

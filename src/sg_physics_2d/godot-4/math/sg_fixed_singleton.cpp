@@ -249,12 +249,11 @@ Ref<SGFixedRect3> SGFixed::rect3(const Ref<SGFixedVector3> &p_position, const Re
 	return ret;
 }
 
-Ref<SGFixedRect3> SGFixed::from_float_rect3(const Rect2 &p_float_rect) const {
+Ref<SGFixedRect3> SGFixed::from_float_rect3(const AABB &p_float_rect) const {
 	Ref<SGFixedRect3> ret(memnew(SGFixedRect3));
-	// TODO: no rect3??
-	// ret->set_internal(SGFixedRect3Internal(
-	// 		SGFixedVector3Internal(fixed::from_float(p_float_rect.position.x), fixed::from_float(p_float_rect.position.y), fixed::from_float(p_float_rect.position.z)),
-	// 		SGFixedVector3Internal(fixed::from_float(p_float_rect.size.x), fixed::from_float(p_float_rect.size.y), fixed::from_float(p_float_rect.size.z))));
+	ret->set_internal(SGFixedRect3Internal(
+			SGFixedVector3Internal(fixed::from_float(p_float_rect.position.x), fixed::from_float(p_float_rect.position.y), fixed::from_float(p_float_rect.position.z)),
+			SGFixedVector3Internal(fixed::from_float(p_float_rect.size.x), fixed::from_float(p_float_rect.size.y), fixed::from_float(p_float_rect.size.z))));
 	return ret;
 }
 

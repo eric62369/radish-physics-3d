@@ -94,7 +94,7 @@ public:
 	Ref<SGFixedVector3> from_float_vector3(const Vector3 &p_float_vector) const;
 
 	Ref<SGFixedRect3> rect3(const Ref<SGFixedVector3> &p_position, const Ref<SGFixedVector3> &p_size) const;
-	Ref<SGFixedRect3> from_float_rect3(const Rect2 &p_float_rect) const; // TODO: there's no rect3???
+	Ref<SGFixedRect3> from_float_rect3(const AABB &p_float_rect) const;
 
 	Ref<SGFixedTransform3D> transform3D(int64_t p_rotation, const Ref<SGFixedVector3> &p_origin) const;
 
