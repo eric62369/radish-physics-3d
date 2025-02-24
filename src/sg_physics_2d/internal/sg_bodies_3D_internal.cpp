@@ -63,12 +63,12 @@ void SGCollisionObject3DInternal::remove_shape(SGShape3DInternal *p_shape) {
 	}
 }
 
-SGFixedRect2Internal SGCollisionObject3DInternal::get_bounds() const {
+SGFixedRect3Internal SGCollisionObject3DInternal::get_bounds() const {
 	if (shapes.size() == 0) {
-		return SGFixedRect2Internal(transform.get_origin(), SGFixedVector2Internal());
+		return SGFixedRect3Internal(transform.get_origin(), SGFixedVector3Internal());
 	}
 
-	SGFixedRect2Internal bounds = shapes[0]->get_bounds();
+	SGFixedRect3Internal bounds = shapes[0]->get_bounds();
 	for (std::vector<SGShape3DInternal *>::size_type i = 1; i < shapes.size(); i++) {
 		bounds = bounds.merge(shapes[i]->get_bounds());
 	}

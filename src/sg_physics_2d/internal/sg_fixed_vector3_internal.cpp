@@ -21,32 +21,32 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
-#include "sg_fixed_vector2_internal.h"
+#include "sg_fixed_vector3_internal.h"
 
-const fixed SGFixedVector2Internal::FIXED_UNIT_EPSILON = fixed(65);
+const fixed SGFixedVector3Internal::FIXED_UNIT_EPSILON = fixed(65);
 
-const SGFixedVector2Internal SGFixedVector2Internal::ZERO = SGFixedVector2Internal(fixed::ZERO, fixed::ZERO);
+const SGFixedVector3Internal SGFixedVector3Internal::ZERO = SGFixedVector3Internal(fixed::ZERO, fixed::ZERO);
 
-bool SGFixedVector2Internal::operator==(const SGFixedVector2Internal &p_v) const {
+bool SGFixedVector3Internal::operator==(const SGFixedVector3Internal &p_v) const {
 	return x == p_v.x && y == p_v.y;
 }
 
-bool SGFixedVector2Internal::operator!=(const SGFixedVector2Internal &p_v) const {
+bool SGFixedVector3Internal::operator!=(const SGFixedVector3Internal &p_v) const {
 	return x != p_v.x || y != p_v.y;
 }
 
-fixed SGFixedVector2Internal::angle() const {
+fixed SGFixedVector3Internal::angle() const {
 	return y.atan2(x);
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::rotated(fixed p_rotation) const {
-	SGFixedVector2Internal v;
+SGFixedVector3Internal SGFixedVector3Internal::rotated(fixed p_rotation) const {
+	SGFixedVector3Internal v;
 	v.set_rotation(angle() + p_rotation);
 	v *= length();
 	return v;
 }
 
-void SGFixedVector2Internal::normalize() {
+void SGFixedVector3Internal::normalize() {
 	// For values less than 2048 we get really imprecise results. Since only
 	// direction matters, we can increase the vector's magnitude.
 	fixed x_abs = x.abs();
@@ -66,7 +66,7 @@ void SGFixedVector2Internal::normalize() {
 			// Multiply X and Y by 2048.
 			fixed x_big = fixed(x.value << 11);
 			fixed y_big = fixed(y.value << 11);
-			fixed l = SGFixedVector2Internal(x_big, y_big).length();
+			fixed l = SGFixedVector3Internal(x_big, y_big).length();
 			if (l != fixed::ZERO) {
 				x = x_big / l;
 				y = y_big / l;
@@ -82,18 +82,18 @@ void SGFixedVector2Internal::normalize() {
 	}
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::normalized() const {
-	SGFixedVector2Internal v = *this;
+SGFixedVector3Internal SGFixedVector3Internal::normalized() const {
+	SGFixedVector3Internal v = *this;
 	v.normalize();
 	return v;
 }
 
-bool SGFixedVector2Internal::is_normalized() const {
-	return fixed::is_equal_approx(length_squared(), fixed::ONE, SGFixedVector2Internal::FIXED_UNIT_EPSILON);
+bool SGFixedVector3Internal::is_normalized() const {
+	return fixed::is_equal_approx(length_squared(), fixed::ONE, SGFixedVector3Internal::FIXED_UNIT_EPSILON);
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::safe_scale(const SGFixedVector2Internal &p_other) const {
-	SGFixedVector2Internal ret = *this * p_other;
+SGFixedVector3Internal SGFixedVector3Internal::safe_scale(const SGFixedVector3Internal &p_other) const {
+	SGFixedVector3Internal ret = *this * p_other;
 
 	// Don't allow scaling all the way down to zero.
 	if (ret.x == fixed::ZERO && x != fixed::ZERO) {
@@ -106,11 +106,11 @@ SGFixedVector2Internal SGFixedVector2Internal::safe_scale(const SGFixedVector2In
 	return ret;
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::safe_scale(fixed p_scale) const {
-	return safe_scale(SGFixedVector2Internal(p_scale, p_scale));
+SGFixedVector3Internal SGFixedVector3Internal::safe_scale(fixed p_scale) const {
+	return safe_scale(SGFixedVector3Internal(p_scale, p_scale));
 }
 
-fixed SGFixedVector2Internal::length() const {
+fixed SGFixedVector3Internal::length() const {
 	// By directly using 64-bit integers we can avoid a left shift, since
 	// multiplying two fixed point numbers effectively shifts them left.
 	int64_t length_squared = x.value * x.value + y.value * y.value;
@@ -125,7 +125,7 @@ fixed SGFixedVector2Internal::length() const {
 	return length;
 }
 
-fixed SGFixedVector2Internal::length_squared() const {
+fixed SGFixedVector3Internal::length_squared() const {
 	fixed ret = x * x + y * y;
 	// Squaring a fixed-point number smaller than 15 will be 0, which means
 	// that it's possible for ret to equal 0.
@@ -136,73 +136,73 @@ fixed SGFixedVector2Internal::length_squared() const {
 	return ret;
 }
 
-fixed SGFixedVector2Internal::distance_to(const SGFixedVector2Internal &p_other) const {
-	SGFixedVector2Internal vec = p_other - *this;
+fixed SGFixedVector3Internal::distance_to(const SGFixedVector3Internal &p_other) const {
+	SGFixedVector3Internal vec = p_other - *this;
 	return vec.length();
 }
 
-fixed SGFixedVector2Internal::distance_squared_to(const SGFixedVector2Internal &p_other) const {
-	SGFixedVector2Internal vec = p_other - *this;
+fixed SGFixedVector3Internal::distance_squared_to(const SGFixedVector3Internal &p_other) const {
+	SGFixedVector3Internal vec = p_other - *this;
 	return vec.length_squared();
 }
 
-fixed SGFixedVector2Internal::angle_to(const SGFixedVector2Internal &p_other) const {
+fixed SGFixedVector3Internal::angle_to(const SGFixedVector3Internal &p_other) const {
 	return cross(p_other).atan2(dot(p_other));
 }
 
-fixed SGFixedVector2Internal::angle_to_point(const SGFixedVector2Internal &p_other) const {
+fixed SGFixedVector3Internal::angle_to_point(const SGFixedVector3Internal &p_other) const {
 	return (y - p_other.y).atan2(x - p_other.x);
 }
 
-fixed SGFixedVector2Internal::dot(const SGFixedVector2Internal &p_other) const {
+fixed SGFixedVector3Internal::dot(const SGFixedVector3Internal &p_other) const {
 	return x * p_other.x + y * p_other.y;
 }
 
-fixed SGFixedVector2Internal::cross(const SGFixedVector2Internal &p_other) const {
+fixed SGFixedVector3Internal::cross(const SGFixedVector3Internal &p_other) const {
 	return x * p_other.y - y * p_other.x;
 }
 
 /*
-fixed SGFixedVector2Internal::posmod(const fixed p_mod) const {
+fixed SGFixedVector3Internal::posmod(const fixed p_mod) const {
 
 }
 
-fixed SGFixedVector2Internal::posmodv(const SGFixedVector2Internal &p_modv) const {
+fixed SGFixedVector3Internal::posmodv(const SGFixedVector3Internal &p_modv) const {
 
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::project(const SGFixedVector2Internal &p_to) const {
+SGFixedVector3Internal SGFixedVector3Internal::project(const SGFixedVector3Internal &p_to) const {
 	return p_to * (dot(p_to) / p_to.length_squared());
 }
 */
 
-SGFixedVector2Internal SGFixedVector2Internal::slide(const SGFixedVector2Internal &p_normal) const {
+SGFixedVector3Internal SGFixedVector3Internal::slide(const SGFixedVector3Internal &p_normal) const {
 #ifdef MATH_CHECKS
-	ERR_FAIL_COND_V_MSG(!p_normal.is_normalized(), SGFixedVector2Internal(), "The normal SGFixedVector2Internal must be normalized.");
+	ERR_FAIL_COND_V_MSG(!p_normal.is_normalized(), SGFixedVector3Internal(), "The normal SGFixedVector3Internal must be normalized.");
 #endif
 	return *this - p_normal * this->dot(p_normal);
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::bounce(const SGFixedVector2Internal &p_normal) const {
+SGFixedVector3Internal SGFixedVector3Internal::bounce(const SGFixedVector3Internal &p_normal) const {
 	return -reflect(p_normal);
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::reflect(const SGFixedVector2Internal &p_normal) const {
+SGFixedVector3Internal SGFixedVector3Internal::reflect(const SGFixedVector3Internal &p_normal) const {
 #ifdef MATH_CHECKS
-	ERR_FAIL_COND_V_MSG(!p_normal.is_normalized(), SGFixedVector2Internal(), "The normal SGFixedVector2Internal must be normalized.");
+	ERR_FAIL_COND_V_MSG(!p_normal.is_normalized(), SGFixedVector3Internal(), "The normal SGFixedVector3Internal must be normalized.");
 #endif
 	return p_normal * fixed::TWO * this->dot(p_normal) - *this;
 }
 
-bool SGFixedVector2Internal::is_equal_approx(const SGFixedVector2Internal &p_v) const {
+bool SGFixedVector3Internal::is_equal_approx(const SGFixedVector3Internal &p_v) const {
 	return fixed::is_equal_approx(x, p_v.x) && fixed::is_equal_approx(y, p_v.y);
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::cubic_interpolate(const SGFixedVector2Internal& p_b, const SGFixedVector2Internal& p_pre_a, const SGFixedVector2Internal& p_post_b, fixed p_weight) const {
-	SGFixedVector2Internal p0 = p_pre_a;
-	SGFixedVector2Internal p1 = *this;
-	SGFixedVector2Internal p2 = p_b;
-	SGFixedVector2Internal p3 = p_post_b;
+SGFixedVector3Internal SGFixedVector3Internal::cubic_interpolate(const SGFixedVector3Internal& p_b, const SGFixedVector3Internal& p_pre_a, const SGFixedVector3Internal& p_post_b, fixed p_weight) const {
+	SGFixedVector3Internal p0 = p_pre_a;
+	SGFixedVector3Internal p1 = *this;
+	SGFixedVector3Internal p2 = p_b;
+	SGFixedVector3Internal p3 = p_post_b;
 
 	fixed t = p_weight;
 	fixed t2 = t * t;
@@ -214,16 +214,16 @@ SGFixedVector2Internal SGFixedVector2Internal::cubic_interpolate(const SGFixedVe
 	//		(-p0 + p2) * t +
 	//		(2.0 * p0 - 5.0 * p1 + 4 * p2 - p3) * t2 +
 	//		(-p0 + 3.0 * p1 - 3.0 * p2 + p3) * t3);
-	SGFixedVector2Internal out = ((p1 * fixed(131072)) +
+	SGFixedVector3Internal out = ((p1 * fixed(131072)) +
 			(-p0 + p2) * t +
 			((p0 * fixed(131072)) - p1 * fixed(327680) + (p2 * fixed(262144)) - p3) * t2 +
 			(-p0 + p1 * fixed(196608) - p2 * fixed(196608) + p3) * t3) * fixed(32768);
 	return out;
 }
 
-SGFixedVector2Internal SGFixedVector2Internal::get_closest_point_to_segment_3D(const SGFixedVector2Internal &p_point, const SGFixedVector2Internal *p_segment) {
-	SGFixedVector2Internal p = p_point - p_segment[0];
-	SGFixedVector2Internal n = p_segment[1] - p_segment[0];
+SGFixedVector3Internal SGFixedVector3Internal::get_closest_point_to_segment_3D(const SGFixedVector3Internal &p_point, const SGFixedVector3Internal *p_segment) {
+	SGFixedVector3Internal p = p_point - p_segment[0];
+	SGFixedVector3Internal n = p_segment[1] - p_segment[0];
 	fixed l2 = n.length();
 	if (l2 == fixed::ZERO) {
 		return p_segment[0]; // Both points are the same, just give any.

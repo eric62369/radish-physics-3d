@@ -26,17 +26,17 @@
 
 using Interval = SGCollisionDetector3DInternal::Interval;
 
-bool SGCollisionDetector3DInternal::AABB_overlaps_AABB(const SGFixedRect2Internal &aabb1, const SGFixedRect2Internal &aabb2) {
-	SGFixedVector2Internal min_one = aabb1.get_min();
-	SGFixedVector2Internal max_one = aabb1.get_max();
-	SGFixedVector2Internal min_two = aabb2.get_min();
-	SGFixedVector2Internal max_two = aabb2.get_max();
+bool SGCollisionDetector3DInternal::AABB_overlaps_AABB(const SGFixedRect3Internal &aabb1, const SGFixedRect3Internal &aabb2) {
+	SGFixedVector3Internal min_one = aabb1.get_min();
+	SGFixedVector3Internal max_one = aabb1.get_max();
+	SGFixedVector3Internal min_two = aabb2.get_min();
+	SGFixedVector3Internal max_two = aabb2.get_max();
 
 	return (min_two.x <= max_one.x) && (min_one.x <= max_two.x) && \
 		   (min_two.y <= max_one.y) && (min_one.y <= max_two.y);
 }
 
-Interval SGCollisionDetector3DInternal::get_interval(const SGShape3DInternal &shape, const SGFixedVector2Internal &axis, fixed p_margin) {
+Interval SGCollisionDetector3DInternal::get_interval(const SGShape3DInternal &shape, const SGFixedVector3Internal &axis, fixed p_margin) {
 	Interval result;
 
 	if (shape.get_shape_type() == SGShape3DInternal::ShapeType::SHAPE_CIRCLE) {
@@ -51,7 +51,7 @@ Interval SGCollisionDetector3DInternal::get_interval(const SGShape3DInternal &sh
 		const SGCapsule3DInternal& capsule = (const SGCapsule3DInternal&)shape;
 		SGFixedTransform3DInternal t = shape.get_global_transform();
 		const fixed scaled_radius = capsule.get_radius() * t.get_scale().x;
-		const std::vector<SGFixedVector2Internal> verts = capsule.get_global_vertices();
+		const std::vector<SGFixedVector3Internal> verts = capsule.get_global_vertices();
 		result.min = axis.dot(verts[0]);
 		result.max = axis.dot(verts[1]);
 		if (result.min > result.max) {
@@ -61,7 +61,7 @@ Interval SGCollisionDetector3DInternal::get_interval(const SGShape3DInternal &sh
 		result.max += scaled_radius;
 	}
 	else {
-		std::vector<SGFixedVector2Internal> verts = shape.get_global_vertices();
+		std::vector<SGFixedVector3Internal> verts = shape.get_global_vertices();
 		result.min = result.max = axis.dot(verts[0]);
 		for (std::size_t i = 1; i < verts.size(); i++) {
 			fixed projection = axis.dot(verts[i]);
@@ -80,7 +80,7 @@ Interval SGCollisionDetector3DInternal::get_interval(const SGShape3DInternal &sh
 	return result;
 }
 
-bool SGCollisionDetector3DInternal::overlaps_on_axis(const SGShape3DInternal &shape1, const SGShape3DInternal &shape2, const SGFixedVector2Internal &axis, fixed p_margin, fixed &separation) {
+bool SGCollisionDetector3DInternal::overlaps_on_axis(const SGShape3DInternal &shape1, const SGShape3DInternal &shape2, const SGFixedVector3Internal &axis, fixed p_margin, fixed &separation) {
 	Interval i1 = get_interval(shape1, axis, p_margin);
 	Interval i2 = get_interval(shape2, axis, p_margin);
 
@@ -100,24 +100,24 @@ bool SGCollisionDetector3DInternal::overlaps_on_axis(const SGShape3DInternal &sh
 	return false;
 }
 
-bool SGCollisionDetector3DInternal::sat_test(const SGShape3DInternal &shape1, const SGShape3DInternal &shape2, const std::vector<SGFixedVector2Internal> &axes,
-fixed p_margin, SGFixedVector2Internal &best_separation_vector, fixed &best_separation_length, SGFixedVector2Internal &collision_normal) {
+bool SGCollisionDetector3DInternal::sat_test(const SGShape3DInternal &shape1, const SGShape3DInternal &shape2, const std::vector<SGFixedVector3Internal> &axes,
+fixed p_margin, SGFixedVector3Internal &best_separation_vector, fixed &best_separation_length, SGFixedVector3Internal &collision_normal) {
 	fixed separation_component;
 
 	for (std::size_t i = 0; i < axes.size(); i++) {
-		const SGFixedVector2Internal &axis = axes[i];
-		if (axis == SGFixedVector2Internal::ZERO) {
+		const SGFixedVector3Internal &axis = axes[i];
+		if (axis == SGFixedVector3Internal::ZERO) {
 			continue;
 		}
 		if (overlaps_on_axis(shape1, shape2, axis, p_margin, separation_component)) {
-			SGFixedVector2Internal separation_vector = (axis * separation_component);
+			SGFixedVector3Internal separation_vector = (axis * separation_component);
 
 			// if the correction is too small it will be set to 0 and the overlap won't be corrected
 			// in that case we don't consider it an overlap
 			if ((axis.x == fixed::ZERO || separation_vector.x != fixed::ZERO) && (axis.y == fixed::ZERO || separation_vector.y != fixed::ZERO))
 			{
 				fixed separation_length = separation_component.abs();
-				if (best_separation_vector == SGFixedVector2Internal::ZERO || separation_length < best_separation_length) {
+				if (best_separation_vector == SGFixedVector3Internal::ZERO || separation_length < best_separation_length) {
 					best_separation_vector = separation_vector;
 					best_separation_length = separation_length;
 					collision_normal = axes[i] * FIXED_SGN(separation_component);
@@ -139,9 +139,9 @@ fixed p_margin, SGFixedVector2Internal &best_separation_vector, fixed &best_sepa
 }
 
 bool SGCollisionDetector3DInternal::Rectangle_overlaps_Rectangle(const SGRectangle3DInternal &rectangle1, const SGRectangle3DInternal &rectangle2, fixed p_margin, OverlapInfo *p_info) {
-	SGFixedVector2Internal best_separation_vector;
+	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
-	SGFixedVector2Internal collision_normal;
+	SGFixedVector3Internal collision_normal;
 
 	if (!sat_test(rectangle1, rectangle2, rectangle1.get_global_axes(), p_margin, best_separation_vector, best_separation_length, collision_normal)) {
 		return false;
@@ -163,7 +163,7 @@ bool SGCollisionDetector3DInternal::Circle_overlaps_Circle(const SGCircle3DInter
 	SGFixedTransform3DInternal t1 = circle1.get_global_transform();
 	SGFixedTransform3DInternal t2 = circle2.get_global_transform();
 
-	SGFixedVector2Internal line = t1.get_origin() - t2.get_origin();
+	SGFixedVector3Internal line = t1.get_origin() - t2.get_origin();
 	fixed line_length = line.length();
 	// We only multiply by the scale.x because we don't support non-uniform scaling.
 	fixed combined_radius = (circle1.get_radius() * t1.get_scale().x + circle2.get_radius() * t2.get_scale().x) + p_margin;
@@ -172,13 +172,13 @@ bool SGCollisionDetector3DInternal::Circle_overlaps_Circle(const SGCircle3DInter
 	// as in further computations normalized_vector * fixed(1) = (0, 0)
 	fixed separation = combined_radius - line_length;
 	bool overlapping;
-	SGFixedVector2Internal collision_normal;
-	SGFixedVector2Internal separation_vector;
+	SGFixedVector3Internal collision_normal;
+	SGFixedVector3Internal separation_vector;
 	if (line_length == fixed::ZERO) {
 		// If circles share an origin, then we arbitrarily decide that we
 		// separate them by moving up.
 		overlapping = true;
-		collision_normal = SGFixedVector2Internal(fixed::ZERO, fixed::NEG_ONE);
+		collision_normal = SGFixedVector3Internal(fixed::ZERO, fixed::NEG_ONE);
 		separation_vector = collision_normal * separation;
 	}
 	else {
@@ -199,9 +199,9 @@ bool SGCollisionDetector3DInternal::Circle_overlaps_Circle(const SGCircle3DInter
 }
 
 bool SGCollisionDetector3DInternal::Circle_overlaps_Rectangle(const SGCircle3DInternal &circle, const SGRectangle3DInternal &rectangle, fixed p_margin, OverlapInfo *p_info) {
-	SGFixedVector2Internal best_separation_vector;
+	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
-	SGFixedVector2Internal collision_normal;
+	SGFixedVector3Internal collision_normal;
 
 	// First, we see if the circle has any seperation from the rectangle's axes.
 	if (!sat_test(rectangle, circle, rectangle.get_global_axes(), p_margin, best_separation_vector, best_separation_length, collision_normal)) {
@@ -211,9 +211,9 @@ bool SGCollisionDetector3DInternal::Circle_overlaps_Rectangle(const SGCircle3DIn
 	// Next, we need to find the axis to check for the circle (it's a vector
 	// from the closest vertex to the circle center).
 
-	std::vector<SGFixedVector2Internal> vertices = rectangle.get_global_vertices();
+	std::vector<SGFixedVector3Internal> vertices = rectangle.get_global_vertices();
 	SGFixedTransform3DInternal ct = circle.get_global_transform();
-	SGFixedVector2Internal closest_vertex = vertices[0];
+	SGFixedVector3Internal closest_vertex = vertices[0];
 	fixed closest_distance = (ct.get_origin() - vertices[0]).length();
 
 	for (std::size_t i = 1; i < vertices.size(); i++) {
@@ -224,7 +224,7 @@ bool SGCollisionDetector3DInternal::Circle_overlaps_Rectangle(const SGCircle3DIn
 		}
 	}
 
-	std::vector<SGFixedVector2Internal> circle_axes;
+	std::vector<SGFixedVector3Internal> circle_axes;
 	circle_axes.push_back((ct.get_origin() - closest_vertex).normalized());
 	if (!sat_test(rectangle, circle, circle_axes, p_margin, best_separation_vector, best_separation_length, collision_normal)) {
 		return false;
@@ -246,9 +246,9 @@ bool SGCollisionDetector3DInternal::Polygon_overlaps_Polygon(const SGPolygon3DIn
 		return false;
 	}
 
-	SGFixedVector2Internal best_separation_vector;
+	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
-	SGFixedVector2Internal collision_normal;
+	SGFixedVector3Internal collision_normal;
 
 	if (!sat_test(polygon1, polygon2, polygon1.get_global_axes(), p_margin, best_separation_vector, best_separation_length, collision_normal)) {
 		return false;
@@ -271,9 +271,9 @@ bool SGCollisionDetector3DInternal::Polygon_overlaps_Circle(const SGPolygon3DInt
 		return false;
 	}
 
-	SGFixedVector2Internal best_separation_vector;
+	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
-	SGFixedVector2Internal collision_normal;
+	SGFixedVector3Internal collision_normal;
 
 	// First, we see if the circle has any seperation from the polygon's axes.
 	if (!sat_test(polygon, circle, polygon.get_global_axes(), p_margin, best_separation_vector, best_separation_length, collision_normal)) {
@@ -283,9 +283,9 @@ bool SGCollisionDetector3DInternal::Polygon_overlaps_Circle(const SGPolygon3DInt
 	// Next, we need to find the axis to check for the circle (it's a vector
 	// from the closest vertex to the circle center).
 
-	std::vector<SGFixedVector2Internal> vertices = polygon.get_global_vertices();
+	std::vector<SGFixedVector3Internal> vertices = polygon.get_global_vertices();
 	SGFixedTransform3DInternal ct = circle.get_global_transform();
-	SGFixedVector2Internal closest_vertex = vertices[0];
+	SGFixedVector3Internal closest_vertex = vertices[0];
 	fixed closest_distance = (ct.get_origin() - vertices[0]).length();
 
 	for (std::size_t i = 1; i < vertices.size(); i++) {
@@ -296,7 +296,7 @@ bool SGCollisionDetector3DInternal::Polygon_overlaps_Circle(const SGPolygon3DInt
 		}
 	}
 
-	std::vector<SGFixedVector2Internal> circle_axes;
+	std::vector<SGFixedVector3Internal> circle_axes;
 	circle_axes.push_back((ct.get_origin() - closest_vertex).normalized());
 	if (!sat_test(polygon, circle, circle_axes, p_margin, best_separation_vector, best_separation_length, collision_normal)) {
 		return false;
@@ -315,9 +315,9 @@ bool SGCollisionDetector3DInternal::Polygon_overlaps_Rectangle(const SGPolygon3D
 		return false;
 	}
 
-	SGFixedVector2Internal best_separation_vector;
+	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
-	SGFixedVector2Internal collision_normal;
+	SGFixedVector3Internal collision_normal;
 
 	if (!sat_test(polygon, rectangle, polygon.get_global_axes(), p_margin, best_separation_vector, best_separation_length, collision_normal)) {
 		return false;
@@ -336,17 +336,17 @@ bool SGCollisionDetector3DInternal::Polygon_overlaps_Rectangle(const SGPolygon3D
 }
 
 bool SGCollisionDetector3DInternal::Capsule_overlaps_Circle(const SGCapsule3DInternal& capsule, const SGCircle3DInternal& circle, fixed p_margin, OverlapInfo* p_info) {
-	SGFixedVector2Internal best_separation_vector;
+	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
-	SGFixedVector2Internal collision_normal;
-	std::vector<SGFixedVector2Internal> axes;
+	SGFixedVector3Internal collision_normal;
+	std::vector<SGFixedVector3Internal> axes;
 	const SGFixedTransform3DInternal capsule_transform = capsule.get_global_transform();
 	// Capsule width axis
 	axes.push_back(capsule_transform.elements[0].normalized());
 
 	// Center of the circle to capsule internal endpoints
-	const std::vector<SGFixedVector2Internal> verts = capsule.get_global_vertices();
-	const SGFixedVector2Internal circle_center = circle.get_global_transform().get_origin();
+	const std::vector<SGFixedVector3Internal> verts = capsule.get_global_vertices();
+	const SGFixedVector3Internal circle_center = circle.get_global_transform().get_origin();
 	axes.push_back((circle_center - verts[0]).normalized());
 	axes.push_back((circle_center - verts[1]).normalized());
 	if (!sat_test(capsule, circle, axes, p_margin, best_separation_vector, best_separation_length, collision_normal)) {
@@ -363,21 +363,21 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Circle(const SGCapsule3DInt
 
 
 bool SGCollisionDetector3DInternal::Capsule_overlaps_Rectangle(const SGCapsule3DInternal& capsule, const SGRectangle3DInternal& rectangle, fixed p_margin, OverlapInfo* p_info) {
-	SGFixedVector2Internal best_separation_vector;
+	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
-	SGFixedVector2Internal collision_normal;
+	SGFixedVector3Internal collision_normal;
 	const SGFixedTransform3DInternal capsule_transform = capsule.get_global_transform();
 	// Rectangle edges
 	if (!sat_test(capsule, rectangle, rectangle.get_global_axes(), p_margin, best_separation_vector, best_separation_length, collision_normal)) {
 		return false;
 	}
 
-	std::vector<SGFixedVector2Internal> axes;
+	std::vector<SGFixedVector3Internal> axes;
 	// Capsule width axis
 	axes.push_back(capsule_transform.elements[0].normalized());
 
 	// Rectangle vertex to capsule internal endpoints
-	const std::vector<SGFixedVector2Internal> capsule_endpoints = capsule.get_global_vertices();
+	const std::vector<SGFixedVector3Internal> capsule_endpoints = capsule.get_global_vertices();
 	axes.push_back((rectangle.get_closest_vertex(capsule_endpoints[0]) - capsule_endpoints[0]).normalized());
 	axes.push_back((rectangle.get_closest_vertex(capsule_endpoints[1]) - capsule_endpoints[1]).normalized());
 
@@ -395,16 +395,16 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Rectangle(const SGCapsule3D
 
 
 bool SGCollisionDetector3DInternal::Capsule_overlaps_Polygon(const SGCapsule3DInternal& capsule, const SGPolygon3DInternal& polygon, fixed p_margin, OverlapInfo* p_info) {
-	SGFixedVector2Internal best_separation_vector;
+	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
-	SGFixedVector2Internal collision_normal;
+	SGFixedVector3Internal collision_normal;
 	const SGFixedTransform3DInternal capsule_transform = capsule.get_global_transform();
 	// Polygon edges
 	if (!sat_test(capsule, polygon, polygon.get_global_axes(), p_margin, best_separation_vector, best_separation_length, collision_normal)) {
 		return false;
 	}
 
-	std::vector<SGFixedVector2Internal> axes;
+	std::vector<SGFixedVector3Internal> axes;
 	// Capsule width axis
 	axes.push_back(capsule_transform.elements[0].normalized());
 	if (!sat_test(capsule, polygon, axes, p_margin, best_separation_vector, best_separation_length, collision_normal)) {
@@ -412,8 +412,8 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Polygon(const SGCapsule3DIn
 	}
 
 	// Polygon vertices to capsule internal endpoints
-	const std::vector<SGFixedVector2Internal> capsule_endpoints = capsule.get_global_vertices();
-	const std::vector<SGFixedVector2Internal> polygon_vertices = polygon.get_global_vertices();
+	const std::vector<SGFixedVector3Internal> capsule_endpoints = capsule.get_global_vertices();
+	const std::vector<SGFixedVector3Internal> polygon_vertices = polygon.get_global_vertices();
 	for (std::size_t i = 0; i < polygon_vertices.size(); i++) {
 		axes.clear();
 		axes.push_back((polygon_vertices[i] - capsule_endpoints[0]).normalized());
@@ -433,10 +433,10 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Polygon(const SGCapsule3DIn
 }
 
 bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DInternal& capsule1, const SGCapsule3DInternal& capsule2, fixed p_margin, OverlapInfo* p_info) {
-	SGFixedVector2Internal best_separation_vector;
+	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
-	SGFixedVector2Internal collision_normal;
-	std::vector<SGFixedVector2Internal> axes;
+	SGFixedVector3Internal collision_normal;
+	std::vector<SGFixedVector3Internal> axes;
 	// Capsule width axis
 	axes.push_back(capsule1.get_global_transform().elements[0].normalized());
 	axes.push_back(capsule2.get_global_transform().elements[0].normalized());
@@ -445,8 +445,8 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DIn
 	}
 
 	// Internal endpoints to internal endpoints
-	const std::vector<SGFixedVector2Internal> capsule1_endpoints = capsule1.get_global_vertices();
-	const std::vector<SGFixedVector2Internal> capsule2_endpoints = capsule2.get_global_vertices();
+	const std::vector<SGFixedVector3Internal> capsule1_endpoints = capsule1.get_global_vertices();
+	const std::vector<SGFixedVector3Internal> capsule2_endpoints = capsule2.get_global_vertices();
 	axes.clear();
 	axes.push_back((capsule1_endpoints[0] - capsule2_endpoints[0]).normalized());
 	axes.push_back((capsule1_endpoints[0] - capsule2_endpoints[1]).normalized());
@@ -465,15 +465,15 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DIn
 	return true;
 }
 
-bool SGCollisionDetector3DInternal::segment_intersects_Capsule(const SGFixedVector2Internal& p_start, const SGFixedVector2Internal& p_cast_to, const SGCapsule3DInternal& capsule, SGFixedVector2Internal& p_intersection_point, SGFixedVector2Internal& p_collision_normal) {
+bool SGCollisionDetector3DInternal::segment_intersects_Capsule(const SGFixedVector3Internal& p_start, const SGFixedVector3Internal& p_cast_to, const SGCapsule3DInternal& capsule, SGFixedVector3Internal& p_intersection_point, SGFixedVector3Internal& p_collision_normal) {
 
 
 	SGCircle3DInternal circle(capsule.get_radius());
 	auto t = capsule.get_global_transform();
 	t.set_origin(capsule.get_global_vertices()[0]);
 	circle.set_transform(t);
-	SGFixedVector2Internal intersection_point;
-	SGFixedVector2Internal collision_normal;
+	SGFixedVector3Internal intersection_point;
+	SGFixedVector3Internal collision_normal;
 	fixed closest_distance_squared;
 	bool colliding = false;
 	if (segment_intersects_Circle(p_start, p_cast_to, circle, intersection_point, collision_normal)) {
@@ -517,7 +517,7 @@ bool SGCollisionDetector3DInternal::segment_intersects_Capsule(const SGFixedVect
 // r = p_cast_to_1
 // q = p_start_2
 // s = p_cast_to_2
-bool SGCollisionDetector3DInternal::segment_intersects_segment(const SGFixedVector2Internal &p_start_1, const SGFixedVector2Internal &p_cast_to_1, const SGFixedVector2Internal &p_start_2, const SGFixedVector2Internal &p_cast_to_2, SGFixedVector2Internal &p_intersection_point) {
+bool SGCollisionDetector3DInternal::segment_intersects_segment(const SGFixedVector3Internal &p_start_1, const SGFixedVector3Internal &p_cast_to_1, const SGFixedVector3Internal &p_start_2, const SGFixedVector3Internal &p_cast_to_2, SGFixedVector3Internal &p_intersection_point) {
 	fixed denominator = p_cast_to_1.cross(p_cast_to_2);
 	fixed u_nominator = (p_start_2 - p_start_1).cross(p_cast_to_1);
 
@@ -553,26 +553,26 @@ bool SGCollisionDetector3DInternal::segment_intersects_segment(const SGFixedVect
 	return true;
 }
 
-bool SGCollisionDetector3DInternal::segment_intersects_Polygon(const SGFixedVector2Internal &p_start, const SGFixedVector2Internal &p_cast_to, const SGShape3DInternal &polygon, SGFixedVector2Internal &p_intersection_point, SGFixedVector2Internal &p_collision_normal) {
-	std::vector<SGFixedVector2Internal> verts = polygon.get_global_vertices();
+bool SGCollisionDetector3DInternal::segment_intersects_Polygon(const SGFixedVector3Internal &p_start, const SGFixedVector3Internal &p_cast_to, const SGShape3DInternal &polygon, SGFixedVector3Internal &p_intersection_point, SGFixedVector3Internal &p_collision_normal) {
+	std::vector<SGFixedVector3Internal> verts = polygon.get_global_vertices();
 
 	bool intersecting = false;
 
-	SGFixedVector2Internal closest_intersection_point;
-	SGFixedVector2Internal closest_collision_normal;
+	SGFixedVector3Internal closest_intersection_point;
+	SGFixedVector3Internal closest_collision_normal;
 	fixed closest_distance;
 
-	SGFixedVector2Internal previous = verts[verts.size() - 1];
+	SGFixedVector3Internal previous = verts[verts.size() - 1];
 	for (std::size_t i = 0; i < verts.size(); i++) {
-		SGFixedVector2Internal cur = verts[i];
-		SGFixedVector2Internal edge = cur - previous;
-		SGFixedVector2Internal intersection_point;
+		SGFixedVector3Internal cur = verts[i];
+		SGFixedVector3Internal edge = cur - previous;
+		SGFixedVector3Internal intersection_point;
 		if (segment_intersects_segment(p_start, p_cast_to, previous, edge, intersection_point)) {
 			fixed distance = (intersection_point - p_start).length();
 			if (!intersecting || distance < closest_distance) {
 				closest_distance = distance;
 				closest_intersection_point = intersection_point;
-				closest_collision_normal = SGFixedVector2Internal(edge.y, -edge.x).normalized();
+				closest_collision_normal = SGFixedVector3Internal(edge.y, -edge.x).normalized();
 			}
 			intersecting = true;
 		}
@@ -596,11 +596,11 @@ bool SGCollisionDetector3DInternal::segment_intersects_Polygon(const SGFixedVect
 //
 // E = p_start
 // d = p_cast_to
-bool SGCollisionDetector3DInternal::segment_intersects_Circle(const SGFixedVector2Internal &p_start, const SGFixedVector2Internal &p_cast_to, const SGCircle3DInternal &circle, SGFixedVector2Internal &p_intersection_point, SGFixedVector2Internal &p_collision_normal) {
+bool SGCollisionDetector3DInternal::segment_intersects_Circle(const SGFixedVector3Internal &p_start, const SGFixedVector3Internal &p_cast_to, const SGCircle3DInternal &circle, SGFixedVector3Internal &p_intersection_point, SGFixedVector3Internal &p_collision_normal) {
 	SGFixedTransform3DInternal ct = circle.get_global_transform();
 
-	SGFixedVector2Internal C = ct.get_origin();
-	SGFixedVector2Internal f = p_start - C;
+	SGFixedVector3Internal C = ct.get_origin();
+	SGFixedVector3Internal f = p_start - C;
 
 	fixed r = circle.get_radius() * ct.get_scale().x;
 

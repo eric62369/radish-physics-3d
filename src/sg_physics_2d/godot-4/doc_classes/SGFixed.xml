@@ -106,18 +106,18 @@
 			</description>
 		</method>
 		<method name="from_float_rect2" qualifiers="const">
-			<return type="SGFixedRect2" />
+			<return type="SGFixedRect3" />
 			<argument index="0" name="float_rect" type="Rect2" />
 			<description>
-				Converts a [Rect2] into an [SGFixedRect2].
+				Converts a [Rect2] into an [SGFixedRect3].
 				[b]Note:[/b] Don't use this in gameplay code! Whereever possible do all gameplay math in fixed-point numbers.
 			</description>
 		</method>
 		<method name="from_float_vector2" qualifiers="const">
-			<return type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
 			<argument index="0" name="float_vector" type="Vector2" />
 			<description>
-				Converts a [Vector2] into an [SGFixedVector2].
+				Converts a [Vector2] into an [SGFixedVector3].
 				[b]Note:[/b] Don't use this in gameplay code! Whereever possible do all gameplay math in fixed-point numbers.
 			</description>
 		</method>
@@ -176,11 +176,11 @@
 			</description>
 		</method>
 		<method name="rect2" qualifiers="const">
-			<return type="SGFixedRect2" />
-			<argument index="0" name="position" type="SGFixedVector2" />
-			<argument index="1" name="size" type="SGFixedVector2" />
+			<return type="SGFixedRect3" />
+			<argument index="0" name="position" type="SGFixedVector3" />
+			<argument index="1" name="size" type="SGFixedVector3" />
 			<description>
-				Constructs an [SGFixedRect2].
+				Constructs an [SGFixedRect3].
 			</description>
 		</method>
 		<method name="round" qualifiers="const">
@@ -228,17 +228,17 @@
 		<method name="transform3D" qualifiers="const">
 			<return type="SGFixedTransform3D" />
 			<argument index="0" name="rotation" type="int" />
-			<argument index="1" name="origin" type="SGFixedVector2" />
+			<argument index="1" name="origin" type="SGFixedVector3" />
 			<description>
 				Constructs an [SGFixedTransform3D].
 			</description>
 		</method>
 		<method name="vector2" qualifiers="const">
-			<return type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
 			<argument index="0" name="fixed_x" type="int" />
 			<argument index="1" name="fixed_y" type="int" />
 			<description>
-				Constructs an [SGFixedVector2].
+				Constructs an [SGFixedVector3].
 			</description>
 		</method>
 	</methods>

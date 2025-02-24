@@ -43,21 +43,21 @@ public:
 	};
 
 	struct OverlapInfo {
-		SGFixedVector2Internal separation;
-		SGFixedVector2Internal collision_normal;
+		SGFixedVector3Internal separation;
+		SGFixedVector3Internal collision_normal;
 	};
 
-	static bool AABB_overlaps_AABB(const SGFixedRect2Internal &aabb1, const SGFixedRect2Internal &aabb2);
+	static bool AABB_overlaps_AABB(const SGFixedRect3Internal &aabb1, const SGFixedRect3Internal &aabb2);
 
 	//
 	// SAT testing utilities
 	//
 
-	static Interval get_interval(const SGShape3DInternal &shape, const SGFixedVector2Internal &axis, fixed p_margin);
+	static Interval get_interval(const SGShape3DInternal &shape, const SGFixedVector3Internal &axis, fixed p_margin);
 
-	static bool overlaps_on_axis(const SGShape3DInternal &shape1, const SGShape3DInternal &shape2, const SGFixedVector2Internal &axis, fixed p_margin, fixed &separation);
-	static bool sat_test(const SGShape3DInternal &shape1, const SGShape3DInternal &shape2, const std::vector<SGFixedVector2Internal> &axes,
-		fixed p_margin, SGFixedVector2Internal &best_separation_vector, fixed &best_separation_length, SGFixedVector2Internal &collision_normal);
+	static bool overlaps_on_axis(const SGShape3DInternal &shape1, const SGShape3DInternal &shape2, const SGFixedVector3Internal &axis, fixed p_margin, fixed &separation);
+	static bool sat_test(const SGShape3DInternal &shape1, const SGShape3DInternal &shape2, const std::vector<SGFixedVector3Internal> &axes,
+		fixed p_margin, SGFixedVector3Internal &best_separation_vector, fixed &best_separation_length, SGFixedVector3Internal &collision_normal);
 	//
 	// Rectangles
 	//
@@ -92,13 +92,13 @@ public:
 	// Line segments
 	//
 
-	static bool segment_intersects_segment(const SGFixedVector2Internal &p_start_1, const SGFixedVector2Internal &p_cast_to_1, const SGFixedVector2Internal &p_start_2, const SGFixedVector2Internal &p_cast_to_2, SGFixedVector2Internal &p_intersection_point);
+	static bool segment_intersects_segment(const SGFixedVector3Internal &p_start_1, const SGFixedVector3Internal &p_cast_to_1, const SGFixedVector3Internal &p_start_2, const SGFixedVector3Internal &p_cast_to_2, SGFixedVector3Internal &p_intersection_point);
 	// This can handle either SGRectangle3DInternal or SGPolygon3DInternal,
 	// since they are both polygons with connected vertices returned by
 	// get_global_vertices().
-	static bool segment_intersects_Polygon(const SGFixedVector2Internal &p_start, const SGFixedVector2Internal &p_cast_to, const SGShape3DInternal &polygon, SGFixedVector2Internal &p_intersection_point, SGFixedVector2Internal &p_collision_normal);
-	static bool segment_intersects_Circle(const SGFixedVector2Internal &p_start, const SGFixedVector2Internal &p_cast_to, const SGCircle3DInternal &circle, SGFixedVector2Internal &p_intersection_point, SGFixedVector2Internal &p_collision_normal);
-	static bool segment_intersects_Capsule(const SGFixedVector2Internal& p_start, const SGFixedVector2Internal& p_cast_to, const SGCapsule3DInternal& capsule, SGFixedVector2Internal& p_intersection_point, SGFixedVector2Internal& p_collision_normal);
+	static bool segment_intersects_Polygon(const SGFixedVector3Internal &p_start, const SGFixedVector3Internal &p_cast_to, const SGShape3DInternal &polygon, SGFixedVector3Internal &p_intersection_point, SGFixedVector3Internal &p_collision_normal);
+	static bool segment_intersects_Circle(const SGFixedVector3Internal &p_start, const SGFixedVector3Internal &p_cast_to, const SGCircle3DInternal &circle, SGFixedVector3Internal &p_intersection_point, SGFixedVector3Internal &p_collision_normal);
+	static bool segment_intersects_Capsule(const SGFixedVector3Internal& p_start, const SGFixedVector3Internal& p_cast_to, const SGCapsule3DInternal& capsule, SGFixedVector3Internal& p_intersection_point, SGFixedVector3Internal& p_collision_normal);
 
 };
 

@@ -110,11 +110,11 @@ void SGRayCast3D::_notification(int p_what) {
 	}
 }
 
-Ref<SGFixedVector2> SGRayCast3D::get_cast_to() const {
+Ref<SGFixedVector3> SGRayCast3D::get_cast_to() const {
 	return cast_to;
 }
 
-void SGRayCast3D::set_cast_to(const Ref<SGFixedVector2> &p_cast_to) {
+void SGRayCast3D::set_cast_to(const Ref<SGFixedVector3> &p_cast_to) {
 	ERR_FAIL_COND(!p_cast_to.is_valid());
 	cast_to->set_internal(p_cast_to->get_internal());
 	queue_redraw();
@@ -176,7 +176,7 @@ void SGRayCast3D::update_raycast_collision() {
 	SGWorld3DInternal::RayCastInfo info;
 
 	Ref<SGFixedTransform3D> t = get_global_fixed_transform();
-	Ref<SGFixedVector2> start = t->get_origin()->copy();
+	Ref<SGFixedVector3> start = t->get_origin()->copy();
 	t->get_origin()->clear();
 
 	Ref<SGRayCastCollision3D> collision = SGPhysics3DServer::get_singleton()->world_cast_ray(world_rid, start, t->xform(cast_to), collision_mask, exceptions, collide_with_areas, collide_with_bodies);
@@ -211,11 +211,11 @@ RID SGRayCast3D::get_collider_rid() const {
 	return collider_rid;
 }
 
-Ref<SGFixedVector2> SGRayCast3D::get_collision_point() const {
+Ref<SGFixedVector3> SGRayCast3D::get_collision_point() const {
 	return collision_point;
 }
 
-Ref<SGFixedVector2> SGRayCast3D::get_collision_normal() const {
+Ref<SGFixedVector3> SGRayCast3D::get_collision_normal() const {
 	return collision_normal;
 }
 
@@ -254,13 +254,13 @@ void SGRayCast3D::set_world(RID p_world) {
 
 SGRayCast3D::SGRayCast3D() {
 	// Start casting to (0, 50) like Godot's RayCast3D.
-	cast_to = Ref<SGFixedVector2>(memnew(SGFixedVector2(SGFixedVector2Internal(fixed::ZERO, fixed(3276800)))));
+	cast_to = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ZERO, fixed(3276800)))));
 	collision_mask = 1;
 
 	colliding = false;
 	collider = ObjectID();
-	collision_point = Ref<SGFixedVector2>(memnew(SGFixedVector2));
-	collision_normal = Ref<SGFixedVector2>(memnew(SGFixedVector2));
+	collision_point = Ref<SGFixedVector3>(memnew(SGFixedVector3));
+	collision_normal = Ref<SGFixedVector3>(memnew(SGFixedVector3));
 
 	world_rid = SGPhysics3DServer::get_singleton()->get_default_world();
 }

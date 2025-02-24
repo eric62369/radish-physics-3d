@@ -26,12 +26,12 @@
 			</description>
 		</method>
 		<method name="get_collision_normal" qualifiers="const">
-			<return type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
 		<method name="get_collision_point" qualifiers="const">
-			<return type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
@@ -71,7 +71,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="cast_to" type="SGFixedVector2" setter="set_cast_to" getter="get_cast_to">
+		<member name="cast_to" type="SGFixedVector3" setter="set_cast_to" getter="get_cast_to">
 		</member>
 		<member name="cast_to_x" type="int" setter="_set_cast_to_x" getter="_get_cast_to_x" default="0">
 		</member>

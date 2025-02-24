@@ -57,8 +57,8 @@ static SGPhysics3DServer *server_singleton;
 void register_sg_physics_3D_extension_types(ModuleInitializationLevel p_level) {
 	if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE) {
 		GDREGISTER_CLASS(SGFixed);
-		GDREGISTER_CLASS(SGFixedVector2);
-		GDREGISTER_CLASS(SGFixedRect2);
+		GDREGISTER_CLASS(SGFixedVector3);
+		GDREGISTER_CLASS(SGFixedRect3);
 		GDREGISTER_CLASS(SGFixedTransform3D);
 
 		GDREGISTER_CLASS(SGFixedNode3D);

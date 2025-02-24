@@ -31,13 +31,13 @@
 
 class SGCollisionObject3D;
 
-class SGFixedNode3D : public Node3D, public SGFixedVector2Watcher {
+class SGFixedNode3D : public Node3D, public SGFixedVector3Watcher {
 	GDCLASS(SGFixedNode3D, Node3D);
 
 	friend SGCollisionObject3D;
 
 	Ref<SGFixedTransform3D> fixed_transform;
-	Ref<SGFixedVector2> fixed_scale;
+	Ref<SGFixedVector3> fixed_scale;
 	int64_t fixed_rotation;
 	bool fixed_xform_dirty;
 
@@ -78,11 +78,11 @@ public:
 	void set_fixed_transform(const Ref<SGFixedTransform3D> &p_transform);
 	Ref<SGFixedTransform3D> get_fixed_transform() const;
 
-	void set_fixed_position(const Ref<SGFixedVector2> &p_fixed_position);
-	Ref<SGFixedVector2> get_fixed_position() const;
+	void set_fixed_position(const Ref<SGFixedVector3> &p_fixed_position);
+	Ref<SGFixedVector3> get_fixed_position() const;
 
-	void set_fixed_scale(const Ref<SGFixedVector2> &p_fixed_scale);
-	Ref<SGFixedVector2> get_fixed_scale() const;
+	void set_fixed_scale(const Ref<SGFixedVector3> &p_fixed_scale);
+	Ref<SGFixedVector3> get_fixed_scale() const;
 
 	void set_fixed_rotation(int64_t p_fixed_rotation);
 	int64_t get_fixed_rotation() const;
@@ -90,18 +90,18 @@ public:
 	void set_global_fixed_transform(const Ref<SGFixedTransform3D> &p_global_transform);
 	Ref<SGFixedTransform3D> get_global_fixed_transform() const;
 
-	void set_global_fixed_position(const Ref<SGFixedVector2> &p_fixed_position);
-	Ref<SGFixedVector2> get_global_fixed_position();
+	void set_global_fixed_position(const Ref<SGFixedVector3> &p_fixed_position);
+	Ref<SGFixedVector3> get_global_fixed_position();
 
-	void set_fixed_position_internal(const SGFixedVector2Internal &p_fixed_position);
-	void set_global_fixed_position_internal(const SGFixedVector2Internal &p_fixed_position);
+	void set_fixed_position_internal(const SGFixedVector3Internal &p_fixed_position);
+	void set_global_fixed_position_internal(const SGFixedVector3Internal &p_fixed_position);
 
 	void set_global_fixed_rotation(int64_t p_fixed_rotation);
 	int64_t get_global_fixed_rotation() const;
 
 	void update_float_transform();
 
-	void fixed_vector2_changed(SGFixedVector2 *p_vector);
+	void fixed_vector2_changed(SGFixedVector3 *p_vector);
 
 	SGFixedNode3D();
 	~SGFixedNode3D();

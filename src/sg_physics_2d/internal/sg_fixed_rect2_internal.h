@@ -24,26 +24,26 @@
 #ifndef SG_FIXED_RECT2_INTERNAL_H
 #define SG_FIXED_RECT2_INTERNAL_H
 
-#include "sg_fixed_vector2_internal.h"
+#include "sg_fixed_vector3_internal.h"
 
-struct SGFixedRect2Internal {
-	SGFixedVector2Internal position;
-	SGFixedVector2Internal size;
+struct SGFixedRect3Internal {
+	SGFixedVector3Internal position;
+	SGFixedVector3Internal size;
 
-	_FORCE_INLINE_ SGFixedRect2Internal() {}
+	_FORCE_INLINE_ SGFixedRect3Internal() {}
 
-	_FORCE_INLINE_ SGFixedRect2Internal(SGFixedVector2Internal p_position, SGFixedVector2Internal p_size)
+	_FORCE_INLINE_ SGFixedRect3Internal(SGFixedVector3Internal p_position, SGFixedVector3Internal p_size)
 		: position(p_position), size(p_size) {}
 
-	_FORCE_INLINE_ SGFixedVector2Internal get_min() const {
+	_FORCE_INLINE_ SGFixedVector3Internal get_min() const {
 		return position;
 	}
 
-	_FORCE_INLINE_ SGFixedVector2Internal get_max() const {
+	_FORCE_INLINE_ SGFixedVector3Internal get_max() const {
 		return position + size;
 	}
 
-	inline bool has_point(const SGFixedVector2Internal &p_point) const {
+	inline bool has_point(const SGFixedVector3Internal &p_point) const {
 		if (p_point.x < position.x)
 			return false;
 		if (p_point.y < position.y)
@@ -57,18 +57,18 @@ struct SGFixedRect2Internal {
 		return true;
 	}
 
-	inline bool intersects(const SGFixedRect2Internal &p_other) const {
-		SGFixedVector2Internal min_one = get_min();
-		SGFixedVector2Internal max_one = get_max();
-		SGFixedVector2Internal min_two = p_other.get_min();
-		SGFixedVector2Internal max_two = p_other.get_max();
+	inline bool intersects(const SGFixedRect3Internal &p_other) const {
+		SGFixedVector3Internal min_one = get_min();
+		SGFixedVector3Internal max_one = get_max();
+		SGFixedVector3Internal min_two = p_other.get_min();
+		SGFixedVector3Internal max_two = p_other.get_max();
 
 		return (min_two.x <= max_one.x) && (min_one.x <= max_two.x) && \
 			(min_two.y <= max_one.y) && (min_one.y <= max_two.y);
 	}
 
-	inline SGFixedRect2Internal merge(const SGFixedRect2Internal &p_rect) const {
-		SGFixedRect2Internal new_rect;
+	inline SGFixedRect3Internal merge(const SGFixedRect3Internal &p_rect) const {
+		SGFixedRect3Internal new_rect;
 
 		new_rect.position.x = MIN(p_rect.position.x, position.x);
 		new_rect.position.y = MIN(p_rect.position.y, position.y);
@@ -89,9 +89,9 @@ struct SGFixedRect2Internal {
 		size.height += p_by * fixed::TWO;
 	}
 
-	inline void expand_to(const SGFixedVector2Internal &p_vector) {
-		SGFixedVector2Internal begin = position;
-		SGFixedVector2Internal end = position + size;
+	inline void expand_to(const SGFixedVector3Internal &p_vector) {
+		SGFixedVector3Internal begin = position;
+		SGFixedVector3Internal end = position + size;
 
 		if (p_vector.x < begin.x)
 			begin.x = p_vector.x;

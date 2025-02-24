@@ -11,7 +11,7 @@
 	<methods>
 	</methods>
 	<members>
-		<member name="extents" type="SGFixedVector2" setter="set_extents" getter="get_extents">
+		<member name="extents" type="SGFixedVector3" setter="set_extents" getter="get_extents">
 		</member>
 		<member name="extents_x" type="int" setter="_set_extents_x" getter="_get_extents_x" default="655360">
 		</member>

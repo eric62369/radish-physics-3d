@@ -95,7 +95,7 @@ void SGFixedNode3D::_changed_callback(Object *p_changed, const char *p_prop) {
 	if (!updating_transform) {
 		if (strcmp(p_prop, "position") == 0) {
 			Vector2 position = get_position();
-			fixed_transform->get_origin()->set_internal(SGFixedVector2Internal(fixed::from_float(position.x), fixed::from_float(position.y)));
+			fixed_transform->get_origin()->set_internal(SGFixedVector3Internal(fixed::from_float(position.x), fixed::from_float(position.y)));
 			set_fixed_position(fixed_transform->get_origin());
 		}
 		else if (strcmp(p_prop, "scale") == 0) {
@@ -190,7 +190,7 @@ Ref<SGFixedTransform3D> SGFixedNode3D::get_fixed_transform() const {
 	return fixed_transform;
 }
 
-void SGFixedNode3D::set_fixed_position(const Ref<SGFixedVector2> &p_fixed_position) {
+void SGFixedNode3D::set_fixed_position(const Ref<SGFixedVector3> &p_fixed_position) {
 	ERR_FAIL_COND(!p_fixed_position.is_valid());
 
 	fixed_transform->get_origin()->set_internal(p_fixed_position->get_internal());
@@ -205,11 +205,11 @@ void SGFixedNode3D::set_fixed_position(const Ref<SGFixedVector2> &p_fixed_positi
 #endif
 }
 
-Ref<SGFixedVector2> SGFixedNode3D::get_fixed_position() const {
+Ref<SGFixedVector3> SGFixedNode3D::get_fixed_position() const {
 	return fixed_transform->get_origin();
 }
 
-void SGFixedNode3D::set_fixed_scale(const Ref<SGFixedVector2> &p_fixed_scale) {
+void SGFixedNode3D::set_fixed_scale(const Ref<SGFixedVector3> &p_fixed_scale) {
 	ERR_FAIL_COND(!p_fixed_scale.is_valid());
 
 	fixed_scale->set_internal(p_fixed_scale->get_internal());
@@ -224,7 +224,7 @@ void SGFixedNode3D::set_fixed_scale(const Ref<SGFixedVector2> &p_fixed_scale) {
 #endif
 }
 
-Ref<SGFixedVector2> SGFixedNode3D::get_fixed_scale() const {
+Ref<SGFixedVector3> SGFixedNode3D::get_fixed_scale() const {
 	return fixed_scale;
 }
 
@@ -259,21 +259,21 @@ Ref<SGFixedTransform3D> SGFixedNode3D::get_global_fixed_transform() const {
 	return Ref<SGFixedTransform3D>(memnew(SGFixedTransform3D(get_global_fixed_transform_internal())));
 }
 
-void SGFixedNode3D::set_global_fixed_position(const Ref<SGFixedVector2> &p_fixed_position) {
+void SGFixedNode3D::set_global_fixed_position(const Ref<SGFixedVector3> &p_fixed_position) {
 	ERR_FAIL_COND(!p_fixed_position.is_valid());
 	set_global_fixed_position_internal(p_fixed_position->get_internal());
 }
 
-Ref<SGFixedVector2> SGFixedNode3D::get_global_fixed_position() {
-	return SGFixedVector2::from_internal(get_global_fixed_transform_internal().get_origin());
+Ref<SGFixedVector3> SGFixedNode3D::get_global_fixed_position() {
+	return SGFixedVector3::from_internal(get_global_fixed_transform_internal().get_origin());
 }
 
-void SGFixedNode3D::set_fixed_position_internal(const SGFixedVector2Internal &p_fixed_position) {
+void SGFixedNode3D::set_fixed_position_internal(const SGFixedVector3Internal &p_fixed_position) {
 	fixed_transform->get_origin()->set_internal(p_fixed_position);
 	transform_changed();
 }
 
-void SGFixedNode3D::set_global_fixed_position_internal(const SGFixedVector2Internal &p_fixed_position) {
+void SGFixedNode3D::set_global_fixed_position_internal(const SGFixedVector3Internal &p_fixed_position) {
 	SGFixedNode3D *fixed_parent = Object::cast_to<SGFixedNode3D>(get_parent());
 	if (fixed_parent) {
 		fixed_transform->get_origin()->set_internal(fixed_parent->get_global_fixed_transform_internal().affine_inverse().xform(p_fixed_position));
@@ -320,7 +320,7 @@ void SGFixedNode3D::update_float_transform() {
 	Transform3D t = get_global_transform();
 }
 
-void SGFixedNode3D::fixed_vector2_changed(SGFixedVector2 *p_vector) {
+void SGFixedNode3D::fixed_vector2_changed(SGFixedVector3 *p_vector) {
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (Engine::get_singleton()->is_editor_hint() && updating_transform) {
 		return;
@@ -348,7 +348,7 @@ SGFixedNode3D::SGFixedNode3D() {
 	fixed_transform = Ref<SGFixedTransform3D>(memnew(SGFixedTransform3D));
 	fixed_transform->get_origin()->set_watcher(this);
 
-	fixed_scale = Ref<SGFixedVector2>(memnew(SGFixedVector2(SGFixedVector2Internal(fixed::ONE, fixed::ONE))));
+	fixed_scale = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ONE, fixed::ONE))));
 	fixed_scale->set_watcher(this);
 
 	fixed_rotation = 0;

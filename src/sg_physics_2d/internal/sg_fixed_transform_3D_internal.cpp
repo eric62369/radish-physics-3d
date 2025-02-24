@@ -40,8 +40,8 @@ void SGFixedTransform3DInternal::affine_invert() {
 	ERR_FAIL_COND(det == fixed::ZERO);
 #endif
 	SWAP(elements[0][0], elements[1][1]);
-	elements[0] /= SGFixedVector2Internal(det, -det);
-	elements[1] /= SGFixedVector2Internal(-det, det);
+	elements[0] /= SGFixedVector3Internal(det, -det);
+	elements[1] /= SGFixedVector3Internal(-det, det);
 
 	elements[2] = basis_xform(-elements[2]);
 }
@@ -53,8 +53,8 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::affine_inverse() const {
 }
 
 void SGFixedTransform3DInternal::rotate(fixed p_phi) {
-	SGFixedVector2Internal scale = get_scale();
-	*this = SGFixedTransform3DInternal(p_phi, SGFixedVector2Internal()) * (*this);
+	SGFixedVector3Internal scale = get_scale();
+	*this = SGFixedTransform3DInternal(p_phi, SGFixedVector3Internal()) * (*this);
 	set_scale(scale);
 }
 
@@ -63,7 +63,7 @@ fixed SGFixedTransform3DInternal::get_rotation() const {
 }
 
 void SGFixedTransform3DInternal::set_rotation(fixed p_rot) {
-	SGFixedVector2Internal scale = get_scale();
+	SGFixedVector3Internal scale = get_scale();
 	fixed cr = p_rot.cos();
 	fixed sr = p_rot.sin();
 	elements[0][0] = cr;
@@ -73,7 +73,7 @@ void SGFixedTransform3DInternal::set_rotation(fixed p_rot) {
 	set_scale(scale);
 }
 
-SGFixedTransform3DInternal::SGFixedTransform3DInternal(fixed p_rot, const SGFixedVector2Internal &p_pos) {
+SGFixedTransform3DInternal::SGFixedTransform3DInternal(fixed p_rot, const SGFixedVector3Internal &p_pos) {
 	fixed cr = p_rot.cos();
 	fixed sr = p_rot.sin();
 	elements[0][0] = cr;
@@ -83,45 +83,45 @@ SGFixedTransform3DInternal::SGFixedTransform3DInternal(fixed p_rot, const SGFixe
 	elements[2] = p_pos;
 }
 
-SGFixedVector2Internal SGFixedTransform3DInternal::get_scale() const {
+SGFixedVector3Internal SGFixedTransform3DInternal::get_scale() const {
 	fixed det_sign = FIXED_SGN(basis_determinant());
-	return SGFixedVector2Internal(elements[0].length(), det_sign * elements[1].length());
+	return SGFixedVector3Internal(elements[0].length(), det_sign * elements[1].length());
 }
 
-void SGFixedTransform3DInternal::set_scale(const SGFixedVector2Internal &p_scale) {
+void SGFixedTransform3DInternal::set_scale(const SGFixedVector3Internal &p_scale) {
 	elements[0].normalize();
 	elements[1].normalize();
 
 	// If scale is very nearly 1, then we just trust normalize() to do its magic.
-	if (!fixed::is_equal_approx(p_scale.x, fixed::ONE, SGFixedVector2Internal::FIXED_UNIT_EPSILON)) {
+	if (!fixed::is_equal_approx(p_scale.x, fixed::ONE, SGFixedVector3Internal::FIXED_UNIT_EPSILON)) {
 		elements[0] = elements[0].safe_scale(p_scale.x);
 	}
-	if (!fixed::is_equal_approx(p_scale.y, fixed::ONE, SGFixedVector2Internal::FIXED_UNIT_EPSILON)) {
+	if (!fixed::is_equal_approx(p_scale.y, fixed::ONE, SGFixedVector3Internal::FIXED_UNIT_EPSILON)) {
 		elements[1] = elements[1].safe_scale(p_scale.y);
 	}
 }
 
-void SGFixedTransform3DInternal::scale(const SGFixedVector2Internal &p_scale) {
+void SGFixedTransform3DInternal::scale(const SGFixedVector3Internal &p_scale) {
 	scale_basis(p_scale);
 	elements[2] *= p_scale;
 }
 
-void SGFixedTransform3DInternal::scale_basis(const SGFixedVector2Internal &p_scale) {
+void SGFixedTransform3DInternal::scale_basis(const SGFixedVector3Internal &p_scale) {
 	elements[0] = elements[0].safe_scale(p_scale);
 	elements[1] = elements[1].safe_scale(p_scale);
 }
 
 void SGFixedTransform3DInternal::translate(fixed p_tx, fixed p_ty) {
-	translate(SGFixedVector2Internal(p_tx, p_ty));
+	translate(SGFixedVector3Internal(p_tx, p_ty));
 }
 
-void SGFixedTransform3DInternal::translate(const SGFixedVector2Internal &p_translation) {
+void SGFixedTransform3DInternal::translate(const SGFixedVector3Internal &p_translation) {
 	elements[2] += basis_xform(p_translation);
 }
 
 void SGFixedTransform3DInternal::orthonormalize() {
-	SGFixedVector2Internal x = elements[0];
-	SGFixedVector2Internal y = elements[1];
+	SGFixedVector3Internal x = elements[0];
+	SGFixedVector3Internal y = elements[1];
 
 	x.normalized();
 	y = (y - x * (x.dot(y)));
@@ -181,19 +181,19 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::operator*(const SGFixedTr
 	return t;
 }
 
-SGFixedTransform3DInternal SGFixedTransform3DInternal::scaled(const SGFixedVector2Internal &p_scale) const {
+SGFixedTransform3DInternal SGFixedTransform3DInternal::scaled(const SGFixedVector3Internal &p_scale) const {
 	SGFixedTransform3DInternal t = *this;
 	t.scale(p_scale);
 	return t;
 }
 
-SGFixedTransform3DInternal SGFixedTransform3DInternal::basis_scaled(const SGFixedVector2Internal &p_scale) const {
+SGFixedTransform3DInternal SGFixedTransform3DInternal::basis_scaled(const SGFixedVector3Internal &p_scale) const {
 	SGFixedTransform3DInternal t = *this;
 	t.scale_basis(p_scale);
 	return t;
 }
 
-SGFixedTransform3DInternal SGFixedTransform3DInternal::translated(const SGFixedVector2Internal &p_offset) const {
+SGFixedTransform3DInternal SGFixedTransform3DInternal::translated(const SGFixedVector3Internal &p_offset) const {
 	SGFixedTransform3DInternal t = *this;
 	t.translate(p_offset);
 	return t;
@@ -210,34 +210,34 @@ fixed SGFixedTransform3DInternal::basis_determinant() const {
 }
 
 SGFixedTransform3DInternal SGFixedTransform3DInternal::interpolate_with(const SGFixedTransform3DInternal &p_transform, fixed p_c) const {
-	SGFixedVector2Internal p1 = get_origin();
-	SGFixedVector2Internal p2 = p_transform.get_origin();
+	SGFixedVector3Internal p1 = get_origin();
+	SGFixedVector3Internal p2 = p_transform.get_origin();
 
 	fixed r1 = get_rotation();
 	fixed r2 = p_transform.get_rotation();
 
-	SGFixedVector2Internal s1 = get_scale();
-	SGFixedVector2Internal s2 = p_transform.get_scale();
+	SGFixedVector3Internal s1 = get_scale();
+	SGFixedVector3Internal s2 = p_transform.get_scale();
 
-	SGFixedVector2Internal v1(r1.cos(), r1.sin());
-	SGFixedVector2Internal v2(r2.cos(), r2.sin());
+	SGFixedVector3Internal v1(r1.cos(), r1.sin());
+	SGFixedVector3Internal v2(r2.cos(), r2.sin());
 
 	fixed dot = v1.dot(v2);
 	dot = CLAMP(dot, fixed::NEG_ONE, fixed::ONE);
 
-	SGFixedVector2Internal v;
+	SGFixedVector3Internal v;
 
 	// 65500 = ~0.9995
 	if (dot > fixed(65500)) {
-		v = SGFixedVector2Internal::linear_interpolate(v1, v2, p_c).normalized();
+		v = SGFixedVector3Internal::linear_interpolate(v1, v2, p_c).normalized();
 	}
 	else {
 		fixed angle = p_c * dot.acos();
-		SGFixedVector2Internal v3 = (v2 - v1 * dot).normalized();
+		SGFixedVector3Internal v3 = (v2 - v1 * dot).normalized();
 		v = v1 * angle.cos() + v3 * angle.sin();
 	}
 
-	SGFixedTransform3DInternal res(v.y.atan2(v.x), SGFixedVector2Internal::linear_interpolate(p1, p2, p_c));
-	res.scale_basis(SGFixedVector2Internal::linear_interpolate(s1, s2, p_c));
+	SGFixedTransform3DInternal res(v.y.atan2(v.x), SGFixedVector3Internal::linear_interpolate(p1, p2, p_c));
+	res.scale_basis(SGFixedVector3Internal::linear_interpolate(s1, s2, p_c));
 	return res;
 }

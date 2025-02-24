@@ -216,15 +216,15 @@ RID SGKinematicCollision3D::get_collider_rid() const {
 	return collider_rid;
 }
 
-Ref<SGFixedVector2> SGKinematicCollision3D::get_normal() const {
+Ref<SGFixedVector3> SGKinematicCollision3D::get_normal() const {
 	return normal;
 }
 
-Ref<SGFixedVector2> SGKinematicCollision3D::get_remainder() const {
+Ref<SGFixedVector3> SGKinematicCollision3D::get_remainder() const {
 	return remainder;
 }
 
-SGKinematicCollision3D::SGKinematicCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector2> &p_normal, const Ref<SGFixedVector2> &p_remainder) {
+SGKinematicCollision3D::SGKinematicCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector3> &p_normal, const Ref<SGFixedVector3> &p_remainder) {
 	collider = p_collider;
 	collider_rid = p_collider_rid;
 	normal = p_normal;
@@ -255,15 +255,15 @@ RID SGRayCastCollision3D::get_collider_rid() const {
 	return collider_rid;
 }
 
-Ref<SGFixedVector2> SGRayCastCollision3D::get_point() const {
+Ref<SGFixedVector3> SGRayCastCollision3D::get_point() const {
 	return point;
 }
 
-Ref<SGFixedVector2> SGRayCastCollision3D::get_normal() const {
+Ref<SGFixedVector3> SGRayCastCollision3D::get_normal() const {
 	return normal;
 }
 
-SGRayCastCollision3D::SGRayCastCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector2> &p_point, const Ref<SGFixedVector2> &p_normal) {
+SGRayCastCollision3D::SGRayCastCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector3> &p_point, const Ref<SGFixedVector3> &p_normal) {
 	collider = p_collider;
 	collider_rid = p_collider_rid;
 	point = p_point;
@@ -353,7 +353,7 @@ RID SGPhysics3DServer::shape_create(SGPhysics3DServer::ShapeType p_shape_type) {
 	SGShape3DInternal *shape = nullptr;
 	switch (p_shape_type) {
 		case SHAPE_RECTANGLE: {
-			shape = memnew(SGRectangle3DInternal(SGFixedVector2Internal(fixed(655360), fixed(655360))));
+			shape = memnew(SGRectangle3DInternal(SGFixedVector3Internal(fixed(655360), fixed(655360))));
 		} break;
 		case SHAPE_CIRCLE: {
 			shape = memnew(SGCircle3DInternal(fixed(655360)));
@@ -417,7 +417,7 @@ Ref<SGFixedTransform3D> SGPhysics3DServer::shape_get_transform(RID p_shape) cons
 	return SGFixedTransform3D::from_internal(internal->get_transform());
 }
 
-void SGPhysics3DServer::rectangle_set_extents(RID p_shape, const Ref<SGFixedVector2> p_extents) {
+void SGPhysics3DServer::rectangle_set_extents(RID p_shape, const Ref<SGFixedVector3> p_extents) {
 	ERR_FAIL_COND(p_extents.is_null());
 	SGShape3DInternal *internal = shape_owner.get_or_null(p_shape);
 	ERR_FAIL_COND(!internal);
@@ -425,11 +425,11 @@ void SGPhysics3DServer::rectangle_set_extents(RID p_shape, const Ref<SGFixedVect
 	((SGRectangle3DInternal *)internal)->set_extents(p_extents->get_internal());
 }
 
-Ref<SGFixedVector2> SGPhysics3DServer::rectangle_get_extents(RID p_shape) const {
+Ref<SGFixedVector3> SGPhysics3DServer::rectangle_get_extents(RID p_shape) const {
 	SGShape3DInternal *internal = shape_owner.get_or_null(p_shape);
-	ERR_FAIL_COND_V(!internal, Ref<SGFixedVector2>());
-	ERR_FAIL_COND_V(internal->get_shape_type() != SGShape3DInternal::SHAPE_RECTANGLE, Ref<SGFixedVector2>());
-	return SGFixedVector2::from_internal(((SGRectangle3DInternal *)internal)->get_extents());
+	ERR_FAIL_COND_V(!internal, Ref<SGFixedVector3>());
+	ERR_FAIL_COND_V(internal->get_shape_type() != SGShape3DInternal::SHAPE_RECTANGLE, Ref<SGFixedVector3>());
+	return SGFixedVector3::from_internal(((SGRectangle3DInternal *)internal)->get_extents());
 }
 
 void SGPhysics3DServer::circle_set_radius(RID p_shape, int64_t p_radius) {
@@ -479,11 +479,11 @@ void SGPhysics3DServer::polygon_set_points(RID p_shape, const Array &p_points_ar
 	ERR_FAIL_COND(!internal);
 	ERR_FAIL_COND(internal->get_shape_type() != SGShape3DInternal::SHAPE_POLYGON);
 
-	std::vector<SGFixedVector2Internal> points;
+	std::vector<SGFixedVector3Internal> points;
 	points.resize(p_points_array.size());
 
 	for (int i = 0; i < p_points_array.size(); i++) {
-		Ref<SGFixedVector2> point = p_points_array[i];
+		Ref<SGFixedVector3> point = p_points_array[i];
 		if (point.is_valid()) {
 			points[i] = point->get_internal();
 		}
@@ -498,10 +498,10 @@ Array SGPhysics3DServer::polygon_get_points(RID p_shape) const {
 	ERR_FAIL_COND_V(internal->get_shape_type() != SGShape3DInternal::SHAPE_POLYGON, Array());
 
 	Array ret;
-	std::vector<SGFixedVector2Internal> points = ((SGPolygon3DInternal *)internal)->get_points();
+	std::vector<SGFixedVector3Internal> points = ((SGPolygon3DInternal *)internal)->get_points();
 	ret.resize(points.size());
 	for (std::size_t i = 0; i < points.size(); i++) {
-		ret[i] = SGFixedVector2::from_internal(points[i]);
+		ret[i] = SGFixedVector3::from_internal(points[i]);
 	}
 	return ret;
 }
@@ -808,7 +808,7 @@ bool SGPhysics3DServer::body_unstuck(RID p_body, int p_max_attempts) const {
 	return internal->get_world()->unstuck_body(internal, p_max_attempts);
 }
 
-Ref<SGKinematicCollision3D> SGPhysics3DServer::body_move_and_collide(RID p_body, const Ref<SGFixedVector2> &p_linear_velocity) const {
+Ref<SGKinematicCollision3D> SGPhysics3DServer::body_move_and_collide(RID p_body, const Ref<SGFixedVector3> &p_linear_velocity) const {
 	SGCollisionObject3DInternal *object = object_owner.get_or_null(p_body);
 	ERR_FAIL_COND_V(!object, Ref<SGKinematicCollision3D>());
 	ERR_FAIL_COND_V(object->get_object_type() != SGCollisionObject3DInternal::OBJECT_BODY, Ref<SGKinematicCollision3D>());
@@ -823,8 +823,8 @@ Ref<SGKinematicCollision3D> SGPhysics3DServer::body_move_and_collide(RID p_body,
 		Ref<SGKinematicCollision3D> result = Ref<SGKinematicCollision3D>(memnew(SGKinematicCollision3D(
 			object,
 			object_data->rid,
-			SGFixedVector2::from_internal(collision.normal),
-			SGFixedVector2::from_internal(collision.remainder)
+			SGFixedVector3::from_internal(collision.normal),
+			SGFixedVector3::from_internal(collision.remainder)
 		)));
 		return result;
 	}
@@ -876,7 +876,7 @@ void SGPhysics3DServer::world_remove_collision_object(RID p_world, RID p_object)
 	}
 }
 
-Ref<SGRayCastCollision3D> SGPhysics3DServer::world_cast_ray(RID p_world, const Ref<SGFixedVector2> &p_start, const Ref<SGFixedVector2> &p_cast_to, uint32_t p_collision_mask, Array p_exceptions, bool p_collide_with_areas, bool p_collide_with_bodies) {
+Ref<SGRayCastCollision3D> SGPhysics3DServer::world_cast_ray(RID p_world, const Ref<SGFixedVector3> &p_start, const Ref<SGFixedVector3> &p_cast_to, uint32_t p_collision_mask, Array p_exceptions, bool p_collide_with_areas, bool p_collide_with_bodies) {
 	SGWorld3DInternal *internal = world_owner.get_or_null(p_world);
 	ERR_FAIL_COND_V(!internal, Ref<SGRayCastCollision3D>());
 
@@ -897,8 +897,8 @@ Ref<SGRayCastCollision3D> SGPhysics3DServer::world_cast_ray(RID p_world, const R
 		ret = Ref<SGRayCastCollision3D>(memnew(SGRayCastCollision3D(
 				object,
 				object_data->rid,
-				SGFixedVector2::from_internal(info.collision_point),
-				SGFixedVector2::from_internal(info.collision_normal))));
+				SGFixedVector3::from_internal(info.collision_point),
+				SGFixedVector3::from_internal(info.collision_normal))));
 	}
 
 	return ret;

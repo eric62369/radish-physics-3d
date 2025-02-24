@@ -24,22 +24,22 @@
 #ifndef SG_FIXED_TRANSFORM_3D_INTERNAL_H
 #define SG_FIXED_TRANSFORM_3D_INTERNAL_H
 
-#include "sg_fixed_vector2_internal.h"
+#include "sg_fixed_vector3_internal.h"
 
 struct SGFixedTransform3DInternal {
-	SGFixedVector2Internal elements[3];
+	SGFixedVector3Internal elements[3];
 
-	_FORCE_INLINE_ fixed tdotx(const SGFixedVector2Internal &v) const { return elements[0][0] * v.x + elements[1][0] * v.y; }
-	_FORCE_INLINE_ fixed tdoty(const SGFixedVector2Internal &v) const { return elements[0][1] * v.x + elements[1][1] * v.y; }
+	_FORCE_INLINE_ fixed tdotx(const SGFixedVector3Internal &v) const { return elements[0][0] * v.x + elements[1][0] * v.y; }
+	_FORCE_INLINE_ fixed tdoty(const SGFixedVector3Internal &v) const { return elements[0][1] * v.x + elements[1][1] * v.y; }
 
-	const SGFixedVector2Internal &operator[](int p_idx) const { return elements[p_idx]; }
-	SGFixedVector2Internal &operator[](int p_idx) { return elements[p_idx]; }
+	const SGFixedVector3Internal &operator[](int p_idx) const { return elements[p_idx]; }
+	SGFixedVector3Internal &operator[](int p_idx) { return elements[p_idx]; }
 
-	_FORCE_INLINE_ SGFixedVector2Internal get_axis(int p_axis) const {
-		ERR_FAIL_INDEX_V(p_axis, 3, SGFixedVector2Internal());
+	_FORCE_INLINE_ SGFixedVector3Internal get_axis(int p_axis) const {
+		ERR_FAIL_INDEX_V(p_axis, 3, SGFixedVector3Internal());
 		return elements[p_axis];
 	}
-	_FORCE_INLINE_ void set_axis(int p_axis, const SGFixedVector2Internal &p_vec) {
+	_FORCE_INLINE_ void set_axis(int p_axis, const SGFixedVector3Internal &p_vec) {
 		ERR_FAIL_INDEX(p_axis, 3);
 		elements[p_axis] = p_vec;
 	}
@@ -52,25 +52,25 @@ struct SGFixedTransform3DInternal {
 
 	void set_rotation(fixed p_rot);
 	fixed get_rotation() const;
-	_FORCE_INLINE_ void set_rotation_and_scale(fixed p_rot, const SGFixedVector2Internal &p_scale);
+	_FORCE_INLINE_ void set_rotation_and_scale(fixed p_rot, const SGFixedVector3Internal &p_scale);
 	void rotate(fixed p_phi);
 
-	void scale(const SGFixedVector2Internal &p_scale);
-	void scale_basis(const SGFixedVector2Internal &p_scale);
+	void scale(const SGFixedVector3Internal &p_scale);
+	void scale_basis(const SGFixedVector3Internal &p_scale);
 	void translate(fixed p_tx, fixed p_ty);
-	void translate(const SGFixedVector2Internal &p_translation);
+	void translate(const SGFixedVector3Internal &p_translation);
 
 	fixed basis_determinant() const;
 
-	SGFixedVector2Internal get_scale() const;
-	void set_scale(const SGFixedVector2Internal &p_scale);
+	SGFixedVector3Internal get_scale() const;
+	void set_scale(const SGFixedVector3Internal &p_scale);
 
-	_FORCE_INLINE_ const SGFixedVector2Internal &get_origin() const { return elements[2]; }
-	_FORCE_INLINE_ void set_origin(const SGFixedVector2Internal &p_origin) { elements[2] = p_origin; }
+	_FORCE_INLINE_ const SGFixedVector3Internal &get_origin() const { return elements[2]; }
+	_FORCE_INLINE_ void set_origin(const SGFixedVector3Internal &p_origin) { elements[2] = p_origin; }
 
-	SGFixedTransform3DInternal scaled(const SGFixedVector2Internal &p_scale) const;
-	SGFixedTransform3DInternal basis_scaled(const SGFixedVector2Internal &p_scale) const;
-	SGFixedTransform3DInternal translated(const SGFixedVector2Internal &p_offset) const;
+	SGFixedTransform3DInternal scaled(const SGFixedVector3Internal &p_scale) const;
+	SGFixedTransform3DInternal basis_scaled(const SGFixedVector3Internal &p_scale) const;
+	SGFixedTransform3DInternal translated(const SGFixedVector3Internal &p_offset) const;
 	SGFixedTransform3DInternal rotated(fixed p_phi) const;
 
 	SGFixedTransform3DInternal untranslated() const;
@@ -87,12 +87,12 @@ struct SGFixedTransform3DInternal {
 
 	SGFixedTransform3DInternal interpolate_with(const SGFixedTransform3DInternal &p_transform, fixed p_c) const;
 
-	_FORCE_INLINE_ SGFixedVector2Internal basis_xform(const SGFixedVector2Internal &p_vec) const;
-	_FORCE_INLINE_ SGFixedVector2Internal basis_xform_inv(const SGFixedVector2Internal &p_vec) const;
-	_FORCE_INLINE_ SGFixedVector2Internal xform(const SGFixedVector2Internal &p_vec) const;
-	_FORCE_INLINE_ SGFixedVector2Internal xform_inv(const SGFixedVector2Internal &p_vec) const;
-	//_FORCE_INLINE_ SGFixedRect2Internal xform(const SGFixedRect2Internal &p_rect) const;
-	//_FORCE_INLINE_ SGFixedRect2Internal xform_inv(const SGFixedRect2Internal &p_rect) const;
+	_FORCE_INLINE_ SGFixedVector3Internal basis_xform(const SGFixedVector3Internal &p_vec) const;
+	_FORCE_INLINE_ SGFixedVector3Internal basis_xform_inv(const SGFixedVector3Internal &p_vec) const;
+	_FORCE_INLINE_ SGFixedVector3Internal xform(const SGFixedVector3Internal &p_vec) const;
+	_FORCE_INLINE_ SGFixedVector3Internal xform_inv(const SGFixedVector3Internal &p_vec) const;
+	//_FORCE_INLINE_ SGFixedRect3Internal xform(const SGFixedRect3Internal &p_rect) const;
+	//_FORCE_INLINE_ SGFixedRect3Internal xform_inv(const SGFixedRect3Internal &p_rect) const;
 
 	SGFixedTransform3DInternal(fixed xx, fixed xy, fixed yx, fixed yy, fixed ox, fixed oy) {
 		elements[0][0] = xx;
@@ -103,7 +103,7 @@ struct SGFixedTransform3DInternal {
 		elements[2][1] = oy;
 	}
 
-	SGFixedTransform3DInternal(fixed p_rot, const SGFixedVector2Internal &p_pos);
+	SGFixedTransform3DInternal(fixed p_rot, const SGFixedVector3Internal &p_pos);
 	SGFixedTransform3DInternal() {
 		elements[0][0] = fixed::ONE;
 		elements[1][1] = fixed::ONE;
@@ -115,24 +115,24 @@ struct SGFixedTransform3DInternal {
 	*/
 };
 
-SGFixedVector2Internal SGFixedTransform3DInternal::basis_xform(const SGFixedVector2Internal &p_vec) const {
-	return SGFixedVector2Internal(tdotx(p_vec), tdoty(p_vec));
+SGFixedVector3Internal SGFixedTransform3DInternal::basis_xform(const SGFixedVector3Internal &p_vec) const {
+	return SGFixedVector3Internal(tdotx(p_vec), tdoty(p_vec));
 }
 
-SGFixedVector2Internal SGFixedTransform3DInternal::basis_xform_inv(const SGFixedVector2Internal &p_vec) const {
-	return SGFixedVector2Internal(elements[0].dot(p_vec), elements[1].dot(p_vec));
+SGFixedVector3Internal SGFixedTransform3DInternal::basis_xform_inv(const SGFixedVector3Internal &p_vec) const {
+	return SGFixedVector3Internal(elements[0].dot(p_vec), elements[1].dot(p_vec));
 }
 
-SGFixedVector2Internal SGFixedTransform3DInternal::xform(const SGFixedVector2Internal &p_vec) const {
-	return SGFixedVector2Internal(tdotx(p_vec), tdoty(p_vec)) + elements[2];
+SGFixedVector3Internal SGFixedTransform3DInternal::xform(const SGFixedVector3Internal &p_vec) const {
+	return SGFixedVector3Internal(tdotx(p_vec), tdoty(p_vec)) + elements[2];
 }
 
-SGFixedVector2Internal SGFixedTransform3DInternal::xform_inv(const SGFixedVector2Internal &p_vec) const {
-	SGFixedVector2Internal v = p_vec - elements[2];
-	return SGFixedVector2Internal(elements[0].dot(v), elements[1].dot(v));
+SGFixedVector3Internal SGFixedTransform3DInternal::xform_inv(const SGFixedVector3Internal &p_vec) const {
+	SGFixedVector3Internal v = p_vec - elements[2];
+	return SGFixedVector3Internal(elements[0].dot(v), elements[1].dot(v));
 }
 
-void SGFixedTransform3DInternal::set_rotation_and_scale(fixed p_rot, const SGFixedVector2Internal &p_scale) {
+void SGFixedTransform3DInternal::set_rotation_and_scale(fixed p_rot, const SGFixedVector3Internal &p_scale) {
 	elements[0][0] = p_rot.cos() * p_scale.x;
 	elements[1][1] = p_rot.cos() * p_scale.y;
 	elements[1][0] = -p_rot.sin() * p_scale.y;

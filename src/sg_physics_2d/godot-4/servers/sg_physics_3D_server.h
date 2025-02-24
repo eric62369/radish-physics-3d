@@ -64,8 +64,8 @@ class SGKinematicCollision3D : public RefCounted {
 
 	SGCollisionObject3D *collider;
 	RID collider_rid;
-	Ref<SGFixedVector2> normal;
-	Ref<SGFixedVector2> remainder;
+	Ref<SGFixedVector3> normal;
+	Ref<SGFixedVector3> remainder;
 
 protected:
 	static void _bind_methods();
@@ -73,10 +73,10 @@ protected:
 public:
 	Object *get_collider() const;
 	RID get_collider_rid() const;
-	Ref<SGFixedVector2> get_normal() const;
-	Ref<SGFixedVector2> get_remainder() const;
+	Ref<SGFixedVector3> get_normal() const;
+	Ref<SGFixedVector3> get_remainder() const;
 
-	SGKinematicCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector2> &p_normal, const Ref<SGFixedVector2> &p_remainder);
+	SGKinematicCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector3> &p_normal, const Ref<SGFixedVector3> &p_remainder);
 	SGKinematicCollision3D();
 };
 
@@ -85,8 +85,8 @@ class SGRayCastCollision3D : public RefCounted {
 
 	SGCollisionObject3D *collider;
 	RID collider_rid;
-	Ref<SGFixedVector2> point;
-	Ref<SGFixedVector2> normal;
+	Ref<SGFixedVector3> point;
+	Ref<SGFixedVector3> normal;
 
 protected:
 	static void _bind_methods();
@@ -95,10 +95,10 @@ public:
 
 	Object *get_collider() const;
 	RID get_collider_rid() const;
-	Ref<SGFixedVector2> get_point() const;
-	Ref<SGFixedVector2> get_normal() const;
+	Ref<SGFixedVector3> get_point() const;
+	Ref<SGFixedVector3> get_normal() const;
 
-	SGRayCastCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector2> &p_point, const Ref<SGFixedVector2> &p_normal);
+	SGRayCastCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector3> &p_point, const Ref<SGFixedVector3> &p_normal);
 	SGRayCastCollision3D();
 };
 
@@ -150,8 +150,8 @@ public:
 	void shape_set_transform(RID p_shape, const Ref<SGFixedTransform3D> &p_transform);
 	Ref<SGFixedTransform3D> shape_get_transform(RID p_shape) const;
 
-	void rectangle_set_extents(RID p_shape, const Ref<SGFixedVector2> p_extents);
-	Ref<SGFixedVector2> rectangle_get_extents(RID p_shape) const;
+	void rectangle_set_extents(RID p_shape, const Ref<SGFixedVector3> p_extents);
+	Ref<SGFixedVector3> rectangle_get_extents(RID p_shape) const;
 
 	void circle_set_radius(RID p_shape, int64_t p_radius);
 	int64_t circle_get_radius(RID p_shape) const;
@@ -193,14 +193,14 @@ public:
 	void body_set_safe_margin(RID p_body, int p_safe_margin);
 	int body_get_safe_margin(RID p_body) const;
 	bool body_unstuck(RID p_body, int p_max_attempts) const;
-	Ref<SGKinematicCollision3D> body_move_and_collide(RID p_body, const Ref<SGFixedVector2> &p_linear_velocity) const;
+	Ref<SGKinematicCollision3D> body_move_and_collide(RID p_body, const Ref<SGFixedVector3> &p_linear_velocity) const;
 
 	RID world_create();
 	RID get_default_world();
 	void world_add_collision_object(RID p_world, RID p_object);
 	void world_remove_collision_object(RID p_world, RID p_object);
 
-	Ref<SGRayCastCollision3D> world_cast_ray(RID p_world, const Ref<SGFixedVector2> &p_start, const Ref<SGFixedVector2> &p_cast_to, uint32_t p_collision_mask, Array p_exceptions = Array(), bool p_collide_with_areas = false, bool p_collide_with_bodies = true);
+	Ref<SGRayCastCollision3D> world_cast_ray(RID p_world, const Ref<SGFixedVector3> &p_start, const Ref<SGFixedVector3> &p_cast_to, uint32_t p_collision_mask, Array p_exceptions = Array(), bool p_collide_with_areas = false, bool p_collide_with_bodies = true);
 
 	void free_rid(RID p_rid);
 

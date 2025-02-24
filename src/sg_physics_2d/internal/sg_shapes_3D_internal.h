@@ -51,8 +51,8 @@ protected:
 	mutable bool global_vertices_dirty;
 	mutable bool global_axes_dirty;
 	SGCollisionObject3DInternal *owner;
-	mutable std::vector<SGFixedVector2Internal> global_vertices;
-	mutable std::vector<SGFixedVector2Internal> global_axes;
+	mutable std::vector<SGFixedVector3Internal> global_vertices;
+	mutable std::vector<SGFixedVector3Internal> global_axes;
 	void *data;
 
 	_FORCE_INLINE_ void mark_global_xform_dirty() const {
@@ -78,9 +78,9 @@ public:
 
 	_FORCE_INLINE_ SGCollisionObject3DInternal *get_owner() const { return owner; }
 
-	virtual std::vector<SGFixedVector2Internal> get_global_vertices() const;
-	virtual std::vector<SGFixedVector2Internal> get_global_axes() const;
-	virtual SGFixedRect2Internal get_bounds() const;
+	virtual std::vector<SGFixedVector3Internal> get_global_vertices() const;
+	virtual std::vector<SGFixedVector3Internal> get_global_axes() const;
+	virtual SGFixedRect3Internal get_bounds() const;
 
 	_FORCE_INLINE_ void set_data(void *p_data) { data = p_data; }
 	_FORCE_INLINE_ void *get_data() const { return data; }
@@ -99,20 +99,20 @@ public:
 class SGRectangle3DInternal : public SGShape3DInternal {
 protected:
 
-	SGFixedVector2Internal extents;
+	SGFixedVector3Internal extents;
 
 public:
-	_FORCE_INLINE_ SGFixedVector2Internal get_extents() const { return extents; }
-	_FORCE_INLINE_ void set_extents(const SGFixedVector2Internal &p_extents) {
+	_FORCE_INLINE_ SGFixedVector3Internal get_extents() const { return extents; }
+	_FORCE_INLINE_ void set_extents(const SGFixedVector3Internal &p_extents) {
 		extents = p_extents;
 		global_vertices_dirty = true;
 	}
 
-	SGFixedVector2Internal get_closest_vertex(const SGFixedVector2Internal& point) const;
-	virtual std::vector<SGFixedVector2Internal> get_global_vertices() const override;
-	virtual std::vector<SGFixedVector2Internal> get_global_axes() const override;
+	SGFixedVector3Internal get_closest_vertex(const SGFixedVector3Internal& point) const;
+	virtual std::vector<SGFixedVector3Internal> get_global_vertices() const override;
+	virtual std::vector<SGFixedVector3Internal> get_global_axes() const override;
 
-	SGRectangle3DInternal(SGFixedVector2Internal p_extents)
+	SGRectangle3DInternal(SGFixedVector3Internal p_extents)
 		: SGShape3DInternal(SHAPE_RECTANGLE)
 	{
 		extents = p_extents;
@@ -120,7 +120,7 @@ public:
 		global_axes.resize(2);
 	}
 	SGRectangle3DInternal(fixed p_extents_w, fixed p_extents_h)
-		: SGRectangle3DInternal(SGFixedVector2Internal(p_extents_w, p_extents_h)) { }
+		: SGRectangle3DInternal(SGFixedVector3Internal(p_extents_w, p_extents_h)) { }
 };
 
 class SGCircle3DInternal : public SGShape3DInternal {
@@ -132,7 +132,7 @@ public:
 	_FORCE_INLINE_ fixed get_radius() const { return radius; }
 	_FORCE_INLINE_ void set_radius(const fixed &p_radius) { radius = p_radius; }
 
-	virtual SGFixedRect2Internal get_bounds() const override;
+	virtual SGFixedRect3Internal get_bounds() const override;
 
 	SGCircle3DInternal(fixed p_radius)
 		: SGShape3DInternal(SHAPE_CIRCLE)
@@ -144,18 +144,18 @@ public:
 class SGPolygon3DInternal : public SGShape3DInternal {
 protected:
 
-	std::vector<SGFixedVector2Internal> points;
+	std::vector<SGFixedVector3Internal> points;
 
 public:
-	_FORCE_INLINE_ std::vector<SGFixedVector2Internal> get_points() const { return points; }
-	_FORCE_INLINE_ void set_points(const std::vector<SGFixedVector2Internal> &p_points) {
+	_FORCE_INLINE_ std::vector<SGFixedVector3Internal> get_points() const { return points; }
+	_FORCE_INLINE_ void set_points(const std::vector<SGFixedVector3Internal> &p_points) {
 		points = p_points;
 		global_vertices.clear();
 		global_axes.clear();
 	}
 
-	virtual std::vector<SGFixedVector2Internal> get_global_vertices() const override;
-	virtual std::vector<SGFixedVector2Internal> get_global_axes() const override;
+	virtual std::vector<SGFixedVector3Internal> get_global_vertices() const override;
+	virtual std::vector<SGFixedVector3Internal> get_global_axes() const override;
 
 	SGPolygon3DInternal() : SGShape3DInternal(SHAPE_POLYGON) { }
 };
@@ -173,8 +173,8 @@ public:
 	_FORCE_INLINE_ fixed get_height() const { return height; }
 	_FORCE_INLINE_ void set_height(const fixed& p_height) { height = p_height; }
 
-	virtual std::vector<SGFixedVector2Internal> get_global_vertices() const override;
-	virtual SGFixedRect2Internal get_bounds() const override;
+	virtual std::vector<SGFixedVector3Internal> get_global_vertices() const override;
+	virtual SGFixedRect3Internal get_bounds() const override;
 
 	SGCapsule3DInternal(fixed p_radius, fixed p_height)
 		: SGShape3DInternal(SHAPE_CAPSULE)

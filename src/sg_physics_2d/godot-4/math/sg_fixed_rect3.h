@@ -26,52 +26,52 @@
 
 #include <godot_cpp/classes/ref_counted.hpp>
 
-#include "sg_fixed_vector2.h"
+#include "sg_fixed_vector3.h"
 #include "../../internal/sg_fixed_rect2_internal.h"
 
 using namespace godot;
 
-class SGFixedRect2 : public RefCounted {
+class SGFixedRect3 : public RefCounted {
 
-	GDCLASS(SGFixedRect2, RefCounted);
+	GDCLASS(SGFixedRect3, RefCounted);
 
-	Ref<SGFixedVector2> position;
-	Ref<SGFixedVector2> size;
+	Ref<SGFixedVector3> position;
+	Ref<SGFixedVector3> size;
 
 protected:
 	static void _bind_methods();
 
 public:
 
-	_FORCE_INLINE_ SGFixedRect2Internal get_internal() const {
-		return SGFixedRect2Internal(position->get_internal(), size->get_internal());
+	_FORCE_INLINE_ SGFixedRect3Internal get_internal() const {
+		return SGFixedRect3Internal(position->get_internal(), size->get_internal());
 	}
 
-	_FORCE_INLINE_ void set_internal(const SGFixedRect2Internal &p_internal) {
+	_FORCE_INLINE_ void set_internal(const SGFixedRect3Internal &p_internal) {
 		position->set_internal(p_internal.position);
 		size->set_internal(p_internal.size);
 	}
 
-	Ref<SGFixedVector2> get_position();
-	void set_position(const Ref<SGFixedVector2> &p_position);
+	Ref<SGFixedVector3> get_position();
+	void set_position(const Ref<SGFixedVector3> &p_position);
 
-	Ref<SGFixedVector2> get_size();
-	void set_size(const Ref<SGFixedVector2> &p_size);
+	Ref<SGFixedVector3> get_size();
+	void set_size(const Ref<SGFixedVector3> &p_size);
 
-	bool has_point(const Ref<SGFixedVector2> &p_point) const;
-	bool intersects(const Ref<SGFixedRect2> &p_other) const;
-	Ref<SGFixedRect2> merge(const Ref<SGFixedRect2> &p_rect) const;
-	Ref<SGFixedRect2> expanded(const Ref<SGFixedVector2> &p_vector);
+	bool has_point(const Ref<SGFixedVector3> &p_point) const;
+	bool intersects(const Ref<SGFixedRect3> &p_other) const;
+	Ref<SGFixedRect3> merge(const Ref<SGFixedRect3> &p_rect) const;
+	Ref<SGFixedRect3> expanded(const Ref<SGFixedVector3> &p_vector);
 
-	_FORCE_INLINE_ static Ref<SGFixedRect2> from_internal(const SGFixedRect2Internal &p_internal) {
-		Ref<SGFixedRect2> ret(memnew(SGFixedRect2));
+	_FORCE_INLINE_ static Ref<SGFixedRect3> from_internal(const SGFixedRect3Internal &p_internal) {
+		Ref<SGFixedRect3> ret(memnew(SGFixedRect3));
 		ret->set_internal(p_internal);
 		return ret;
 	}
 
-	SGFixedRect2();
-	SGFixedRect2(const SGFixedRect2Internal &p_internal);
-	~SGFixedRect2();
+	SGFixedRect3();
+	SGFixedRect3(const SGFixedRect3Internal &p_internal);
+	~SGFixedRect3();
 };
 
 #endif

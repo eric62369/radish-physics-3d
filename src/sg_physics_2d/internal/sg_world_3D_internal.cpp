@@ -257,7 +257,7 @@ public:
 bool SGWorld3DInternal::get_best_overlapping_body(SGBody3DInternal *p_body, bool p_use_safe_margin, SGWorld3DInternal::BodyOverlapInfo *p_info) const {
 	fixed safe_margin = p_use_safe_margin ? p_body->get_safe_margin() : fixed::ZERO;
 
-	SGFixedRect2Internal bounds = p_body->get_bounds();
+	SGFixedRect3Internal bounds = p_body->get_bounds();
 	bounds.grow_by(safe_margin);
 
 	SGBestOverlappingResultHandler result_handler(this, p_body, safe_margin, p_info, compare_callback);
@@ -291,7 +291,7 @@ bool SGWorld3DInternal::unstuck_body(SGBody3DInternal *p_body, int p_max_attempt
 	return stuck;
 }
 
-bool SGWorld3DInternal::move_and_collide(SGBody3DInternal *p_body, const SGFixedVector2Internal &p_linear_velocity, SGWorld3DInternal::BodyCollisionInfo *p_collision) const {
+bool SGWorld3DInternal::move_and_collide(SGBody3DInternal *p_body, const SGFixedVector3Internal &p_linear_velocity, SGWorld3DInternal::BodyCollisionInfo *p_collision) const {
 	BodyOverlapInfo overlap_info;
 
 	// First, get our body unstuck, if it's stuck.
@@ -300,7 +300,7 @@ bool SGWorld3DInternal::move_and_collide(SGBody3DInternal *p_body, const SGFixed
 		// We can't really continue. Bail with some sort of reasonable values.
 		if (p_collision) {
 			p_collision->collider = overlap_info.collider;
-			p_collision->normal = SGFixedVector2Internal::ZERO;
+			p_collision->normal = SGFixedVector3Internal::ZERO;
 			p_collision->remainder = p_linear_velocity;
 		}
 		return true;
@@ -309,7 +309,7 @@ bool SGWorld3DInternal::move_and_collide(SGBody3DInternal *p_body, const SGFixed
 	// Move the body the full amount.
 	SGFixedTransform3DInternal original_transform = p_body->get_transform();
 	SGFixedTransform3DInternal test_transform = original_transform;
-	SGFixedVector2Internal destination = original_transform.get_origin() + p_linear_velocity;
+	SGFixedVector3Internal destination = original_transform.get_origin() + p_linear_velocity;
 	test_transform.set_origin(destination);
 	p_body->set_transform(test_transform);
 
@@ -321,10 +321,10 @@ bool SGWorld3DInternal::move_and_collide(SGBody3DInternal *p_body, const SGFixed
 	// Use binary search to find the point at which we collide, and the point just before that.
 	fixed low = fixed::ZERO;
 	fixed hi = fixed::ONE;
-	SGFixedVector2Internal last_safe_position = original_transform.get_origin();
+	SGFixedVector3Internal last_safe_position = original_transform.get_origin();
 	for (int i = 0; i < 8; i++) {
 		fixed cur = (low + hi) * fixed::HALF;
-		SGFixedVector2Internal test_position = original_transform.get_origin() + (p_linear_velocity * cur);
+		SGFixedVector3Internal test_position = original_transform.get_origin() + (p_linear_velocity * cur);
 		test_transform.set_origin(test_position);
 		p_body->set_transform(test_transform);
 		if (get_best_overlapping_body(p_body, false, &overlap_info)) {
@@ -355,7 +355,7 @@ bool SGWorld3DInternal::move_and_collide(SGBody3DInternal *p_body, const SGFixed
 	return true;
 }
 
-bool SGWorld3DInternal::segment_intersects_shape(const SGFixedVector2Internal &p_start, const SGFixedVector2Internal &p_cast_to, SGShape3DInternal *p_shape, SGFixedVector2Internal &p_intersection_point, SGFixedVector2Internal &p_collision_normal) const {
+bool SGWorld3DInternal::segment_intersects_shape(const SGFixedVector3Internal &p_start, const SGFixedVector3Internal &p_cast_to, SGShape3DInternal *p_shape, SGFixedVector3Internal &p_intersection_point, SGFixedVector3Internal &p_collision_normal) const {
 	using ShapeType = SGShape3DInternal::ShapeType;
 
 	ShapeType shape_type = p_shape->get_shape_type();
@@ -379,18 +379,18 @@ class SGRayCastResultHandler : public SGResultHandlerInternal {
 private:
 
 	const SGWorld3DInternal *world;
-	const SGFixedVector2Internal &start;
-	const SGFixedVector2Internal &cast_to;
+	const SGFixedVector3Internal &start;
+	const SGFixedVector3Internal &cast_to;
 	uint32_t collision_mask;
 	std::unordered_set<SGCollisionObject3DInternal *> *exceptions;
 
 	bool intersects;
 	SGCollisionObject3DInternal *collider;
 	fixed shortest_distance;
-	SGFixedVector2Internal closest_intersection_point;
-	SGFixedVector2Internal closest_collision_normal;
-	SGFixedVector2Internal intersection_point;
-	SGFixedVector2Internal collision_normal;
+	SGFixedVector3Internal closest_intersection_point;
+	SGFixedVector3Internal closest_collision_normal;
+	SGFixedVector3Internal intersection_point;
+	SGFixedVector3Internal collision_normal;
 
 public:
 
@@ -430,19 +430,19 @@ public:
 		return intersects;
 	}
 
-	_FORCE_INLINE_ SGRayCastResultHandler(const SGWorld3DInternal *p_world, const SGFixedVector2Internal &p_start, const SGFixedVector2Internal &p_cast_to, uint32_t p_collision_mask, std::unordered_set<SGCollisionObject3DInternal *> *p_exceptions)
+	_FORCE_INLINE_ SGRayCastResultHandler(const SGWorld3DInternal *p_world, const SGFixedVector3Internal &p_start, const SGFixedVector3Internal &p_cast_to, uint32_t p_collision_mask, std::unordered_set<SGCollisionObject3DInternal *> *p_exceptions)
 		: world(p_world), start(p_start), cast_to(p_cast_to), collision_mask(p_collision_mask), exceptions(p_exceptions), intersects(false), collider(nullptr) {
-		SGFixedRect2Internal bounds(p_start, SGFixedVector2Internal());
+		SGFixedRect3Internal bounds(p_start, SGFixedVector3Internal());
 		bounds.expand_to(p_start + p_cast_to);
 	}
 
 };
 
-bool SGWorld3DInternal::cast_ray(const SGFixedVector2Internal &p_start, const SGFixedVector2Internal &p_cast_to, uint32_t p_collision_mask, std::unordered_set<SGCollisionObject3DInternal *> *p_exceptions,
+bool SGWorld3DInternal::cast_ray(const SGFixedVector3Internal &p_start, const SGFixedVector3Internal &p_cast_to, uint32_t p_collision_mask, std::unordered_set<SGCollisionObject3DInternal *> *p_exceptions,
 		bool collide_with_areas, bool collide_with_bodies, SGWorld3DInternal::RayCastInfo *p_info) const {
 	SGRayCastResultHandler result_handler(this, p_start, p_cast_to, p_collision_mask, p_exceptions);
 
-	SGFixedRect2Internal bounds(p_start, SGFixedVector2Internal());
+	SGFixedRect3Internal bounds(p_start, SGFixedVector3Internal());
 	bounds.expand_to(p_start + p_cast_to);
 
 	int collide_with = 0;

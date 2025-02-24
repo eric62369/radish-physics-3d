@@ -36,7 +36,7 @@ class SGRayCast3D : public SGFixedNode3D {
 
 	RID world_rid;
 
-	Ref<SGFixedVector2> cast_to;
+	Ref<SGFixedVector3> cast_to;
 	uint32_t collision_mask;
 	bool collide_with_areas = false;
 	bool collide_with_bodies = true;
@@ -44,8 +44,8 @@ class SGRayCast3D : public SGFixedNode3D {
 	bool colliding;
 	ObjectID collider;
 	RID collider_rid;
-	Ref<SGFixedVector2> collision_point;
-	Ref<SGFixedVector2> collision_normal;
+	Ref<SGFixedVector3> collision_point;
+	Ref<SGFixedVector3> collision_normal;
 
 	Array exceptions;
 
@@ -59,8 +59,8 @@ protected:
 	void _set_cast_to_y(int64_t p_y);
 
 public:
-	Ref<SGFixedVector2> get_cast_to() const;
-	void set_cast_to(const Ref<SGFixedVector2> &p_cast_to);
+	Ref<SGFixedVector3> get_cast_to() const;
+	void set_cast_to(const Ref<SGFixedVector3> &p_cast_to);
 
 	uint32_t get_collision_mask() const;
 	void set_collision_mask(uint32_t p_collision_mask);
@@ -77,8 +77,8 @@ public:
 	bool is_colliding() const;
 	Object *get_collider() const;
 	RID get_collider_rid() const;
-	Ref<SGFixedVector2> get_collision_point() const;
-	Ref<SGFixedVector2> get_collision_normal() const;
+	Ref<SGFixedVector3> get_collision_point() const;
+	Ref<SGFixedVector3> get_collision_normal() const;
 
 	void add_exception(const Object *p_object);
 	void remove_exception(const Object *p_object);

@@ -72,9 +72,9 @@ completeness.
 And, we provide some new fixed-point types that mirror the built-in Godot types,
 for example:
 
- - `SGFixedVector2` replaces `Vector2`
+ - `SGFixedVector3` replaces `Vector2`
  - `SGFixedTransform2D` replaces `Transform2D`
- - `SGFixedRect2` replaces `Rect2`
+ - `SGFixedRect3` replaces `Rect2`
 
 Complete API documentation will be coming soon.
 
@@ -86,7 +86,7 @@ values that we can represent, that's called an "overflow".
 If an overflow happens, you're not going to the result you're looking for, or
 your game may even crash.
 
-**To prevent overflow, any `SGFixedVector2` shouldn't have an X or Y component
+**To prevent overflow, any `SGFixedVector3` shouldn't have an X or Y component
 outside the range `-1966080000` to `1966080000` (which is `-30000.0` to `30000.0` in
 "real world" numbers)!**
 

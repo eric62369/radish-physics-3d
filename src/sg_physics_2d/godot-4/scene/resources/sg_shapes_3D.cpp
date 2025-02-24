@@ -53,18 +53,18 @@ void SGRectangleShape3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "extents", PROPERTY_HINT_NONE, "", 0), "set_extents", "get_extents");
 }
 
-void SGRectangleShape3D::set_extents(const Ref<SGFixedVector2>& p_extents) {
+void SGRectangleShape3D::set_extents(const Ref<SGFixedVector3>& p_extents) {
 	ERR_FAIL_COND(!p_extents.is_valid());
 
 	extents->set_internal(p_extents->get_internal());
 	emit_changed();
 }
 
-Ref<SGFixedVector2> SGRectangleShape3D::get_extents() {
+Ref<SGFixedVector3> SGRectangleShape3D::get_extents() {
 	return extents;
 }
 
-void SGRectangleShape3D::fixed_vector2_changed(SGFixedVector2 *p_vector) {
+void SGRectangleShape3D::fixed_vector2_changed(SGFixedVector3 *p_vector) {
 	emit_changed();
 }
 
@@ -99,7 +99,7 @@ void SGRectangleShape3D::draw(const RID &p_to_rid, const Color &p_color) {
 }
 
 SGRectangleShape3D::SGRectangleShape3D() : SGShape3D(),
-	extents(Ref<SGFixedVector2>(memnew(SGFixedVector2(SGFixedVector2Internal(fixed(655360), fixed(655360))))))
+	extents(Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(655360), fixed(655360))))))
 {
 	extents->set_watcher(this);
 }

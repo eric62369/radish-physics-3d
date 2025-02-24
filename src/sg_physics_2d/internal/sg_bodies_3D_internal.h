@@ -72,7 +72,7 @@ public:
 		return shapes;
 	}
 
-	SGFixedRect2Internal get_bounds() const;
+	SGFixedRect3Internal get_bounds() const;
 
 	void add_to_broadphase(SGBroadphase3DInternal *p_broadphase);
 	void remove_from_broadphase();

@@ -86,8 +86,8 @@ SGBroadphase3DInternal::Element *SGBroadphase3DInternal::create_element(SGCollis
 	element->object = p_object;
 	element->bounds = p_object->get_bounds();
 
-	SGFixedVector2Internal min = element->bounds.get_min();
-	SGFixedVector2Internal max = element->bounds.get_max();
+	SGFixedVector3Internal min = element->bounds.get_min();
+	SGFixedVector3Internal max = element->bounds.get_max();
 
 	element->from = HashKey(
 		min.x.to_int() / cell_size,
@@ -104,8 +104,8 @@ SGBroadphase3DInternal::Element *SGBroadphase3DInternal::create_element(SGCollis
 void SGBroadphase3DInternal::update_element(SGBroadphase3DInternal::Element *p_element) {
 	p_element->bounds = p_element->object->get_bounds();
 
-	SGFixedVector2Internal min = p_element->bounds.get_min();
-	SGFixedVector2Internal max = p_element->bounds.get_max();
+	SGFixedVector3Internal min = p_element->bounds.get_min();
+	SGFixedVector3Internal max = p_element->bounds.get_max();
 
 	HashKey from(
 		min.x.to_int() / cell_size,
@@ -133,9 +133,9 @@ void SGBroadphase3DInternal::delete_element(SGBroadphase3DInternal::Element *p_e
 	delete p_element;
 }
 
-void SGBroadphase3DInternal::find_nearby(const SGFixedRect2Internal &p_bounds, SGResultHandlerInternal *p_result_handler, int p_type) const {
-	SGFixedVector2Internal min = p_bounds.get_min();
-	SGFixedVector2Internal max = p_bounds.get_max();
+void SGBroadphase3DInternal::find_nearby(const SGFixedRect3Internal &p_bounds, SGResultHandlerInternal *p_result_handler, int p_type) const {
+	SGFixedVector3Internal min = p_bounds.get_min();
+	SGFixedVector3Internal max = p_bounds.get_max();
 
 	HashKey from(
 		min.x.to_int() / cell_size,
@@ -174,8 +174,8 @@ void SGBroadphase3DInternal::set_cell_size(int p_cell_size) {
 
 		_clear_cells();
 		for (SGBroadphase3DInternal::Element *element : elements) {
-			SGFixedVector2Internal min = element->bounds.get_min();
-			SGFixedVector2Internal max = element->bounds.get_max();
+			SGFixedVector3Internal min = element->bounds.get_min();
+			SGFixedVector3Internal max = element->bounds.get_max();
 
 			element->from = HashKey(
 				min.x.to_int() / cell_size,

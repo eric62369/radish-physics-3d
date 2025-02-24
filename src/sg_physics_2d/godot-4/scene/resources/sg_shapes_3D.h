@@ -49,10 +49,10 @@ public:
 	virtual ~SGShape3D();
 };
 
-class SGRectangleShape3D : public SGShape3D, public SGFixedVector2Watcher {
+class SGRectangleShape3D : public SGShape3D, public SGFixedVector3Watcher {
 	GDCLASS(SGRectangleShape3D, SGShape3D);
 
-	Ref<SGFixedVector2> extents;
+	Ref<SGFixedVector3> extents;
 
 protected:
 	static void _bind_methods();
@@ -65,10 +65,10 @@ protected:
 	void _set_extents_y(int64_t p_y);
 
 public:
-	void set_extents(const Ref<SGFixedVector2>& p_extents);
-	Ref<SGFixedVector2> get_extents();
+	void set_extents(const Ref<SGFixedVector3>& p_extents);
+	Ref<SGFixedVector3> get_extents();
 
-	void fixed_vector2_changed(SGFixedVector2 *p_vector);
+	void fixed_vector2_changed(SGFixedVector3 *p_vector);
 
 	virtual void sync_to_physics_engine(RID p_internal_shape) const override;
 

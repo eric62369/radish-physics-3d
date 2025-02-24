@@ -18,14 +18,14 @@
 			</description>
 		</method>
 		<method name="basis_xform" qualifiers="const">
-			<return type="SGFixedVector2" />
-			<argument index="0" name="vector" type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
+			<argument index="0" name="vector" type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
 		<method name="basis_xform_inv" qualifiers="const">
-			<return type="SGFixedVector2" />
-			<argument index="0" name="vector" type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
+			<argument index="0" name="vector" type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
@@ -40,7 +40,7 @@
 			</description>
 		</method>
 		<method name="get_scale" qualifiers="const">
-			<return type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
@@ -81,37 +81,37 @@
 		</method>
 		<method name="scaled" qualifiers="const">
 			<return type="SGFixedTransform3D" />
-			<argument index="0" name="scale" type="SGFixedVector2" />
+			<argument index="0" name="scale" type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
 		<method name="translated" qualifiers="const">
 			<return type="SGFixedTransform3D" />
-			<argument index="0" name="offset" type="SGFixedVector2" />
+			<argument index="0" name="offset" type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
 		<method name="xform" qualifiers="const">
-			<return type="SGFixedVector2" />
-			<argument index="0" name="vector" type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
+			<argument index="0" name="vector" type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
 		<method name="xform_inv" qualifiers="const">
-			<return type="SGFixedVector2" />
-			<argument index="0" name="vector" type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
+			<argument index="0" name="vector" type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
 	</methods>
 	<members>
-		<member name="origin" type="SGFixedVector2" setter="set_origin" getter="get_origin">
+		<member name="origin" type="SGFixedVector3" setter="set_origin" getter="get_origin">
 			The origin vector. It represents translation.
 		</member>
-		<member name="x" type="SGFixedVector2" setter="set_x" getter="get_x">
+		<member name="x" type="SGFixedVector3" setter="set_x" getter="get_x">
 			The X vector.
 		</member>
-		<member name="y" type="SGFixedVector2" setter="set_y" getter="get_y">
+		<member name="y" type="SGFixedVector3" setter="set_y" getter="get_y">
 			The Y vector.
 		</member>
 	</members>

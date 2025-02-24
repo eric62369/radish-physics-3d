@@ -37,7 +37,7 @@ protected:
 	SGPhysicsBody3D(RID p_rid);
 
 public:
-	Ref<SGKinematicCollision3D> move_and_collide(const Ref<SGFixedVector2> &p_linear_velocity);
+	Ref<SGKinematicCollision3D> move_and_collide(const Ref<SGFixedVector3> &p_linear_velocity);
 
 	SGPhysicsBody3D();
 };

@@ -68,7 +68,7 @@
 		<method name="body_move_and_collide" qualifiers="const">
 			<return type="SGKinematicCollision3D" />
 			<argument index="0" name="body" type="RID" />
-			<argument index="1" name="linear_velocity" type="SGFixedVector2" />
+			<argument index="1" name="linear_velocity" type="SGFixedVector3" />
 			<description>
 				Moves the body, stopping on any collision.
 			</description>
@@ -239,7 +239,7 @@
 			</description>
 		</method>
 		<method name="rectangle_get_extents" qualifiers="const">
-			<return type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
 			<argument index="0" name="shape" type="RID" />
 			<description>
 				Returns the extents of the rectangle shape.
@@ -248,7 +248,7 @@
 		<method name="rectangle_set_extents">
 			<return type="void" />
 			<argument index="0" name="shape" type="RID" />
-			<argument index="1" name="extents" type="SGFixedVector2" />
+			<argument index="1" name="extents" type="SGFixedVector3" />
 			<description>
 				Sets the extents of the rectangle shape.
 			</description>

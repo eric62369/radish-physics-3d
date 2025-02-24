@@ -65,7 +65,7 @@ public:
 
 	struct Element {
 		SGCollisionObject3DInternal *object;
-		SGFixedRect2Internal bounds;
+		SGFixedRect3Internal bounds;
 		HashKey from;
 		HashKey to;
 		uint64_t query_id;
@@ -96,7 +96,7 @@ public:
 	void delete_element(Element *p_element);
 
 	// p_type is really SGCollisionObject3DInternal::ObjectType, but I couldn't work out the circulate dependencies.
-	void find_nearby(const SGFixedRect2Internal &p_bounds, SGResultHandlerInternal *p_result_handler, int p_type = 3) const;
+	void find_nearby(const SGFixedRect3Internal &p_bounds, SGResultHandlerInternal *p_result_handler, int p_type = 3) const;
 
 	void set_cell_size(int p_cell_size);
 

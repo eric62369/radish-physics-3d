@@ -121,7 +121,7 @@ void SGCollisionPolygon3D::update_polygon() const {
 	polygon.resize(fixed_polygon.size());
 
 	for (int i = 0; i < fixed_polygon.size(); i++) {
-		Ref<SGFixedVector2> p = fixed_polygon[i];
+		Ref<SGFixedVector3> p = fixed_polygon[i];
 		if (p.is_valid()) {
 			polygon[i] = p->to_float();
 		}
@@ -154,7 +154,7 @@ void SGCollisionPolygon3D::update_fixed_polygon() {
 	fixed_polygon.resize(polygon.size());
 
 	for (int i = 0; i < polygon.size(); i++) {
-		Ref<SGFixedVector2> p(memnew(SGFixedVector2));
+		Ref<SGFixedVector3> p(memnew(SGFixedVector3));
 		p->from_float(polygon[i]);
 		fixed_polygon[i] = p;
 	}
@@ -205,9 +205,9 @@ bool SGCollisionPolygon3D::is_convex(const Array &p_vertices) {
 	int y_first_sign = 0;
 	int y_flips = 0;
 
-	Ref<SGFixedVector2> prev;
-	Ref<SGFixedVector2> cur = p_vertices[p_vertices.size() - 2];
-	Ref<SGFixedVector2> next = p_vertices[p_vertices.size() - 1];
+	Ref<SGFixedVector3> prev;
+	Ref<SGFixedVector3> cur = p_vertices[p_vertices.size() - 2];
+	Ref<SGFixedVector3> next = p_vertices[p_vertices.size() - 1];
 
 	for (int i = 0; i < p_vertices.size(); i++) {
 		prev = cur;
@@ -218,8 +218,8 @@ bool SGCollisionPolygon3D::is_convex(const Array &p_vertices) {
 		ERR_FAIL_COND_V_MSG(!prev.is_valid(), false, "Vertex in polygon is invalid");
 		ERR_FAIL_COND_V_MSG(!next.is_valid(), false, "Vertex in polygon is invalid");
 
-		SGFixedVector2Internal previous_edge = cur->get_internal() - prev->get_internal();
-		SGFixedVector2Internal next_edge = next->get_internal() - cur->get_internal();
+		SGFixedVector3Internal previous_edge = cur->get_internal() - prev->get_internal();
+		SGFixedVector3Internal next_edge = next->get_internal() - cur->get_internal();
 
 		if (next_edge.x > fixed::ZERO) {
 			if (x_sign == 0) {
@@ -301,7 +301,7 @@ bool SGCollisionPolygon3D::is_convex(const Array &p_vertices) {
 Array SGCollisionPolygon3D::_get_fixed_polygon_pairs() const {
 	Array ret;
 	for (int i = 0; i < fixed_polygon.size(); i++) {
-		Ref<SGFixedVector2> p = fixed_polygon[i];
+		Ref<SGFixedVector3> p = fixed_polygon[i];
 		if (p.is_valid()) {
 			Array pair;
 			pair.resize(2);
@@ -320,7 +320,7 @@ void SGCollisionPolygon3D::_set_fixed_polygon_pairs(const Array &p_pairs) {
 		if (pair.size() == 2) {
 			int64_t x = pair[0];
 			int64_t y = pair[1];
-			Ref<SGFixedVector2> point = SGFixedVector2::from_internal(SGFixedVector2Internal(fixed(x), fixed(y)));
+			Ref<SGFixedVector3> point = SGFixedVector3::from_internal(SGFixedVector3Internal(fixed(x), fixed(y)));
 			points.push_back(point);
 		}
 	}

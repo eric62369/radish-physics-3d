@@ -72,7 +72,7 @@
 // 		case RECTANGLE_SHAPE: {
 // 			Ref<SGRectangleShape3D> rectangle = node->get_shape();
 
-// 			Ref<SGFixedVector2> extents = rectangle->get_extents();
+// 			Ref<SGFixedVector3> extents = rectangle->get_extents();
 // 			switch (idx) {
 // 				case 0:
 // 					extents->set_x(fixed::from_float(p_point.x).value);

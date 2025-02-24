@@ -36,7 +36,7 @@ SGPhysicsBody3D::SGPhysicsBody3D() : SGCollisionObject3D() {
 SGPhysicsBody3D::SGPhysicsBody3D(RID p_rid) : SGCollisionObject3D(p_rid) {
 }
 
-Ref<SGKinematicCollision3D> SGPhysicsBody3D::move_and_collide(const Ref<SGFixedVector2> &p_linear_velocity) {
+Ref<SGKinematicCollision3D> SGPhysicsBody3D::move_and_collide(const Ref<SGFixedVector3> &p_linear_velocity) {
 	ERR_FAIL_COND_V(!p_linear_velocity.is_valid(), Ref<SGKinematicCollision3D>());
 	SGPhysics3DServer *physics_server = SGPhysics3DServer::get_singleton();
 	Ref<SGKinematicCollision3D> ret = physics_server->body_move_and_collide(rid, p_linear_velocity);

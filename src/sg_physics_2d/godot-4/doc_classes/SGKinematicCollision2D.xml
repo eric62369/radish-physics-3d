@@ -18,10 +18,10 @@
 		<member name="collider_rid" type="RID" setter="" getter="get_collider_rid">
 			The RID of the colliding body.
 		</member>
-		<member name="normal" type="SGFixedVector2" setter="" getter="get_normal">
+		<member name="normal" type="SGFixedVector3" setter="" getter="get_normal">
 			The collision normal vector.
 		</member>
-		<member name="remainder" type="SGFixedVector2" setter="" getter="get_remainder">
+		<member name="remainder" type="SGFixedVector3" setter="" getter="get_remainder">
 			The remaining motion that would have happened if it weren't for the collision.
 		</member>
 	</members>

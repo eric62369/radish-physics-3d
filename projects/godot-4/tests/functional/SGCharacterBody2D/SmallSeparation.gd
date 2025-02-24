@@ -4,8 +4,8 @@ extends Node2D
 @onready var circle := $SGStaticBody2D/Circle
 @onready var square := $SGStaticBody2D/Square
 @onready var polygon := $SGStaticBody2D/Polygon
-var velocity := SGFixedVector2.new()
-@onready var original_fixed_position : SGFixedVector2 = kinematic.fixed_position.copy()
+var velocity := SGFixedVector3.new()
+@onready var original_fixed_position : SGFixedVector3 = kinematic.fixed_position.copy()
 
 
 func test_with_circle() -> SGKinematicCollision2D:

@@ -35,13 +35,13 @@ class SGCharacterBody3D : public SGPhysicsBody3D {
 
 protected:
 	Vector<Ref<SGKinematicCollision3D>> slide_colliders;
-	Ref<SGFixedVector2> floor_normal;
+	Ref<SGFixedVector3> floor_normal;
 	bool on_floor;
 	bool on_ceiling;
 	bool on_wall;
 
-	Ref<SGFixedVector2> velocity;
-	Ref<SGFixedVector2> up_direction;
+	Ref<SGFixedVector3> velocity;
+	Ref<SGFixedVector3> up_direction;
 	int64_t max_slides;
 	fixed floor_max_angle;
 
@@ -51,11 +51,11 @@ public:
 	int get_safe_margin() const;
 	void set_safe_margin(int p_safe_margin);
 
-	Ref<SGFixedVector2> get_velocity() const;
-	void set_velocity(const Ref<SGFixedVector2> &p_velocity);
+	Ref<SGFixedVector3> get_velocity() const;
+	void set_velocity(const Ref<SGFixedVector3> &p_velocity);
 
-	Ref<SGFixedVector2> get_up_direction() const;
-	void set_up_direction(const Ref<SGFixedVector2> &p_up_direction);
+	Ref<SGFixedVector3> get_up_direction() const;
+	void set_up_direction(const Ref<SGFixedVector3> &p_up_direction);
 
 	int64_t get_max_slides() const;
 	void set_max_slides(int64_t p_max_slides);
@@ -63,8 +63,8 @@ public:
 	int64_t get_floor_max_angle() const;
 	void set_floor_max_angle(int64_t p_floor_max_angle);
 
-	Ref<SGFixedVector2> get_floor_normal() const;
-	int get_floor_angle(const Ref<SGFixedVector2> &p_up_direction) const;
+	Ref<SGFixedVector3> get_floor_normal() const;
+	int get_floor_angle(const Ref<SGFixedVector3> &p_up_direction) const;
 	bool is_on_floor() const;
 	bool is_on_ceiling() const;
 	bool is_on_wall() const;

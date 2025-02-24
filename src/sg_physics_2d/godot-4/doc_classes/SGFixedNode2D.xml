@@ -13,7 +13,7 @@
 	</tutorials>
 	<methods>
 		<method name="get_global_fixed_position">
-			<return type="SGFixedVector2" />
+			<return type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
@@ -29,7 +29,7 @@
 		</method>
 		<method name="set_global_fixed_position">
 			<return type="void" />
-			<argument index="0" name="fixed_position" type="SGFixedVector2" />
+			<argument index="0" name="fixed_position" type="SGFixedVector3" />
 			<description>
 			</description>
 		</method>
@@ -54,7 +54,7 @@
 		</method>
 	</methods>
 	<members>
-		<member name="fixed_position" type="SGFixedVector2" setter="set_fixed_position" getter="get_fixed_position">
+		<member name="fixed_position" type="SGFixedVector3" setter="set_fixed_position" getter="get_fixed_position">
 			The position of node as a fixed-point vector.
 		</member>
 		<member name="fixed_position_x" type="int" setter="_set_fixed_position_x" getter="_get_fixed_position_x" default="0">
@@ -66,7 +66,7 @@
 		<member name="fixed_rotation" type="int" setter="set_fixed_rotation" getter="get_fixed_rotation" default="0">
 			The rotation of the node (in radians) as a fixed-point number.
 		</member>
-		<member name="fixed_scale" type="SGFixedVector2" setter="set_fixed_scale" getter="get_fixed_scale">
+		<member name="fixed_scale" type="SGFixedVector3" setter="set_fixed_scale" getter="get_fixed_scale">
 			The scale of the node (in radians) as a fixed-point number.
 			Note: the physics engine doesn't support collisions shapes that are scaled non-uniformly (ie. having a different [code]x[/code] and [code]y[/code] value). Using a non-uniform [code]fixed_scale[/code] will lead to undefined behavior.
 		</member>

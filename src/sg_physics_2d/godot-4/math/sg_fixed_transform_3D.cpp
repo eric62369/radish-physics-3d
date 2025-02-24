@@ -55,9 +55,9 @@ void SGFixedTransform3D::_bind_methods() {
 }
 
 Transform3D SGFixedTransform3D::to_float() const {
-	Vector2 x_float = x->to_float();
-	Vector2 y_float = y->to_float();
-	Vector2 origin_float = origin->to_float();
+	Vector3 x_float = x->to_float();
+	Vector3 y_float = y->to_float();
+	Vector3 origin_float = origin->to_float();
 	return Transform3D(x_float.x, x_float.y, y_float.x, y_float.y, origin_float.x, origin_float.y);
 }
 
@@ -75,17 +75,17 @@ Ref<SGFixedTransform3D> SGFixedTransform3D::copy() const {
 	return ret;
 }
 
-void SGFixedTransform3D::set_x(const Ref<SGFixedVector2> &p_x) {
+void SGFixedTransform3D::set_x(const Ref<SGFixedVector3> &p_x) {
 	ERR_FAIL_COND(!p_x.is_valid());
 	x->set_internal(p_x->get_internal());
 }
 
-void SGFixedTransform3D::set_y(const Ref<SGFixedVector2> &p_y) {
+void SGFixedTransform3D::set_y(const Ref<SGFixedVector3> &p_y) {
 	ERR_FAIL_COND(!p_y.is_valid());
 	y->set_internal(p_y->get_internal());
 }
 
-void SGFixedTransform3D::set_origin(const Ref<SGFixedVector2> &p_origin) {
+void SGFixedTransform3D::set_origin(const Ref<SGFixedVector3> &p_origin) {
 	ERR_FAIL_COND(!p_origin.is_valid());
 	origin->set_internal(p_origin->get_internal());
 }
@@ -113,19 +113,19 @@ Ref<SGFixedTransform3D> SGFixedTransform3D::rotated(int64_t p_radians) const {
 	return SGFixedTransform3D::from_internal(internal);
 }
 
-Ref<SGFixedVector2> SGFixedTransform3D::get_scale() const {
+Ref<SGFixedVector3> SGFixedTransform3D::get_scale() const {
 	SGFixedTransform3DInternal internal = get_internal();
-	return SGFixedVector2::from_internal(internal.get_scale());
+	return SGFixedVector3::from_internal(internal.get_scale());
 }
 
-Ref<SGFixedTransform3D> SGFixedTransform3D::scaled(const Ref<SGFixedVector2> &p_scale) const {
+Ref<SGFixedTransform3D> SGFixedTransform3D::scaled(const Ref<SGFixedVector3> &p_scale) const {
 	ERR_FAIL_COND_V(!p_scale.is_valid(), Ref<SGFixedTransform3D>());
 	SGFixedTransform3DInternal internal = get_internal();
 	internal.scale(p_scale->get_internal());
 	return SGFixedTransform3D::from_internal(internal);
 }
 
-Ref<SGFixedTransform3D> SGFixedTransform3D::translated(const Ref<SGFixedVector2> &p_offset) const {
+Ref<SGFixedTransform3D> SGFixedTransform3D::translated(const Ref<SGFixedVector3> &p_offset) const {
 	ERR_FAIL_COND_V(!p_offset.is_valid(), Ref<SGFixedTransform3D>());
 	SGFixedTransform3DInternal internal = get_internal();
 	internal.translate(p_offset->get_internal());
@@ -156,44 +156,44 @@ Ref<SGFixedTransform3D> SGFixedTransform3D::interpolate_with(const Ref<SGFixedTr
 	return SGFixedTransform3D::from_internal(internal);
 }
 
-Ref<SGFixedVector2> SGFixedTransform3D::basis_xform(const Ref<SGFixedVector2> &p_vec) const {
+Ref<SGFixedVector3> SGFixedTransform3D::basis_xform(const Ref<SGFixedVector3> &p_vec) const {
 	ERR_FAIL_COND_V(!p_vec.is_valid(), Ref<SGFixedTransform3D>());
-	SGFixedVector2Internal internal = p_vec->get_internal();
+	SGFixedVector3Internal internal = p_vec->get_internal();
 	internal = get_internal().basis_xform(internal);
-	return SGFixedVector2::from_internal(internal);
+	return SGFixedVector3::from_internal(internal);
 }
 
-Ref<SGFixedVector2> SGFixedTransform3D::basis_xform_inv(const Ref<SGFixedVector2> &p_vec) const {
+Ref<SGFixedVector3> SGFixedTransform3D::basis_xform_inv(const Ref<SGFixedVector3> &p_vec) const {
 	ERR_FAIL_COND_V(!p_vec.is_valid(), Ref<SGFixedTransform3D>());
-	SGFixedVector2Internal internal = p_vec->get_internal();
+	SGFixedVector3Internal internal = p_vec->get_internal();
 	internal = get_internal().basis_xform_inv(internal);
-	return SGFixedVector2::from_internal(internal);
+	return SGFixedVector3::from_internal(internal);
 }
 
-Ref<SGFixedVector2> SGFixedTransform3D::xform(const Ref<SGFixedVector2> &p_vec) const {
+Ref<SGFixedVector3> SGFixedTransform3D::xform(const Ref<SGFixedVector3> &p_vec) const {
 	ERR_FAIL_COND_V(!p_vec.is_valid(), Ref<SGFixedTransform3D>());
-	SGFixedVector2Internal internal = p_vec->get_internal();
+	SGFixedVector3Internal internal = p_vec->get_internal();
 	internal = get_internal().xform(internal);
-	return SGFixedVector2::from_internal(internal);
+	return SGFixedVector3::from_internal(internal);
 }
 
-Ref<SGFixedVector2> SGFixedTransform3D::xform_inv(const Ref<SGFixedVector2> &p_vec) const {
+Ref<SGFixedVector3> SGFixedTransform3D::xform_inv(const Ref<SGFixedVector3> &p_vec) const {
 	ERR_FAIL_COND_V(!p_vec.is_valid(), Ref<SGFixedTransform3D>());
-	SGFixedVector2Internal internal = p_vec->get_internal();
+	SGFixedVector3Internal internal = p_vec->get_internal();
 	internal = get_internal().xform_inv(internal);
-	return SGFixedVector2::from_internal(internal);
+	return SGFixedVector3::from_internal(internal);
 }
 
 SGFixedTransform3D::SGFixedTransform3D() :
-	x(memnew(SGFixedVector2(SGFixedVector2Internal(fixed::ONE, fixed::ZERO)))),
-	y(memnew(SGFixedVector2(SGFixedVector2Internal(fixed::ZERO, fixed::ONE)))),
-	origin(memnew(SGFixedVector2()))
+	x(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ONE, fixed::ZERO)))),
+	y(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ZERO, fixed::ONE)))),
+	origin(memnew(SGFixedVector3()))
 {
 }
 
 SGFixedTransform3D::SGFixedTransform3D(const SGFixedTransform3DInternal &p_internal) :
-	x(memnew(SGFixedVector2(p_internal.elements[0]))),
-	y(memnew(SGFixedVector2(p_internal.elements[1]))),
-	origin(memnew(SGFixedVector2(p_internal.elements[2])))
+	x(memnew(SGFixedVector3(p_internal.elements[0]))),
+	y(memnew(SGFixedVector3(p_internal.elements[1]))),
+	origin(memnew(SGFixedVector3(p_internal.elements[2])))
 {
 }

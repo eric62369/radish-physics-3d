@@ -27,8 +27,8 @@
 #include <godot_cpp/classes/object.hpp>
 #include <godot_cpp/variant/string.hpp>
 
-#include "sg_fixed_vector2.h"
-#include "sg_fixed_rect2.h"
+#include "sg_fixed_vector3.h"
+#include "sg_fixed_rect3.h"
 #include "sg_fixed_transform_3D.h"
 
 class SGFixed : public Object {
@@ -90,13 +90,13 @@ public:
 	int64_t pow(int64_t p_fixed_one, int64_t p_fixed_two) const;
 	int64_t move_toward(int64_t p_from, int64_t p_to, int64_t p_delta) const;
 
-	Ref<SGFixedVector2> vector2(int64_t p_fixed_x, int64_t p_fixed_y) const;
-	Ref<SGFixedVector2> from_float_vector2(const Vector2 &p_float_vector) const;
+	Ref<SGFixedVector3> vector2(int64_t p_fixed_x, int64_t p_fixed_y) const;
+	Ref<SGFixedVector3> from_float_vector2(const Vector2 &p_float_vector) const;
 
-	Ref<SGFixedRect2> rect2(const Ref<SGFixedVector2> &p_position, const Ref<SGFixedVector2> &p_size) const;
-	Ref<SGFixedRect2> from_float_rect2(const Rect2 &p_float_rect) const;
+	Ref<SGFixedRect3> rect2(const Ref<SGFixedVector3> &p_position, const Ref<SGFixedVector3> &p_size) const;
+	Ref<SGFixedRect3> from_float_rect2(const Rect2 &p_float_rect) const;
 
-	Ref<SGFixedTransform3D> transform3D(int64_t p_rotation, const Ref<SGFixedVector2> &p_origin) const;
+	Ref<SGFixedTransform3D> transform3D(int64_t p_rotation, const Ref<SGFixedVector3> &p_origin) const;
 
 	SGFixed();
 	~SGFixed();

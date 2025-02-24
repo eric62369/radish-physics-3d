@@ -72,20 +72,20 @@ void SGCharacterBody3D::set_safe_margin(int p_safe_margin) {
 	return SGPhysics3DServer::get_singleton()->body_set_safe_margin(rid, p_safe_margin);
 }
 
-Ref<SGFixedVector2> SGCharacterBody3D::get_velocity() const {
+Ref<SGFixedVector3> SGCharacterBody3D::get_velocity() const {
 	return velocity;
 }
 
-void SGCharacterBody3D::set_velocity(const Ref<SGFixedVector2> &p_velocity) {
+void SGCharacterBody3D::set_velocity(const Ref<SGFixedVector3> &p_velocity) {
 	ERR_FAIL_COND(p_velocity.is_null());
 	velocity->set_internal(p_velocity->get_internal());
 }
 
-Ref<SGFixedVector2> SGCharacterBody3D::get_up_direction() const {
+Ref<SGFixedVector3> SGCharacterBody3D::get_up_direction() const {
 	return up_direction;
 }
 
-void SGCharacterBody3D::set_up_direction(const Ref<SGFixedVector2> &p_up_direction) {
+void SGCharacterBody3D::set_up_direction(const Ref<SGFixedVector3> &p_up_direction) {
 	ERR_FAIL_COND(p_up_direction.is_null());
 	up_direction->set_internal(p_up_direction->get_internal());
 }
@@ -107,12 +107,12 @@ void SGCharacterBody3D::set_floor_max_angle(int64_t p_floor_max_angle) {
 	floor_max_angle = fixed(p_floor_max_angle);
 }
 
-Ref<SGFixedVector2> SGCharacterBody3D::get_floor_normal() const {
+Ref<SGFixedVector3> SGCharacterBody3D::get_floor_normal() const {
 	return floor_normal;
 }
 
-int SGCharacterBody3D::get_floor_angle(const Ref<SGFixedVector2> &p_up_direction) const {
-	SGFixedVector2Internal up_direction(fixed::ZERO, fixed::NEG_ONE);
+int SGCharacterBody3D::get_floor_angle(const Ref<SGFixedVector3> &p_up_direction) const {
+	SGFixedVector3Internal up_direction(fixed::ZERO, fixed::NEG_ONE);
 	if (p_up_direction.is_valid()) {
 		up_direction = p_up_direction->get_internal();
 	}
@@ -150,9 +150,9 @@ Ref<SGKinematicCollision3D> SGCharacterBody3D::get_last_slide_collision() {
 bool SGCharacterBody3D::move_and_slide() {
 	SGPhysics3DServer *physics_server = SGPhysics3DServer::get_singleton();
 
-	SGFixedVector2Internal motion_internal = velocity->get_internal();
-	SGFixedVector2Internal body_velocity = motion_internal;
-	SGFixedVector2Internal up_direction_internal = up_direction->get_internal();
+	SGFixedVector3Internal motion_internal = velocity->get_internal();
+	SGFixedVector3Internal body_velocity = motion_internal;
+	SGFixedVector3Internal up_direction_internal = up_direction->get_internal();
 
 	slide_colliders.clear();
 	floor_normal->clear();
@@ -160,7 +160,7 @@ bool SGCharacterBody3D::move_and_slide() {
 	on_ceiling = false;
 	on_wall = false;
 
-	Ref<SGFixedVector2> motion;
+	Ref<SGFixedVector3> motion;
 	motion.instantiate();
 
 	bool collided = false;
@@ -174,19 +174,19 @@ bool SGCharacterBody3D::move_and_slide() {
 		}
 		collided = true;
 
-		SGFixedVector2Internal collision_normal = collision->get_normal()->get_internal();
-		SGFixedVector2Internal collision_remainder = collision->get_remainder()->get_internal();
+		SGFixedVector3Internal collision_normal = collision->get_normal()->get_internal();
+		SGFixedVector3Internal collision_remainder = collision->get_remainder()->get_internal();
 
-		if (collision_normal == SGFixedVector2Internal::ZERO) {
+		if (collision_normal == SGFixedVector3Internal::ZERO) {
 			// This means we couldn't unstuck the body. Clear out the motion
 			// vector and bail.
-			body_velocity = SGFixedVector2Internal::ZERO;
+			body_velocity = SGFixedVector3Internal::ZERO;
 			break;
 		}
 
 		slide_colliders.push_back(collision);
 
-		if (up_direction_internal == SGFixedVector2Internal::ZERO) {
+		if (up_direction_internal == SGFixedVector3Internal::ZERO) {
 			// All is wall!
 			on_wall = true;
 		}
@@ -204,7 +204,7 @@ bool SGCharacterBody3D::move_and_slide() {
 		motion_internal = collision_remainder.slide(collision_normal);
 		body_velocity = body_velocity.slide(collision_normal);
 
-		if (motion_internal == SGFixedVector2Internal::ZERO) {
+		if (motion_internal == SGFixedVector3Internal::ZERO) {
 			// No remaining motion, so we're good - bail!
 			break;
 		}
@@ -236,7 +236,7 @@ SGCharacterBody3D::SGCharacterBody3D()
 	: SGPhysicsBody3D(SGPhysics3DServer::get_singleton()->collision_object_create(SGPhysics3DServer::OBJECT_BODY, SGPhysics3DServer::BODY_CHARACTER))
 {
 	velocity.instantiate();
-	up_direction = Ref<SGFixedVector2>(memnew(SGFixedVector2(SGFixedVector2Internal(fixed(0), fixed(-65536)))));
+	up_direction = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(0), fixed(-65536)))));
 	max_slides = 4;
 	floor_max_angle = fixed(51471);
 

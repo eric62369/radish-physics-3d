@@ -26,7 +26,7 @@
 
 #include <godot_cpp/classes/ref_counted.hpp>
 
-#include "sg_fixed_vector2.h"
+#include "sg_fixed_vector3.h"
 #include "../../internal/sg_fixed_transform_3D_internal.h"
 
 using namespace godot;
@@ -34,22 +34,22 @@ using namespace godot;
 class SGFixedTransform3D : public RefCounted {
 	GDCLASS(SGFixedTransform3D, RefCounted);
 
-	Ref<SGFixedVector2> x;
-	Ref<SGFixedVector2> y;
-	Ref<SGFixedVector2> origin;
+	Ref<SGFixedVector3> x;
+	Ref<SGFixedVector3> y;
+	Ref<SGFixedVector3> origin;
 
 protected:
 	static void _bind_methods();
 
 public:
-	_FORCE_INLINE_ Ref<SGFixedVector2> get_x() const { return x; }
-	void set_x(const Ref<SGFixedVector2> &p_x);
+	_FORCE_INLINE_ Ref<SGFixedVector3> get_x() const { return x; }
+	void set_x(const Ref<SGFixedVector3> &p_x);
 
-	_FORCE_INLINE_ Ref<SGFixedVector2> get_y() const { return y; }
-	void set_y(const Ref<SGFixedVector2> &p_y);
+	_FORCE_INLINE_ Ref<SGFixedVector3> get_y() const { return y; }
+	void set_y(const Ref<SGFixedVector3> &p_y);
 
-	_FORCE_INLINE_ Ref<SGFixedVector2> get_origin() const { return origin; }
-	void set_origin(const Ref<SGFixedVector2> &p_origin);
+	_FORCE_INLINE_ Ref<SGFixedVector3> get_origin() const { return origin; }
+	void set_origin(const Ref<SGFixedVector3> &p_origin);
 
 	_FORCE_INLINE_ SGFixedTransform3DInternal get_internal() const {
 		return SGFixedTransform3DInternal(fixed(x->get_x()), fixed(x->get_y()), fixed(y->get_x()), fixed(y->get_y()), fixed(origin->get_x()), fixed(origin->get_y()));
@@ -79,9 +79,9 @@ public:
 	int64_t get_rotation() const;
 	Ref<SGFixedTransform3D> rotated(int64_t p_radians) const;
 
-	Ref<SGFixedVector2> get_scale() const;
-	Ref<SGFixedTransform3D> scaled(const Ref<SGFixedVector2> &p_scale) const;
-	Ref<SGFixedTransform3D> translated(const Ref<SGFixedVector2> &p_offset) const;
+	Ref<SGFixedVector3> get_scale() const;
+	Ref<SGFixedTransform3D> scaled(const Ref<SGFixedVector3> &p_scale) const;
+	Ref<SGFixedTransform3D> translated(const Ref<SGFixedVector3> &p_offset) const;
 
 	Ref<SGFixedTransform3D> orthonormalized() const;
 	bool is_equal_approx(const Ref<SGFixedTransform3D> &p_transform) const;
@@ -90,10 +90,10 @@ public:
 
 	Ref<SGFixedTransform3D> interpolate_with(const Ref<SGFixedTransform3D> &p_transform, int64_t p_weight) const;
 
-	Ref<SGFixedVector2> basis_xform(const Ref<SGFixedVector2> &p_vec) const;
-	Ref<SGFixedVector2> basis_xform_inv(const Ref<SGFixedVector2> &p_vec) const;
-	Ref<SGFixedVector2> xform(const Ref<SGFixedVector2> &p_vec) const;
-	Ref<SGFixedVector2> xform_inv(const Ref<SGFixedVector2> &p_vec) const;
+	Ref<SGFixedVector3> basis_xform(const Ref<SGFixedVector3> &p_vec) const;
+	Ref<SGFixedVector3> basis_xform_inv(const Ref<SGFixedVector3> &p_vec) const;
+	Ref<SGFixedVector3> xform(const Ref<SGFixedVector3> &p_vec) const;
+	Ref<SGFixedVector3> xform_inv(const Ref<SGFixedVector3> &p_vec) const;
 
 	SGFixedTransform3D();
 	SGFixedTransform3D(const SGFixedTransform3DInternal &p_internal);
