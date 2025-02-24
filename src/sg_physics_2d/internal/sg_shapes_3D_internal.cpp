@@ -61,10 +61,14 @@ SGFixedRect3Internal SGShape3DInternal::get_bounds() const {
 std::vector<SGFixedVector3Internal> SGRectangle3DInternal::get_global_vertices() const {
 	if (global_vertices_dirty) {
 		SGFixedTransform3DInternal t = get_global_transform();
-		global_vertices[0] = t.xform(SGFixedVector3Internal(-extents.x, -extents.y));
-		global_vertices[1] = t.xform(SGFixedVector3Internal(extents.x, -extents.y));
-		global_vertices[2] = t.xform(SGFixedVector3Internal(extents.x, extents.y));
-		global_vertices[3] = t.xform(SGFixedVector3Internal(-extents.x, extents.y));
+		global_vertices[0] = t.xform(SGFixedVector3Internal(-extents.x, -extents.y, -extents.z));
+		global_vertices[1] = t.xform(SGFixedVector3Internal(extents.x, -extents.y, -extents.z));
+		global_vertices[2] = t.xform(SGFixedVector3Internal(extents.x, extents.y, -extents.z));
+		global_vertices[3] = t.xform(SGFixedVector3Internal(-extents.x, extents.y, -extents.z));
+		global_vertices[4] = t.xform(SGFixedVector3Internal(-extents.x, -extents.y, extents.z));
+		global_vertices[5] = t.xform(SGFixedVector3Internal(extents.x, -extents.y, extents.z));
+		global_vertices[6] = t.xform(SGFixedVector3Internal(extents.x, extents.y, extents.z));
+		global_vertices[7] = t.xform(SGFixedVector3Internal(-extents.x, extents.y, extents.z));
 		global_vertices_dirty = false;
 	}
 
@@ -75,8 +79,9 @@ std::vector<SGFixedVector3Internal> SGRectangle3DInternal::get_global_axes() con
 	if (global_axes_dirty) {
 		SGFixedTransform3DInternal t = get_global_transform();
 		t.set_origin(SGFixedVector3Internal::ZERO);
-		global_axes[0] = t.xform(SGFixedVector3Internal(extents.x, fixed::ZERO)).normalized();
-		global_axes[1] = t.xform(SGFixedVector3Internal(fixed::ZERO, extents.y)).normalized();
+		global_axes[0] = t.xform(SGFixedVector3Internal(extents.x, fixed::ZERO, fixed::ZERO)).normalized();
+		global_axes[1] = t.xform(SGFixedVector3Internal(fixed::ZERO, extents.y, fixed::ZERO)).normalized();
+		global_axes[2] = t.xform(SGFixedVector3Internal(fixed::ZERO, fixed::ZERO, extents.z)).normalized();
 		global_axes_dirty = false;
 	}
 
@@ -86,11 +91,12 @@ std::vector<SGFixedVector3Internal> SGRectangle3DInternal::get_global_axes() con
 SGFixedVector3Internal SGRectangle3DInternal::get_closest_vertex(const SGFixedVector3Internal& point) const {
 	const SGFixedTransform3DInternal t = get_global_transform();
 	const SGFixedVector3Internal local_v = t.xform_inv(point);
-	const SGFixedVector3Internal half_extents = SGFixedVector3Internal(fixed(get_extents().x.value / 2), fixed(get_extents().y.value / 2));
+	const SGFixedVector3Internal half_extents = SGFixedVector3Internal(fixed(get_extents().x.value / 2), fixed(get_extents().y.value / 2), fixed(get_extents().z.value / 2));
 
 	const SGFixedVector3Internal vertex(
 		(local_v.x.value < 0) ? -half_extents.x : half_extents.x,
-		(local_v.y.value < 0) ? -half_extents.y : half_extents.y);
+		(local_v.y.value < 0) ? -half_extents.y : half_extents.y,
+		(local_v.z.value < 0) ? -half_extents.z : half_extents.z);
 
 	return t.xform(vertex);
 }
@@ -123,7 +129,7 @@ std::vector<SGFixedVector3Internal> SGPolygon3DInternal::get_global_axes() const
 			std::size_t next_index = (i == points.size() - 1) ? 0 : i + 1;
 			SGFixedVector3Internal edge = t.xform(points[next_index] - points[i]);
 			// Get the vector perpendicular to the edge, which will be the edge normal.
-			global_axes[i] = SGFixedVector3Internal(edge.y, -edge.x).normalized();
+			global_axes[i] = SGFixedVector3Internal(edge.y, -edge.x, edge.z).normalized(); // TODO: what does perpendicular mean in this case
 		}
 		global_axes_dirty = false;
 	}
@@ -135,7 +141,7 @@ SGFixedRect3Internal SGCircle3DInternal::get_bounds() const {
 	SGFixedTransform3DInternal t = get_global_transform();
 	fixed radius_scaled = radius * t.get_scale().x;
 	fixed diameter(radius_scaled.value << 1);
-	return SGFixedRect3Internal(t.get_origin() - radius_scaled, SGFixedVector3Internal(diameter, diameter));
+	return SGFixedRect3Internal(t.get_origin() - radius_scaled, SGFixedVector3Internal(diameter, diameter, diameter));
 }
 
 std::vector<SGFixedVector3Internal> SGCapsule3DInternal::get_global_vertices() const {
@@ -156,8 +162,8 @@ SGFixedRect3Internal SGCapsule3DInternal::get_bounds() const {
 	const std::vector<SGFixedVector3Internal> global_vertices = get_global_vertices();
 	SGFixedRect3Internal bounds(global_vertices[0], SGFixedVector3Internal());
 	bounds.expand_to(global_vertices[1]);
-	bounds.position -= SGFixedVector3Internal(radius_scaled, radius_scaled);
+	bounds.position -= SGFixedVector3Internal(radius_scaled, radius_scaled, radius_scaled);
 	fixed diameter_scaled = fixed(radius_scaled.value * 2);
-	bounds.size += SGFixedVector3Internal(diameter_scaled, diameter_scaled);
+	bounds.size += SGFixedVector3Internal(diameter_scaled, diameter_scaled, diameter_scaled);
 	return bounds;
 }

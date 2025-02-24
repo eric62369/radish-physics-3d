@@ -40,10 +40,11 @@ void SGFixedTransform3DInternal::affine_invert() {
 	ERR_FAIL_COND(det == fixed::ZERO);
 #endif
 	SWAP(elements[0][0], elements[1][1]);
-	elements[0] /= SGFixedVector3Internal(det, -det);
-	elements[1] /= SGFixedVector3Internal(-det, det);
+	elements[0] /= SGFixedVector3Internal(det, -det, -det); // TODO: determinant 3D vector math please 
+	elements[1] /= SGFixedVector3Internal(-det, det, -det);
+	elements[2] /= SGFixedVector3Internal(-det, -det, det);
 
-	elements[2] = basis_xform(-elements[2]);
+	elements[3] = basis_xform(-elements[3]);
 }
 
 SGFixedTransform3DInternal SGFixedTransform3DInternal::affine_inverse() const {
@@ -85,12 +86,13 @@ SGFixedTransform3DInternal::SGFixedTransform3DInternal(fixed p_rot, const SGFixe
 
 SGFixedVector3Internal SGFixedTransform3DInternal::get_scale() const {
 	fixed det_sign = FIXED_SGN(basis_determinant());
-	return SGFixedVector3Internal(elements[0].length(), det_sign * elements[1].length());
+	return SGFixedVector3Internal(elements[0].length(), det_sign * elements[1].length(), det_sign * elements[2].length()); // TODO: determinant vector math
 }
 
 void SGFixedTransform3DInternal::set_scale(const SGFixedVector3Internal &p_scale) {
 	elements[0].normalize();
 	elements[1].normalize();
+	elements[2].normalize();
 
 	// If scale is very nearly 1, then we just trust normalize() to do its magic.
 	if (!fixed::is_equal_approx(p_scale.x, fixed::ONE, SGFixedVector3Internal::FIXED_UNIT_EPSILON)) {
@@ -99,24 +101,28 @@ void SGFixedTransform3DInternal::set_scale(const SGFixedVector3Internal &p_scale
 	if (!fixed::is_equal_approx(p_scale.y, fixed::ONE, SGFixedVector3Internal::FIXED_UNIT_EPSILON)) {
 		elements[1] = elements[1].safe_scale(p_scale.y);
 	}
+	if (!fixed::is_equal_approx(p_scale.y, fixed::ONE, SGFixedVector3Internal::FIXED_UNIT_EPSILON)) {
+		elements[2] = elements[2].safe_scale(p_scale.z);
+	}
 }
 
 void SGFixedTransform3DInternal::scale(const SGFixedVector3Internal &p_scale) {
 	scale_basis(p_scale);
-	elements[2] *= p_scale;
+	elements[3] *= p_scale;
 }
 
 void SGFixedTransform3DInternal::scale_basis(const SGFixedVector3Internal &p_scale) {
 	elements[0] = elements[0].safe_scale(p_scale);
 	elements[1] = elements[1].safe_scale(p_scale);
+	elements[2] = elements[2].safe_scale(p_scale);
 }
 
-void SGFixedTransform3DInternal::translate(fixed p_tx, fixed p_ty) {
-	translate(SGFixedVector3Internal(p_tx, p_ty));
+void SGFixedTransform3DInternal::translate(fixed p_tx, fixed p_ty, fixed p_tz) {
+	translate(SGFixedVector3Internal(p_tx, p_ty, p_tz));
 }
 
 void SGFixedTransform3DInternal::translate(const SGFixedVector3Internal &p_translation) {
-	elements[2] += basis_xform(p_translation);
+	elements[3] += basis_xform(p_translation);
 }
 
 void SGFixedTransform3DInternal::orthonormalize() {
@@ -162,17 +168,27 @@ bool SGFixedTransform3DInternal::operator!=(const SGFixedTransform3DInternal &p_
 void SGFixedTransform3DInternal::operator*=(const SGFixedTransform3DInternal &p_transform) {
 	elements[2] = xform(p_transform.elements[2]);
 
-	fixed x0, x1, y0, y1;
+	fixed x0, x1, x2, y0, y1, y2, z0, z1, z2;
 
 	x0 = tdotx(p_transform.elements[0]);
 	x1 = tdoty(p_transform.elements[0]);
+	x2 = tdotz(p_transform.elements[0]);
 	y0 = tdotx(p_transform.elements[1]);
 	y1 = tdoty(p_transform.elements[1]);
+	y2 = tdotz(p_transform.elements[1]);
+	z0 = tdotx(p_transform.elements[2]);
+	z1 = tdoty(p_transform.elements[2]);
+	z2 = tdotz(p_transform.elements[2]);
 
 	elements[0][0] = x0;
 	elements[0][1] = x1;
+	elements[0][2] = x2;
 	elements[1][0] = y0;
 	elements[1][1] = y1;
+	elements[1][2] = y2;
+	elements[2][0] = z0;
+	elements[2][1] = z1;
+	elements[2][2] = z2;
 }
 
 SGFixedTransform3DInternal SGFixedTransform3DInternal::operator*(const SGFixedTransform3DInternal &p_transform) const {
@@ -206,7 +222,7 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::rotated(fixed p_phi) cons
 }
 
 fixed SGFixedTransform3DInternal::basis_determinant() const {
-	return elements[0].x * elements[1].y - elements[0].y * elements[1].x;
+	return elements[0].x * elements[1].y - elements[0].y * elements[1].x; // TODO: determinant how
 }
 
 SGFixedTransform3DInternal SGFixedTransform3DInternal::interpolate_with(const SGFixedTransform3DInternal &p_transform, fixed p_c) const {

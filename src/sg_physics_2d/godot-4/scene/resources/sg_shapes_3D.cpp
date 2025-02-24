@@ -92,14 +92,14 @@ void SGRectangleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
 	SGPhysics3DServer::get_singleton()->rectangle_set_extents(p_internal_shape, extents);
 }
 
-// void SGRectangleShape3D::draw(const RID &p_to_rid, const Color &p_color) {
+// void SGRectangleShape3D::draw(const RID &p_to_rid, const Color &p_color) {  // TODO: draw rectangle3D?
 // 	Vector3 float_extents = extents->to_float();
 
 // 	RenderingServer::get_singleton()->canvas_item_add_rect(p_to_rid, Rect2(-float_extents, float_extents * 2.0), p_color);
 // }
 
 SGRectangleShape3D::SGRectangleShape3D() : SGShape3D(),
-	extents(Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(655360), fixed(655360))))))
+	extents(Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(655360), fixed(655360), fixed(655360))))))
 {
 	extents->set_watcher(this);
 }

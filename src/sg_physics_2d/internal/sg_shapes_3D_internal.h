@@ -119,8 +119,8 @@ public:
 		global_vertices.resize(4);
 		global_axes.resize(2);
 	}
-	SGRectangle3DInternal(fixed p_extents_w, fixed p_extents_h)
-		: SGRectangle3DInternal(SGFixedVector3Internal(p_extents_w, p_extents_h)) { }
+	SGRectangle3DInternal(fixed p_extents_w, fixed p_extents_h, fixed p_extents_d)
+		: SGRectangle3DInternal(SGFixedVector3Internal(p_extents_w, p_extents_h, p_extents_d)) { }
 };
 
 class SGCircle3DInternal : public SGShape3DInternal {

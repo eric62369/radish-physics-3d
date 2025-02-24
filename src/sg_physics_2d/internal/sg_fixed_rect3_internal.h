@@ -68,7 +68,8 @@ struct SGFixedRect3Internal {
 		SGFixedVector3Internal max_two = p_other.get_max();
 
 		return (min_two.x <= max_one.x) && (min_one.x <= max_two.x) && \
-			(min_two.y <= max_one.y) && (min_one.y <= max_two.y);
+			(min_two.y <= max_one.y) && (min_one.y <= max_two.y) && \
+			(min_two.z <= max_one.z) && (min_one.z <= max_two.z);
 	}
 
 	inline SGFixedRect3Internal merge(const SGFixedRect3Internal &p_rect) const {
@@ -76,9 +77,11 @@ struct SGFixedRect3Internal {
 
 		new_rect.position.x = MIN(p_rect.position.x, position.x);
 		new_rect.position.y = MIN(p_rect.position.y, position.y);
+		new_rect.position.z = MIN(p_rect.position.z, position.z);
 
 		new_rect.size.x = MAX(p_rect.position.x + p_rect.size.x, position.x + size.x);
 		new_rect.size.y = MAX(p_rect.position.y + p_rect.size.y, position.y + size.y);
+		new_rect.size.z = MAX(p_rect.position.z + p_rect.size.z, position.z + size.z);
 
 		// Make relative again.
 		new_rect.size = new_rect.size - new_rect.position;

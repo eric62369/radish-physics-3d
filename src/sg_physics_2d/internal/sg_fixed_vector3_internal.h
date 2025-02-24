@@ -121,7 +121,7 @@ struct SGFixedVector3Internal {
 
 	void set_rotation(fixed p_radians) {
 		x = p_radians.cos();
-		y = p_radians.sin();
+		y = p_radians.sin(); // TODO: set rotations and operators above
 	}
 
 	_FORCE_INLINE_ SGFixedVector3Internal abs() const {
@@ -178,7 +178,7 @@ struct SGFixedVector3Internal {
 };
 
 SGFixedVector3Internal SGFixedVector3Internal::direction_to(const SGFixedVector3Internal &p_to) const {
-	SGFixedVector3Internal ret(p_to.x - x, p_to.y - y);
+	SGFixedVector3Internal ret(p_to.x - x, p_to.y - y, p_to.z - z);
 	ret.normalize();
 	return ret;
 }
@@ -187,6 +187,7 @@ SGFixedVector3Internal SGFixedVector3Internal::linear_interpolate(const SGFixedV
 	SGFixedVector3Internal res = p_a;
 	res.x += (p_weight * (p_b.x - p_a.x));
 	res.y += (p_weight * (p_b.y - p_a.y));
+	res.z += (p_weight * (p_b.z - p_a.z));
 	return res;
 }
 

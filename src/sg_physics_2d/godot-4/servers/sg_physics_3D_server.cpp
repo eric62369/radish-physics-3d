@@ -353,7 +353,7 @@ RID SGPhysics3DServer::shape_create(SGPhysics3DServer::ShapeType p_shape_type) {
 	SGShape3DInternal *shape = nullptr;
 	switch (p_shape_type) {
 		case SHAPE_RECTANGLE: {
-			shape = memnew(SGRectangle3DInternal(SGFixedVector3Internal(fixed(655360), fixed(655360))));
+			shape = memnew(SGRectangle3DInternal(SGFixedVector3Internal(fixed(655360), fixed(655360), fixed(655360))));
 		} break;
 		case SHAPE_CIRCLE: {
 			shape = memnew(SGCircle3DInternal(fixed(655360)));

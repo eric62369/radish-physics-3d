@@ -27,10 +27,11 @@
 #include "sg_fixed_vector3_internal.h"
 
 struct SGFixedTransform3DInternal {
-	SGFixedVector3Internal elements[3];
+	SGFixedVector3Internal elements[4];
 
-	_FORCE_INLINE_ fixed tdotx(const SGFixedVector3Internal &v) const { return elements[0][0] * v.x + elements[1][0] * v.y; }
-	_FORCE_INLINE_ fixed tdoty(const SGFixedVector3Internal &v) const { return elements[0][1] * v.x + elements[1][1] * v.y; }
+	_FORCE_INLINE_ fixed tdotx(const SGFixedVector3Internal &v) const { return elements[0][0] * v.x + elements[1][0] * v.y + elements[2][0] * v.z; }
+	_FORCE_INLINE_ fixed tdoty(const SGFixedVector3Internal &v) const { return elements[0][1] * v.x + elements[1][1] * v.y + elements[2][1] * v.z; }
+	_FORCE_INLINE_ fixed tdotz(const SGFixedVector3Internal &v) const { return elements[0][2] * v.x + elements[1][2] * v.y + elements[2][2] * v.z; }
 
 	const SGFixedVector3Internal &operator[](int p_idx) const { return elements[p_idx]; }
 	SGFixedVector3Internal &operator[](int p_idx) { return elements[p_idx]; }
@@ -57,7 +58,7 @@ struct SGFixedTransform3DInternal {
 
 	void scale(const SGFixedVector3Internal &p_scale);
 	void scale_basis(const SGFixedVector3Internal &p_scale);
-	void translate(fixed p_tx, fixed p_ty);
+	void translate(fixed p_tx, fixed p_ty, fixed p_tz);
 	void translate(const SGFixedVector3Internal &p_translation);
 
 	fixed basis_determinant() const;
@@ -123,20 +124,20 @@ struct SGFixedTransform3DInternal {
 };
 
 SGFixedVector3Internal SGFixedTransform3DInternal::basis_xform(const SGFixedVector3Internal &p_vec) const {
-	return SGFixedVector3Internal(tdotx(p_vec), tdoty(p_vec));
+	return SGFixedVector3Internal(tdotx(p_vec), tdoty(p_vec), tdotz(p_vec));
 }
 
 SGFixedVector3Internal SGFixedTransform3DInternal::basis_xform_inv(const SGFixedVector3Internal &p_vec) const {
-	return SGFixedVector3Internal(elements[0].dot(p_vec), elements[1].dot(p_vec));
+	return SGFixedVector3Internal(elements[0].dot(p_vec), elements[1].dot(p_vec), elements[2].dot(p_vec));
 }
 
 SGFixedVector3Internal SGFixedTransform3DInternal::xform(const SGFixedVector3Internal &p_vec) const {
-	return SGFixedVector3Internal(tdotx(p_vec), tdoty(p_vec)) + elements[2];
+	return SGFixedVector3Internal(tdotx(p_vec), tdoty(p_vec), tdotz(p_vec)) + elements[2];
 }
 
 SGFixedVector3Internal SGFixedTransform3DInternal::xform_inv(const SGFixedVector3Internal &p_vec) const {
 	SGFixedVector3Internal v = p_vec - elements[2];
-	return SGFixedVector3Internal(elements[0].dot(v), elements[1].dot(v));
+	return SGFixedVector3Internal(elements[0].dot(v), elements[1].dot(v), elements[2].dot(v));
 }
 
 void SGFixedTransform3DInternal::set_rotation_and_scale(fixed p_rot, const SGFixedVector3Internal &p_scale) {
