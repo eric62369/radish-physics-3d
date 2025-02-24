@@ -28,7 +28,7 @@
 
 struct SGFixedRect3Internal {
 	SGFixedVector3Internal position;
-	SGFixedVector3Internal size;
+	SGFixedVector3Internal size; // TODO: doesn't a rectangular prism got a second depth?
 
 	_FORCE_INLINE_ SGFixedRect3Internal() {}
 

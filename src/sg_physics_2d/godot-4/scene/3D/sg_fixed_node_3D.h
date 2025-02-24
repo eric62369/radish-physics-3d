@@ -101,7 +101,7 @@ public:
 
 	void update_float_transform();
 
-	void fixed_vector2_changed(SGFixedVector3 *p_vector);
+	void fixed_vector3_changed(SGFixedVector3 *p_vector);
 
 	SGFixedNode3D();
 	~SGFixedNode3D();

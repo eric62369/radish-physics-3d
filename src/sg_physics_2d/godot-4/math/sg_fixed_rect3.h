@@ -27,7 +27,7 @@
 #include <godot_cpp/classes/ref_counted.hpp>
 
 #include "sg_fixed_vector3.h"
-#include "../../internal/sg_fixed_rect2_internal.h"
+#include "../../internal/sg_fixed_rect3_internal.h"
 
 using namespace godot;
 

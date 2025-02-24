@@ -305,10 +305,11 @@ void SGFixedNode3D::update_float_transform() {
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 		updating_transform = true;
 #endif
-
+		// TODO: how to float transform?
 		Transform3D float_xform;
-		float_xform.set_rotation_and_scale(fixed(fixed_rotation).to_float(), fixed_scale->to_float());
-		float_xform[2] = fixed_transform->get_origin()->to_float();
+		float_xform.rotate_basis(Vector3(0, 1, 0), fixed(fixed_rotation).to_float());
+		float_xform.scale(fixed_scale->to_float());
+		float_xform.origin = fixed_transform->get_origin()->to_float();
 		set_transform(float_xform);
 
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
@@ -320,7 +321,7 @@ void SGFixedNode3D::update_float_transform() {
 	Transform3D t = get_global_transform();
 }
 
-void SGFixedNode3D::fixed_vector2_changed(SGFixedVector3 *p_vector) {
+void SGFixedNode3D::fixed_vector3_changed(SGFixedVector3 *p_vector) {
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (Engine::get_singleton()->is_editor_hint() && updating_transform) {
 		return;
@@ -348,14 +349,14 @@ SGFixedNode3D::SGFixedNode3D() {
 	fixed_transform = Ref<SGFixedTransform3D>(memnew(SGFixedTransform3D));
 	fixed_transform->get_origin()->set_watcher(this);
 
-	fixed_scale = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ONE, fixed::ONE))));
+	fixed_scale = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ONE, fixed::ONE, fixed::ONE))));
 	fixed_scale->set_watcher(this);
 
 	fixed_rotation = 0;
 
 	fixed_xform_dirty = false;
 
-	CanvasItem::set_notify_transform(true);
+	// CanvasItem::set_notify_transform(true); // TODO: no canvas item?
 	// @todo Figure out how to re-implement this from GDExtension
 	//set_notify_transform(true);
 

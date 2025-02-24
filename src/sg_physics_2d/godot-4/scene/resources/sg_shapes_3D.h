@@ -68,7 +68,7 @@ public:
 	void set_extents(const Ref<SGFixedVector3>& p_extents);
 	Ref<SGFixedVector3> get_extents();
 
-	void fixed_vector2_changed(SGFixedVector3 *p_vector);
+	void fixed_vector3_changed(SGFixedVector3 *p_vector);
 
 	virtual void sync_to_physics_engine(RID p_internal_shape) const override;
 

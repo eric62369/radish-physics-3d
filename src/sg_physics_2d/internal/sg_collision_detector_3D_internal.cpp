@@ -178,7 +178,7 @@ bool SGCollisionDetector3DInternal::Circle_overlaps_Circle(const SGCircle3DInter
 		// If circles share an origin, then we arbitrarily decide that we
 		// separate them by moving up.
 		overlapping = true;
-		collision_normal = SGFixedVector3Internal(fixed::ZERO, fixed::NEG_ONE);
+		collision_normal = SGFixedVector3Internal(fixed::ZERO, fixed::NEG_ONE, fixed::ZERO); // TODO: what is z axis?
 		separation_vector = collision_normal * separation;
 	}
 	else {
@@ -493,7 +493,7 @@ bool SGCollisionDetector3DInternal::segment_intersects_Capsule(const SGFixedVect
 		}
 		colliding = true;
 	}
-	SGRectangle3DInternal rectangle(capsule.get_radius(), fixed(capsule.get_height().value / 2));
+	SGRectangle3DInternal rectangle(capsule.get_radius(), fixed(capsule.get_height().value / 2), capsule.get_radius()); // TODO: z collision how?
 	rectangle.set_transform(capsule.get_global_transform());
 	if (segment_intersects_Polygon(p_start, p_cast_to, rectangle, intersection_point, collision_normal)) {
 		fixed distance_squared = intersection_point.distance_squared_to(p_start);
@@ -572,7 +572,7 @@ bool SGCollisionDetector3DInternal::segment_intersects_Polygon(const SGFixedVect
 			if (!intersecting || distance < closest_distance) {
 				closest_distance = distance;
 				closest_intersection_point = intersection_point;
-				closest_collision_normal = SGFixedVector3Internal(edge.y, -edge.x).normalized();
+				closest_collision_normal = SGFixedVector3Internal(edge.y, -edge.x, edge.z).normalized(); // TODO: z collision normal how?
 			}
 			intersecting = true;
 		}

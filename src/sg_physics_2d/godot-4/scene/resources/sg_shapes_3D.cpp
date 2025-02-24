@@ -64,7 +64,7 @@ Ref<SGFixedVector3> SGRectangleShape3D::get_extents() {
 	return extents;
 }
 
-void SGRectangleShape3D::fixed_vector2_changed(SGFixedVector3 *p_vector) {
+void SGRectangleShape3D::fixed_vector3_changed(SGFixedVector3 *p_vector) {
 	emit_changed();
 }
 
@@ -92,11 +92,11 @@ void SGRectangleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
 	SGPhysics3DServer::get_singleton()->rectangle_set_extents(p_internal_shape, extents);
 }
 
-// void SGRectangleShape3D::draw(const RID &p_to_rid, const Color &p_color) {  // TODO: draw rectangle3D?
-// 	Vector3 float_extents = extents->to_float();
-
-// 	RenderingServer::get_singleton()->canvas_item_add_rect(p_to_rid, Rect2(-float_extents, float_extents * 2.0), p_color);
-// }
+void SGRectangleShape3D::draw(const RID &p_to_rid, const Color &p_color) {  // TODO: draw rectangle3D?
+	Vector3 float_extents = extents->to_float();
+	// TODO: drawing is hard https://github.com/godotengine/godot/blob/master/scene/resources/3d/box_shape_3d.cpp
+	// RenderingServer::get_singleton()->canvas_item_add_aabb(p_to_rid, AABB(-float_extents, float_extents * 2.0), p_color);
+}
 
 SGRectangleShape3D::SGRectangleShape3D() : SGShape3D(),
 	extents(Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(655360), fixed(655360), fixed(655360))))))
@@ -136,15 +136,16 @@ void SGCircleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
 void SGCircleShape3D::draw(const RID &p_to_rid, const Color &p_color) {
 	float float_radius = fixed(radius).to_float();
 
-	PackedVector2Array points;
-	for (int i = 0; i < 24; i++) {
+	PackedVector3Array points;
+	// TODO: draw 3D circle
+	// for (int i = 0; i < 24; i++) {
 
-		points.push_back(Vector2(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius);
-	}
+	// 	points.push_back(Vector2(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius);
+	// }
 
-	PackedColorArray col;
-	col.push_back(p_color);
-	RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
+	// PackedColorArray col;
+	// col.push_back(p_color);
+	// RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
 }
 
 SGCircleShape3D::SGCircleShape3D() : SGShape3D(),
@@ -197,18 +198,18 @@ void SGCapsuleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
 void SGCapsuleShape3D::draw(const RID& p_to_rid, const Color& p_color) {
 	float float_height = fixed(height).to_float();
 	float float_radius = fixed(radius).to_float();
+	// TODO: draw 3D capsule
+	// PackedVector3Array points;
+	// for (int i = 12; i < 24; i++) {
+	// 	points.push_back(Vector3(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius + Vector2(0, -float_height/2));
+	// }
+	// for (int i = 0; i < 12; i++) {
+	// 	points.push_back(Vector3(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius + Vector2(0, float_height / 2));
+	// }
 
-	PackedVector2Array points;
-	for (int i = 12; i < 24; i++) {
-		points.push_back(Vector2(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius + Vector2(0, -float_height/2));
-	}
-	for (int i = 0; i < 12; i++) {
-		points.push_back(Vector2(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius + Vector2(0, float_height / 2));
-	}
-
-	PackedColorArray col;
-	col.push_back(p_color);
-	RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
+	// PackedColorArray col;
+	// col.push_back(p_color);
+	// RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
 }
 
 SGCapsuleShape3D::SGCapsuleShape3D() : SGShape3D(),

@@ -75,11 +75,11 @@ void SGFixed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("pow", "fixed_one", "fixed_two"), &SGFixed::pow);
 	ClassDB::bind_method(D_METHOD("move_toward", "fixed_from_value", "fixed_to_value", "fixed_delta_value"), &SGFixed::move_toward);
 
-	ClassDB::bind_method(D_METHOD("vector2", "fixed_x", "fixed_y"), &SGFixed::vector2);
-	ClassDB::bind_method(D_METHOD("from_float_vector2", "float_vector"), &SGFixed::from_float_vector2);
+	ClassDB::bind_method(D_METHOD("vector3", "fixed_x", "fixed_y"), &SGFixed::vector3);
+	ClassDB::bind_method(D_METHOD("from_float_vector3", "float_vector"), &SGFixed::from_float_vector3);
 
-	ClassDB::bind_method(D_METHOD("rect2", "position", "size"), &SGFixed::rect2);
-	ClassDB::bind_method(D_METHOD("from_float_rect2", "float_rect"), &SGFixed::from_float_rect2);
+	ClassDB::bind_method(D_METHOD("rect3", "position", "size"), &SGFixed::rect3);
+	ClassDB::bind_method(D_METHOD("from_float_rect3", "float_rect"), &SGFixed::from_float_rect3);
 
 	ClassDB::bind_method(D_METHOD("transform3D", "rotation", "origin"), &SGFixed::transform3D);
 
@@ -234,26 +234,27 @@ int64_t SGFixed::move_toward(int64_t p_from, int64_t p_to, int64_t p_delta) cons
 	return fixed(p_from).move_toward(fixed(p_to), fixed(p_delta)).value;
 }
 
-Ref<SGFixedVector3> SGFixed::vector2(int64_t p_fixed_x, int64_t p_fixed_y) const {
-	return Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(p_fixed_x), fixed(p_fixed_y)))));
+Ref<SGFixedVector3> SGFixed::vector3(int64_t p_fixed_x, int64_t p_fixed_y, int64_t p_fixed_z) const {
+	return Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(p_fixed_x), fixed(p_fixed_y), fixed(p_fixed_z)))));
 }
 
-Ref<SGFixedVector3> SGFixed::from_float_vector2(const Vector2 &p_float_vector) const {
-	return Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::from_float(p_float_vector.x), fixed::from_float(p_float_vector.y)))));
+Ref<SGFixedVector3> SGFixed::from_float_vector3(const Vector3 &p_float_vector) const {
+	return Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::from_float(p_float_vector.x), fixed::from_float(p_float_vector.y), fixed::from_float(p_float_vector.z)))));
 }
 
-Ref<SGFixedRect3> SGFixed::rect2(const Ref<SGFixedVector3> &p_position, const Ref<SGFixedVector3> &p_size) const {
+Ref<SGFixedRect3> SGFixed::rect3(const Ref<SGFixedVector3> &p_position, const Ref<SGFixedVector3> &p_size) const {
 	Ref<SGFixedRect3> ret(memnew(SGFixedRect3));
 	ret->set_position(p_position);
 	ret->set_size(p_size);
 	return ret;
 }
 
-Ref<SGFixedRect3> SGFixed::from_float_rect2(const Rect2 &p_float_rect) const {
+Ref<SGFixedRect3> SGFixed::from_float_rect3(const Rect2 &p_float_rect) const {
 	Ref<SGFixedRect3> ret(memnew(SGFixedRect3));
-	ret->set_internal(SGFixedRect3Internal(
-			SGFixedVector3Internal(fixed::from_float(p_float_rect.position.x), fixed::from_float(p_float_rect.position.y)),
-			SGFixedVector3Internal(fixed::from_float(p_float_rect.size.x), fixed::from_float(p_float_rect.size.y))));
+	// TODO: no rect3??
+	// ret->set_internal(SGFixedRect3Internal(
+	// 		SGFixedVector3Internal(fixed::from_float(p_float_rect.position.x), fixed::from_float(p_float_rect.position.y), fixed::from_float(p_float_rect.position.z)),
+	// 		SGFixedVector3Internal(fixed::from_float(p_float_rect.size.x), fixed::from_float(p_float_rect.size.y), fixed::from_float(p_float_rect.size.z))));
 	return ret;
 }
 

@@ -59,19 +59,22 @@ Transform3D SGFixedTransform3D::to_float() const {
 	Vector3 y_float = y->to_float();
 	Vector3 z_float = z->to_float();
 	Vector3 origin_float = origin->to_float();
-	return Transform3D(x_float.x, x_float.y, y_float.x, y_float.y, origin_float.x, origin_float.y);
+	return Transform3D(x_float.x, x_float.y, x_float.z, y_float.x, y_float.y, y_float.z, z_float.x, z_float.y, z_float.z, origin_float.x, origin_float.y, origin_float.z);
 }
 
 void SGFixedTransform3D::from_float(const Transform3D &p_float_transform) {
-	x->from_float(p_float_transform[0]);
-	y->from_float(p_float_transform[1]);
-	origin->from_float(p_float_transform[2]);
+	// TODO: someone remind me how 3D transforms are different than columns in 2D / how to get the vectors from transform 
+	// x->from_float(p_float_transform.origin.x);
+	// y->from_float(p_float_transform[1]);
+	// z->from_float(p_float_transform[2]);
+	// origin->from_float(p_float_transform[3]);
 }
 
 Ref<SGFixedTransform3D> SGFixedTransform3D::copy() const {
 	Ref<SGFixedTransform3D> ret(memnew(SGFixedTransform3D));
 	ret->x->set_internal(x->get_internal());
 	ret->y->set_internal(y->get_internal());
+	ret->z->set_internal(z->get_internal());
 	ret->origin->set_internal(origin->get_internal());
 	return ret;
 }
@@ -84,6 +87,11 @@ void SGFixedTransform3D::set_x(const Ref<SGFixedVector3> &p_x) {
 void SGFixedTransform3D::set_y(const Ref<SGFixedVector3> &p_y) {
 	ERR_FAIL_COND(!p_y.is_valid());
 	y->set_internal(p_y->get_internal());
+}
+
+void SGFixedTransform3D::set_z(const Ref<SGFixedVector3> &p_z) {
+	ERR_FAIL_COND(!p_z.is_valid());
+	z->set_internal(p_z->get_internal());
 }
 
 void SGFixedTransform3D::set_origin(const Ref<SGFixedVector3> &p_origin) {
@@ -186,8 +194,9 @@ Ref<SGFixedVector3> SGFixedTransform3D::xform_inv(const Ref<SGFixedVector3> &p_v
 }
 
 SGFixedTransform3D::SGFixedTransform3D() :
-	x(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ONE, fixed::ZERO)))),
-	y(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ZERO, fixed::ONE)))),
+	x(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ONE, fixed::ZERO, fixed::ZERO)))),
+	y(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ZERO, fixed::ONE, fixed::ZERO)))),
+	z(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ZERO, fixed::ZERO, fixed::ONE)))),
 	origin(memnew(SGFixedVector3()))
 {
 }
@@ -195,6 +204,7 @@ SGFixedTransform3D::SGFixedTransform3D() :
 SGFixedTransform3D::SGFixedTransform3D(const SGFixedTransform3DInternal &p_internal) :
 	x(memnew(SGFixedVector3(p_internal.elements[0]))),
 	y(memnew(SGFixedVector3(p_internal.elements[1]))),
-	origin(memnew(SGFixedVector3(p_internal.elements[2])))
+	z(memnew(SGFixedVector3(p_internal.elements[2]))),
+	origin(memnew(SGFixedVector3(p_internal.elements[3])))
 {
 }

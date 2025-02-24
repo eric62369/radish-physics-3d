@@ -72,8 +72,8 @@ completeness.
 And, we provide some new fixed-point types that mirror the built-in Godot types,
 for example:
 
- - `SGFixedVector3` replaces `Vector2`
- - `SGFixedTransform2D` replaces `Transform2D`
+ - `SGFixedVector3` replaces `Vector3`
+ - `SGFixedTransform2D` replaces `Transform3D`
  - `SGFixedRect3` replaces `Rect2`
 
 Complete API documentation will be coming soon.

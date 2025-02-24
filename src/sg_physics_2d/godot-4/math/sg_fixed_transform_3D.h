@@ -62,10 +62,16 @@ public:
 	_FORCE_INLINE_ void set_internal(const SGFixedTransform3DInternal &p_internal) {
 		x->set_x(p_internal[0][0].value);
 		x->set_y(p_internal[0][1].value);
+		x->set_z(p_internal[0][2].value);
 		y->set_x(p_internal[1][0].value);
 		y->set_y(p_internal[1][1].value);
-		origin->set_x(p_internal[2][0].value);
-		origin->set_y(p_internal[2][1].value);
+		y->set_z(p_internal[1][2].value);
+		z->set_x(p_internal[2][0].value);
+		z->set_y(p_internal[2][1].value);
+		z->set_z(p_internal[2][2].value);
+		origin->set_x(p_internal[3][0].value);
+		origin->set_y(p_internal[3][1].value);
+		origin->set_z(p_internal[3][2].value);
 	}
 
 	_FORCE_INLINE_ static Ref<SGFixedTransform3D> from_internal(const SGFixedTransform3DInternal &p_internal) {

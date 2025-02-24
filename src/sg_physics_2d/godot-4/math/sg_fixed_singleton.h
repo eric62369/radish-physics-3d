@@ -90,11 +90,11 @@ public:
 	int64_t pow(int64_t p_fixed_one, int64_t p_fixed_two) const;
 	int64_t move_toward(int64_t p_from, int64_t p_to, int64_t p_delta) const;
 
-	Ref<SGFixedVector3> vector2(int64_t p_fixed_x, int64_t p_fixed_y) const;
-	Ref<SGFixedVector3> from_float_vector2(const Vector2 &p_float_vector) const;
+	Ref<SGFixedVector3> vector3(int64_t p_fixed_x, int64_t p_fixed_y, int64_t p_fixed_z) const;
+	Ref<SGFixedVector3> from_float_vector3(const Vector3 &p_float_vector) const;
 
-	Ref<SGFixedRect3> rect2(const Ref<SGFixedVector3> &p_position, const Ref<SGFixedVector3> &p_size) const;
-	Ref<SGFixedRect3> from_float_rect2(const Rect2 &p_float_rect) const;
+	Ref<SGFixedRect3> rect3(const Ref<SGFixedVector3> &p_position, const Ref<SGFixedVector3> &p_size) const;
+	Ref<SGFixedRect3> from_float_rect3(const Rect2 &p_float_rect) const; // TODO: there's no rect3???
 
 	Ref<SGFixedTransform3D> transform3D(int64_t p_rotation, const Ref<SGFixedVector3> &p_origin) const;
 
