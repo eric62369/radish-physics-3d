@@ -130,7 +130,7 @@ fi
 
 PODMAN_OPTS=${PODMAN_OPTS:-}
 
-(cd $GODOT_BUILD_DIR && patch -p1 < $CI_PROJECT_DIR/src/sg_physics_2d/godot-3/convert_float_contextual_menu.patch)
+(cd $GODOT_BUILD_DIR && patch -p1 < $CI_PROJECT_DIR/src/sg_physics_3d/godot-3/convert_float_contextual_menu.patch)
 
 podman run --rm --systemd=false -v "$(realpath $GODOT_BUILD_DIR):/build" -v "$(realpath $GODOT_SOURCE_DIR):/src" -v "$(pwd)/scripts/godot:/scripts" -w /build -e NUM_CORES="$NUM_CORES" -e PLATFORM="$PLATFORM" -e BITS="$BITS" -e MONO="$MONO" -e TARGET="$TARGET" -e FN_TOOLS="$FN_TOOLS" -e FN_OPT="$FN_OPT" -e "SCONS_OPTS=$SCONS_OPTS" -e BUILD_TYPE=$BUILD_TYPE $PODMAN_OPTS "$IMAGE" /scripts/$CMD $BUILD_TYPE
 exit $?

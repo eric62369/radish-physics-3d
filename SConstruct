@@ -22,7 +22,7 @@ env.Append(CPPDEFINES=['USE_GDEXTENSION'])
 # Updates the environment with the option variables.
 opts.Update(env)
 
-sg_physics_2d_subdirs = [
+sg_physics_3d_subdirs = [
 	"internal/",
     "godot-4/math/",
     "godot-4/servers/",
@@ -33,11 +33,11 @@ sg_physics_2d_subdirs = [
 ]
 sources = []
 
-for d in sg_physics_2d_subdirs:
-    sources += Glob('src/sg_physics_2d/' + d + "*.cpp")
+for d in sg_physics_3d_subdirs:
+    sources += Glob('src/sg_physics_3d/' + d + "*.cpp")
 
 if env.editor_build or env.debug_features:
-    sources += Glob('src/sg_physics_2d/godot-4/editor/*.cpp')
+    sources += Glob('src/sg_physics_3d/godot-4/editor/*.cpp')
 
 env.Append(CPPPATH=['src/'])
 
@@ -56,8 +56,8 @@ else:
     )
 
 
-build_icons = env.Install(target=env['target_path'] + 'sg-physics-3d/icons/', source=Glob('src/sg_physics_2d/godot-4/icons/*.svg'))
-project_icons = env.Install(target='projects/godot-4/sg-physics-3d/icons/', source=Glob('src/sg_physics_2d/godot-4/icons/*.svg'))
+build_icons = env.Install(target=env['target_path'] + 'sg-physics-3d/icons/', source=Glob('src/sg_physics_3d/godot-4/icons/*.svg'))
+project_icons = env.Install(target='projects/godot-4/sg-physics-3d/icons/', source=Glob('src/sg_physics_3d/godot-4/icons/*.svg'))
 
 library_copy = env.Install(target='projects/godot-4/sg-physics-3d/lib/', source=library)
 gdextension_copy = env.Install(target='projects/godot-4/sg-physics-3d/', source=env['target_path'] + 'sg-physics-3d/sg-physics-3d.gdextension')
