@@ -26,7 +26,7 @@ sg_physics_3d_subdirs = [
 	"internal/",
     "godot-4/math/",
     "godot-4/servers/",
-    "godot-4/scene/3d/",
+    "godot-4/scene/3D/",
     "godot-4/scene/resources/",
     "godot-4/scene/animation/",
     "godot-4/",

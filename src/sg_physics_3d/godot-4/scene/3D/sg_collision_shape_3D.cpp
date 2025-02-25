@@ -50,28 +50,28 @@ void SGCollisionShape3D::_bind_methods() {
 
 void SGCollisionShape3D::_notification(int p_what) {
 	switch (p_what) {
-		case NOTIFICATION_DRAW: {
-			if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_collisions_hint()) {
-				break;
-			}
+		// case NOTIFICATION_DRAW: { // TODO: 3D draw notification
+		// 	if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_collisions_hint()) {
+		// 		break;
+		// 	}
 
-			if (!shape.is_valid()) {
-				break;
-			}
+		// 	if (!shape.is_valid()) {
+		// 		break;
+		// 	}
 
-			// @todo Get access to the debug collision color from GDExtension
-			//Color draw_col = get_tree()->get_debug_collisions_color();
-			Color draw_col = debug_color;
-			if (disabled) {
-				float g = draw_col.get_v();
-				draw_col.r = g;
-				draw_col.g = g;
-				draw_col.b = g;
-				draw_col.a *= 0.5;
-			}
+		// 	// @todo Get access to the debug collision color from GDExtension
+		// 	//Color draw_col = get_tree()->get_debug_collisions_color();
+		// 	Color draw_col = debug_color;
+		// 	if (disabled) {
+		// 		float g = draw_col.get_v();
+		// 		draw_col.r = g;
+		// 		draw_col.g = g;
+		// 		draw_col.b = g;
+		// 		draw_col.a *= 0.5;
+		// 	}
 
-			shape->draw(get_canvas_item(), draw_col);
-		} break;
+		// 	shape->draw(get_canvas_item(), draw_col);
+		// } break;
 
 		case NOTIFICATION_PARENTED: {
 			SGCollisionObject3D *parent_node = Object::cast_to<SGCollisionObject3D>(get_parent());
@@ -96,7 +96,7 @@ void SGCollisionShape3D::_notification(int p_what) {
 void SGCollisionShape3D::set_disabled(bool p_disabled) {
 	if (disabled != p_disabled) {
 		disabled = p_disabled;
-		queue_redraw();
+		// TODO: queue_redraw 3D
 		if (collision_object_rid.is_valid() && rid.is_valid()) {
 			if (disabled) {
 				SGPhysics3DServer::get_singleton()->collision_object_remove_shape(collision_object_rid, rid);
@@ -135,7 +135,7 @@ void SGCollisionShape3D::set_shape(const Ref<SGShape3D> &p_shape) {
 		}
 	}
 
-	queue_redraw();
+	// TODO: queue_redraw 3D
 }
 
 Ref<SGShape3D> SGCollisionShape3D::get_shape() {
@@ -143,12 +143,12 @@ Ref<SGShape3D> SGCollisionShape3D::get_shape() {
 }
 
 void SGCollisionShape3D::_shape_changed() {
-	queue_redraw();
+	// TODO: queue_redraw 3D
 }
 
 void SGCollisionShape3D::set_debug_color(const Color& p_color) {
 	debug_color = p_color;
-	queue_redraw();
+	// TODO: queue_redraw 3D
 }
 
 Color SGCollisionShape3D::get_debug_color() const {

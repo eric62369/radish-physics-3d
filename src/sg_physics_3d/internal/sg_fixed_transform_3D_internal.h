@@ -132,11 +132,11 @@ SGFixedVector3Internal SGFixedTransform3DInternal::basis_xform_inv(const SGFixed
 }
 
 SGFixedVector3Internal SGFixedTransform3DInternal::xform(const SGFixedVector3Internal &p_vec) const {
-	return SGFixedVector3Internal(tdotx(p_vec), tdoty(p_vec), tdotz(p_vec)) + elements[2];
+	return SGFixedVector3Internal(tdotx(p_vec), tdoty(p_vec), tdotz(p_vec)) + elements[3];
 }
 
 SGFixedVector3Internal SGFixedTransform3DInternal::xform_inv(const SGFixedVector3Internal &p_vec) const {
-	SGFixedVector3Internal v = p_vec - elements[2];
+	SGFixedVector3Internal v = p_vec - elements[3];
 	return SGFixedVector3Internal(elements[0].dot(v), elements[1].dot(v), elements[2].dot(v));
 }
 

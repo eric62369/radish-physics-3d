@@ -23,6 +23,7 @@
 
 #include "sg_fixed_position_3D.h"
 
+#include <godot_cpp/classes/canvas_item.hpp>
 #include <godot_cpp/classes/engine.hpp>
 
 #define DEFAULT_EXTENTS_FIXED 655360
@@ -31,16 +32,17 @@
 void SGFixedPosition3D::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_ENTER_TREE: {
-			queue_redraw();
+			// TODO: queue_redraw 3D
 		} break;
-		case NOTIFICATION_DRAW: {
-			if (!is_inside_tree())
-				break;
-			if (Engine::get_singleton()->is_editor_hint()) {
-				draw_line(Point2(-DEFAULT_EXTENTS_FLOAT, 0), Point2(+DEFAULT_EXTENTS_FLOAT, 0), Color(0.96, 0.20, 0.32));
-				draw_line(Point2(0, -DEFAULT_EXTENTS_FLOAT), Point2(0, +DEFAULT_EXTENTS_FLOAT), Color(0.53, 0.84, 0.01));
-			}
-		} break;
+		// case NOTIFICATION_DRAW: { // TODO: how to 3D draw notification?
+		// 	if (!is_inside_tree())
+		// 		break;
+		// 	if (Engine::get_singleton()->is_editor_hint()) {
+		// 		// TODO: draw 3D
+		// 		// draw_line(Point2(-DEFAULT_EXTENTS_FLOAT, 0), Point2(+DEFAULT_EXTENTS_FLOAT, 0), Color(0.96, 0.20, 0.32));
+		// 		// draw_line(Point2(0, -DEFAULT_EXTENTS_FLOAT), Point2(0, +DEFAULT_EXTENTS_FLOAT), Color(0.53, 0.84, 0.01));
+		// 	}
+		// } break;
 	}
 }
 

@@ -35,7 +35,7 @@ class SGCollisionPolygon3D : public SGFixedNode3D {
 
 protected:
 	mutable Rect2 aabb;
-	mutable PackedVector2Array polygon;
+	mutable PackedVector3Array polygon;
 	Array fixed_polygon;
 	RID collision_object_rid;
 	RID rid;
@@ -69,8 +69,8 @@ public:
 	void set_disabled(bool p_disabled);
 	bool get_disabled() const;
 
-	void set_polygon(const PackedVector2Array &p_polygon);
-	PackedVector2Array get_polygon() const;
+	void set_polygon(const PackedVector3Array &p_polygon);
+	PackedVector3Array get_polygon() const;
 
 	void set_fixed_polygon(const Array &p_fixed_polygon);
 	Array get_fixed_polygon() const;

@@ -80,7 +80,7 @@ void SGRayCast3D::_bind_methods() {
 }
 
 void SGRayCast3D::_notification(int p_what) {
-	switch (p_what) {
+	// switch (p_what) {
 		// case NOTIFICATION_DRAW: {
 		// TODO: how to draw raycast
 		// 	if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_collisions_hint())
@@ -108,7 +108,7 @@ void SGRayCast3D::_notification(int p_what) {
 		// 	draw_primitive(pts, cols, PackedVector2Array());
 
 		// } break;
-	}
+	// }
 }
 
 Ref<SGFixedVector3> SGRayCast3D::get_cast_to() const {
@@ -118,7 +118,7 @@ Ref<SGFixedVector3> SGRayCast3D::get_cast_to() const {
 void SGRayCast3D::set_cast_to(const Ref<SGFixedVector3> &p_cast_to) {
 	ERR_FAIL_COND(!p_cast_to.is_valid());
 	cast_to->set_internal(p_cast_to->get_internal());
-	queue_redraw();
+	// TODO: queue_redraw 3D
 }
 
 int64_t SGRayCast3D::_get_cast_to_x() const {
@@ -127,7 +127,7 @@ int64_t SGRayCast3D::_get_cast_to_x() const {
 
 void SGRayCast3D::_set_cast_to_x(int64_t p_x) {
 	cast_to->set_x(p_x);
-	queue_redraw();
+	// TODO: queue_redraw 3D
 }
 
 int64_t SGRayCast3D::_get_cast_to_y() const {
@@ -136,7 +136,7 @@ int64_t SGRayCast3D::_get_cast_to_y() const {
 
 void SGRayCast3D::_set_cast_to_y(int64_t p_y) {
 	cast_to->set_y(p_y);
-	queue_redraw();
+	// TODO: queue_redraw 3D
 }
 
 uint32_t SGRayCast3D::get_collision_mask() const {
@@ -255,7 +255,7 @@ void SGRayCast3D::set_world(RID p_world) {
 
 SGRayCast3D::SGRayCast3D() {
 	// Start casting to (0, 50) like Godot's RayCast3D.
-	cast_to = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ZERO, fixed(3276800)))));
+	cast_to = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ZERO, fixed(3276800), fixed::ZERO))));
 	collision_mask = 1;
 
 	colliding = false;

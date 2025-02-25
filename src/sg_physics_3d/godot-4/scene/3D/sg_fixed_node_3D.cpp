@@ -120,6 +120,7 @@ void SGFixedNode3D::_update_fixed_transform_rotation_and_scale() {
 	new_xform.set_rotation_and_scale(fixed(fixed_rotation), fixed_scale->get_internal());
 	fixed_transform->get_x()->set_internal(new_xform[0]);
 	fixed_transform->get_y()->set_internal(new_xform[1]);
+	fixed_transform->get_y()->set_internal(new_xform[2]);
 	transform_changed();
 }
 
@@ -232,18 +233,17 @@ Ref<SGFixedVector3> SGFixedNode3D::get_fixed_scale() const {
 void SGFixedNode3D::set_fixed_rotation(int64_t p_fixed_rotation) {
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	//disable to avoid loop of updates of transform
-	CanvasItem::set_notify_transform(false);
+	// CanvasItem::set_notify_transform(false);
 #endif
 	fixed_rotation = p_fixed_rotation;
 	_update_fixed_transform_rotation_and_scale();
-
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (Engine::get_singleton()->is_editor_hint()) {
 		updating_transform = true;
-		set_rotation(fixed(fixed_rotation).to_float());
+		set_rotation(Vector3(0, fixed(fixed_rotation).to_float(), 0));
 		updating_transform = false;
 	}
-	CanvasItem::set_notify_transform(true);
+	// CanvasItem::set_notify_transform(true);
 #endif
 }
 
@@ -356,7 +356,7 @@ SGFixedNode3D::SGFixedNode3D() {
 
 	fixed_xform_dirty = false;
 
-	CanvasItem::set_notify_transform(true); // TODO: no canvas item?
+	// CanvasItem::set_notify_transform(true); // TODO: no 3D canvas item?
 	// @todo Figure out how to re-implement this from GDExtension
 	set_notify_transform(true);
 

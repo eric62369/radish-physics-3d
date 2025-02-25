@@ -61,7 +61,7 @@ void SGCollisionObject3D::_notification(int p_what) {
 			sync_to_physics_engine();
 			break;
 
-		case NOTIFICATION_EXIT_CANVAS: // NOTIFICATION_EXIT_TREE // TODO: why was it exit canvas and why doesn't it register?
+		case NOTIFICATION_EXIT_TREE: // TODO: why was it exit canvas and why doesn't it register?
 			SGPhysics3DServer::get_singleton()->world_remove_collision_object(world_rid, rid);
 			break;
 	}
