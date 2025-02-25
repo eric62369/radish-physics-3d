@@ -39,14 +39,12 @@
 #include "./scene/3D/sg_character_body_3D.h"
 #include "./scene/3D/sg_ray_cast_3D.h"
 #include "./scene/3D/sg_collision_shape_3D.h"
-#include "./scene/3D/sg_collision_polygon_3D.h"
 #include "./scene/resources/sg_shapes_3D.h"
 #include "./servers/sg_physics_3D_server.h"
 #include "../internal/sg_world_3D_internal.h"
 
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 #include "./editor/sg_collision_shape_3D_editor_plugin.h"
-#include "./editor/sg_collision_polygon_3D_editor_plugin.h"
 #endif
 
 using namespace godot;
@@ -75,7 +73,6 @@ void register_sg_physics_3D_extension_types(ModuleInitializationLevel p_level) {
 		GDREGISTER_CLASS(SGRayCastCollision3D);
 
 		GDREGISTER_CLASS(SGCollisionShape3D);
-		GDREGISTER_CLASS(SGCollisionPolygon3D);
 
 		GDREGISTER_VIRTUAL_CLASS(SGShape3D);
 		GDREGISTER_CLASS(SGRectangleShape3D);
@@ -92,11 +89,8 @@ void register_sg_physics_3D_extension_types(ModuleInitializationLevel p_level) {
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (p_level == MODULE_INITIALIZATION_LEVEL_EDITOR) {
 		GDREGISTER_CLASS(SGCollisionShape3DEditorPlugin);
-		GDREGISTER_CLASS(SGCollisionPolygon3DEditor);
-		GDREGISTER_CLASS(SGCollisionPolygon3DEditorPlugin);
 
 		EditorPlugins::add_by_type<SGCollisionShape3DEditorPlugin>();
-		EditorPlugins::add_by_type<SGCollisionPolygon3DEditorPlugin>();
 	}
 #endif
 }

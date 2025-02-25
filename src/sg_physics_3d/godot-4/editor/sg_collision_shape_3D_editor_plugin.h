@@ -45,7 +45,7 @@ class SGCollisionShape3DEditorPlugin : public EditorPlugin {
 	EditorUndoRedoManager *undo_redo;
 	SGCollisionShape3D *node = NULL;
 
-	Vector<Point2> handles;
+	Vector<Vector3> handles;
 
 	int shape_type;
 	int edit_handle;
@@ -53,7 +53,7 @@ class SGCollisionShape3DEditorPlugin : public EditorPlugin {
 	Variant original;
 
 	Variant get_handle_value(int idx) const;
-	void set_handle(int idx, Point2 &p_point);
+	void set_handle(int idx, Vector3 &p_point);
 	void commit_handle(int idx, Variant &p_org);
 
 	void _get_current_shape_type();

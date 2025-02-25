@@ -26,7 +26,6 @@
 #define TTR(m) m
 
 #include "sg_collision_shape_3D.h"
-#include "sg_collision_polygon_3D.h"
 #include "../../servers/sg_physics_3D_server.h"
 
 #include "../../../internal/sg_bodies_3D_internal.h"
@@ -76,10 +75,6 @@ PackedStringArray SGCollisionObject3D::_get_configuration_warnings() const {
 			has_shape_child = true;
 			break;
 		}
-		if (Object::cast_to<SGCollisionPolygon3D>(get_child(i))) {
-			has_shape_child = true;
-			break;
-		}
 	}
 	if (!has_shape_child) {
 		warnings.push_back(TTR("This node needs at least one SGCollisionShape3D as a child."));
@@ -110,12 +105,6 @@ void SGCollisionObject3D::sync_to_physics_engine() const {
 		SGCollisionShape3D *shape = Object::cast_to<SGCollisionShape3D>(get_child(i));
 		if (shape) {
 			shape->sync_to_physics_engine();
-		}
-		else {
-			SGCollisionPolygon3D *polygon = Object::cast_to<SGCollisionPolygon3D>(get_child(i));
-			if (polygon) {
-				polygon->sync_to_physics_engine();
-			}
 		}
 	}
 
