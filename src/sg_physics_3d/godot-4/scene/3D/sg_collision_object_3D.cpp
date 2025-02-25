@@ -25,8 +25,6 @@
 
 #define TTR(m) m
 
-#include <godot_cpp/classes/canvas_item.hpp>
-
 #include "sg_collision_shape_3D.h"
 #include "sg_collision_polygon_3D.h"
 #include "../../servers/sg_physics_3D_server.h"

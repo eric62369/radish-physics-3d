@@ -112,7 +112,7 @@ Ref<SGFixedVector3> SGCharacterBody3D::get_floor_normal() const {
 }
 
 int SGCharacterBody3D::get_floor_angle(const Ref<SGFixedVector3> &p_up_direction) const {
-	SGFixedVector3Internal up_direction(fixed::ZERO, fixed::NEG_ONE);
+	SGFixedVector3Internal up_direction(fixed::ZERO, fixed::NEG_ONE, fixed::ZERO);
 	if (p_up_direction.is_valid()) {
 		up_direction = p_up_direction->get_internal();
 	}
@@ -236,7 +236,7 @@ SGCharacterBody3D::SGCharacterBody3D()
 	: SGPhysicsBody3D(SGPhysics3DServer::get_singleton()->collision_object_create(SGPhysics3DServer::OBJECT_BODY, SGPhysics3DServer::BODY_CHARACTER))
 {
 	velocity.instantiate();
-	up_direction = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(0), fixed(-65536)))));
+	up_direction = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(0), fixed(-65536), fixed(0)))));
 	max_slides = 4;
 	floor_max_angle = fixed(51471);
 

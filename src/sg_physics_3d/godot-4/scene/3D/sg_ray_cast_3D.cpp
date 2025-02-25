@@ -82,6 +82,7 @@ void SGRayCast3D::_bind_methods() {
 void SGRayCast3D::_notification(int p_what) {
 	switch (p_what) {
 		// case NOTIFICATION_DRAW: {
+		// TODO: how to draw raycast
 		// 	if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_collisions_hint())
 		// 		break;
 		// 	Transform3D xf;
