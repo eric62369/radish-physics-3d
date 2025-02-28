@@ -4,7 +4,7 @@ extends SGArea2D
 
 const SPEED = SGFixed.ONE * 10
 
-var vector: SGFixedVector2
+var vector: SGFixedVector3
 
 func _ready() -> void:
 	color_rect.color = Color(randf(), randf(), randf(), 1.0)

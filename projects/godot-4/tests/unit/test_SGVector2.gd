@@ -1,7 +1,7 @@
 extends "res://addons/gut/test.gd"
 
 func test_normalize():
-	var v: SGFixedVector2
+	var v: SGFixedVector3
 	
 	# Normal kind of vector
 	v = SGFixed.vector2(65536, 65536).normalized()

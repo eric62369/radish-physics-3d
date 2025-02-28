@@ -68,9 +68,9 @@ fixed_position_y = 5832704
 position = Vector2(506, 89)
 
 [node name="Player" type="SGCharacterBody2D" parent="."]
-velocity = Object(SGFixedVector2,"x":0,"y":0,"script":null)
+velocity = Object(SGFixedVector3,"x":0,"y":0,"script":null)
 
-up_direction = Object(SGFixedVector2,"x":0,"y":-65536,"script":null)
+up_direction = Object(SGFixedVector3,"x":0,"y":-65536,"script":null)
 
 fixed_position_x = 9699328
 fixed_position_y = 17170432

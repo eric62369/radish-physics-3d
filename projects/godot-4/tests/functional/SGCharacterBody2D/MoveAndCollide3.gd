@@ -8,7 +8,7 @@ var movements := []
 var slides := []
 
 
-func move_and_compare(kinematic: SGCharacterBody2D, velocity: SGFixedVector2) -> void:
+func move_and_compare(kinematic: SGCharacterBody2D, velocity: SGFixedVector3) -> void:
 	var before := kinematic.fixed_position.copy()
 	kinematic.velocity = velocity
 	kinematic.move_and_slide()

@@ -10,7 +10,7 @@ Download
 
 You can download prebuilt binaries for several platforms from the "Releases" page:
 
-[https://gitlab.com/snopek-games/sg-physics-2d/-/releases](https://gitlab.com/snopek-games/sg-physics-2d/-/releases)
+[https://gitlab.com/snopek-games/sg-physics-3d/-/releases](https://gitlab.com/snopek-games/sg-physics-3d/-/releases)
 
 What is "deterministic" physics and why would I need it?
 --------------------------------------------------------
@@ -72,9 +72,9 @@ completeness.
 And, we provide some new fixed-point types that mirror the built-in Godot types,
 for example:
 
- - `SGFixedVector2` replaces `Vector2`
- - `SGFixedTransform2D` replaces `Transform2D`
- - `SGFixedRect2` replaces `Rect2`
+ - `SGFixedVector3` replaces `Vector3`
+ - `SGFixedTransform2D` replaces `Transform3D`
+ - `SGFixedRect3` replaces `Rect2`
 
 Complete API documentation will be coming soon.
 
@@ -86,7 +86,7 @@ values that we can represent, that's called an "overflow".
 If an overflow happens, you're not going to the result you're looking for, or
 your game may even crash.
 
-**To prevent overflow, any `SGFixedVector2` shouldn't have an X or Y component
+**To prevent overflow, any `SGFixedVector3` shouldn't have an X or Y component
 outside the range `-1966080000` to `1966080000` (which is `-30000.0` to `30000.0` in
 "real world" numbers)!**
 
@@ -221,13 +221,13 @@ SG Physics 2D doesn't include a special node for tile maps. If you want to add
 collision shapes to a `TileMap` node, you'd do it in code, rather than in the
 editor.
 
-Creating a thousands of `SGStaticBody2D` and `SGCollisionShape2D` nodes can
+Creating a thousands of `SGStaticBody3D` and `SGCollisionShape3D` nodes can
 cause performance problems, so instead of creating nodes, you can create
-resources using the `SGPhysics2DServer`.
+resources using the `SGPhysics3DServer`.
 
 There's a demo in the code base demonstrating how to do this:
 
-[https://gitlab.com/snopek-games/sg-physics-2d/-/blob/main/projects/godot-4/demos/tilemap/Main.gd](https://gitlab.com/snopek-games/sg-physics-2d/-/blob/main/projects/godot-4/demos/tilemap/Main.gd)
+[https://gitlab.com/snopek-games/sg-physics-3d/-/blob/main/projects/godot-4/demos/tilemap/Main.gd](https://gitlab.com/snopek-games/sg-physics-3d/-/blob/main/projects/godot-4/demos/tilemap/Main.gd)
 
 Compiling from source
 ---------------------
@@ -238,7 +238,7 @@ In Godot 4, SG Physics 2D is implemented as a GDExtension.
 
 You can download prebuilt binaries for several platforms from the "Releases" page:
 
-[https://gitlab.com/snopek-games/sg-physics-2d/-/releases](https://gitlab.com/snopek-games/sg-physics-2d/-/releases)
+[https://gitlab.com/snopek-games/sg-physics-3d/-/releases](https://gitlab.com/snopek-games/sg-physics-3d/-/releases)
 
 However, if you'd like to build it from source yourself, you can follow these steps:
 
@@ -265,7 +265,7 @@ GDNative plugin) must be compiled into Godot.
 You can download pre-compiled binaries for Windows, Linux, MacOS and HTML5
 from the releases page:
 
-[https://gitlab.com/snopek-games/sg-physics-2d/-/releases](https://gitlab.com/snopek-games/sg-physics-2d/-/releases)
+[https://gitlab.com/snopek-games/sg-physics-3d/-/releases](https://gitlab.com/snopek-games/sg-physics-3d/-/releases)
 
 However, if are targeting a platform that doesn't have pre-compiled binaries,
 or need to include another module, or just want to compile it yourself, you
@@ -279,7 +279,7 @@ can follow these steps:
     source code and run:
 
 	```
-	scons platform=PLATFORM tools=yes target=release_debug custom_modules=/PATH/sg-physics-2d/src
+	scons platform=PLATFORM tools=yes target=release_debug custom_modules=/PATH/sg-physics-3d/src
 	```
 
 	... replacing `PLATFORM` with your desired platform (ex. windows, osx,
@@ -290,13 +290,13 @@ The instructions above will compile the Godot editor. If you want to compile
 the debug export templates instead, replace the command in the 3rd step with:
 
 ```
-scons platform=PLATFORM tools=no target=debug custom_modules=/PATH/sg-physics-2d/src
+scons platform=PLATFORM tools=no target=debug custom_modules=/PATH/sg-physics-3d/src
 ```
 
 ... or for the release export templates:
 
 ```
-scons platform=PLATFORM tools=no target=release production=yes custom_modules=/PATH/sg-physics-2d/src
+scons platform=PLATFORM tools=no target=release production=yes custom_modules=/PATH/sg-physics-3d/src
 ```
 
 For more information about compiling Godot, see [the official
@@ -318,7 +318,7 @@ SCRIPT ERROR: Parse Error: Unknown class: "SGKinematicBody2D"
 
 **NOTE: This doesn't apply to Godot 4! You can use the standard export templates with Godot 4.**
 
-Each [release build](https://gitlab.com/snopek-games/sg-physics-2d/-/releases)
+Each [release build](https://gitlab.com/snopek-games/sg-physics-3d/-/releases)
 includes not only the Godot editor, but also debug and release export templates
 for that platform. Alternatively, you can compile the export templates yourself
 as described in the previous section.

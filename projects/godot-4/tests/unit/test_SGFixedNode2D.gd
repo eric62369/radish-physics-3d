@@ -1,7 +1,7 @@
 extends "res://addons/gut/test.gd"
 
 func test_initial_scale():
-	var n: SGFixedNode2D
+	var n: SGFixedNode3D
 	
 	# Ensure that the initial scale and transform match expectations.
 	n = SGFixedNode2D.new()
