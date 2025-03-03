@@ -6,7 +6,7 @@ env = SConscript("godot-cpp/SConstruct")
 
 # Define our options
 opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'bin/'))
-opts.Add(PathVariable('target_name', 'The library name.', 'libsgphysics3d', PathVariable.PathAccept))
+opts.Add(PathVariable('target_name', 'The library name.', 'sgphysics3d', PathVariable.PathAccept))
 
 # For the reference:
 # - CCFLAGS are compilation flags shared between C and C++

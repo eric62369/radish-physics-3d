@@ -113,13 +113,14 @@ void unregister_sg_physics_3D_extension_types(ModuleInitializationLevel p_level)
 }
 
 extern "C" {
-GDExtensionBool GDE_EXPORT sg_physics_3D_extension_init(GDExtensionInterfaceGetProcAddress p_interface, const GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
-	GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
-
-	init_obj.register_initializer(register_sg_physics_3D_extension_types);
-	init_obj.register_terminator(unregister_sg_physics_3D_extension_types);
-	init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
-
-	return init_obj.init();
-}
-}
+	// Initialization.
+	GDExtensionBool GDE_EXPORT sg_physics_3d_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, const GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
+		godot::GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, r_initialization);
+	
+		init_obj.register_initializer(register_sg_physics_3D_extension_types);
+		init_obj.register_terminator(unregister_sg_physics_3D_extension_types);
+		init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
+	
+		return init_obj.init();
+	}
+	}
