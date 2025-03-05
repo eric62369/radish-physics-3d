@@ -81,7 +81,7 @@ void SGFixed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("rect3", "position", "size"), &SGFixed::rect3);
 	ClassDB::bind_method(D_METHOD("from_float_rect3", "float_rect"), &SGFixed::from_float_rect3);
 
-	ClassDB::bind_method(D_METHOD("transform3D", "rotation", "origin"), &SGFixed::transform3D);
+	ClassDB::bind_method(D_METHOD("transform3d", "rotation", "origin"), &SGFixed::transform3d);
 
 	BIND_CONSTANT(ONE);
 	BIND_CONSTANT(HALF);
@@ -257,7 +257,7 @@ Ref<SGFixedRect3> SGFixed::from_float_rect3(const AABB &p_float_rect) const {
 	return ret;
 }
 
-Ref<SGFixedTransform3D> SGFixed::transform3D(int64_t p_rotation, const Ref<SGFixedVector3> &p_origin) const {
+Ref<SGFixedTransform3D> SGFixed::transform3d(int64_t p_rotation, const Ref<SGFixedVector3> &p_origin) const {
 	Ref<SGFixedTransform3D> ret(memnew(SGFixedTransform3D));
 	ret->set_internal(SGFixedTransform3DInternal(fixed(p_rotation), p_origin->get_internal()));
 	return ret;

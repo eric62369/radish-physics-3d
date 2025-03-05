@@ -4,7 +4,7 @@ func test_deterministic_rotation():
 	var t: SGFixedTransform3D
 
 	# Make sure this gives an identity matrix.
-	t = SGFixed.transform3d(0, SGFixed.vector2(0, 0))
+	t = SGFixed.transform3d(0, SGFixed.vector3(0, 0, 0))
 	assert_eq(t.x.x, 65536)
 	assert_eq(t.x.y, 0)
 	assert_eq(t.y.x, 0)
@@ -17,17 +17,19 @@ func test_deterministic_rotation():
 	t.y.y = 65535
 	assert_eq(t.get_rotation(), -364)
 
-	var big_t = t.scaled(SGFixed.vector2(13107200, 13107200))
+	var big_t = t.scaled(SGFixed.vector3(13107200, 13107200, 13107200))
 	var big_t_inv = big_t.affine_inverse()
-	var rounda = big_t.xform(big_t_inv.xform(SGFixed.vector2(65536, 65536)))
+	var rounda = big_t.xform(big_t_inv.xform(SGFixed.vector3(65536, 65536, 65536)))
 	assert_almost_eq(rounda.x, 65536, 2000)
 	assert_almost_eq(rounda.y, 65536, 2000)
+	assert_almost_eq(rounda.z, 65536, 2000)
 
-	var small_t = t.scaled(SGFixed.vector2(131, 131))
+	var small_t = t.scaled(SGFixed.vector3(131, 131, 131))
 	var small_t_inv = small_t.affine_inverse()
-	var roundb = small_t.xform(small_t_inv.xform(SGFixed.vector2(65536, 65536)))
+	var roundb = small_t.xform(small_t_inv.xform(SGFixed.vector3(65536, 65536, 65536)))
 	assert_almost_eq(rounda.x, 65536, 2000)
 	assert_almost_eq(rounda.y, 65536, 2000)
+	assert_almost_eq(rounda.z, 65536, 2000)
 
 	t = SGFixedTransform3D.new()
 	t.x.x = 65348

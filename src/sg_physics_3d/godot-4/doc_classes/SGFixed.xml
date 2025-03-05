@@ -225,7 +225,7 @@
 				Converts a fixed-point number into a normal int.
 			</description>
 		</method>
-		<method name="transform3D" qualifiers="const">
+		<method name="transform3d" qualifiers="const">
 			<return type="SGFixedTransform3D" />
 			<argument index="0" name="rotation" type="int" />
 			<argument index="1" name="origin" type="SGFixedVector3" />

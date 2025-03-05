@@ -125,4 +125,3 @@ func test_get_overlapping_body_polygon_collisions() -> void:
 
 	remove_child(scene)
 	scene.queue_free()
-
