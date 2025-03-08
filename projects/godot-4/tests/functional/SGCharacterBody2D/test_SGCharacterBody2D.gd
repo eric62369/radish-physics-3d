@@ -8,7 +8,7 @@ func test_move_and_collide_deepest_penetration() -> void:
 		var scene = MoveAndCollide1.instantiate()
 		add_child(scene)
 
-		var collision: SGKinematicCollision2D
+		var collision: SGKinematicCollision3D
 
 		collision = scene.do_move_and_collide()
 		assert_not_null(collision)
@@ -48,7 +48,7 @@ func test_move_and_collide_lowest_scene_tree() -> void:
 		var scene = MoveAndCollide2.instantiate()
 		add_child(scene)
 
-		var collision: SGKinematicCollision2D
+		var collision: SGKinematicCollision3D
 
 		collision = scene.do_move_and_collide()
 		assert_not_null(collision)

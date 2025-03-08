@@ -66,11 +66,15 @@ protected:
 	void _set_fixed_position_x(int64_t p_x);
 	int64_t _get_fixed_position_y() const;
 	void _set_fixed_position_y(int64_t p_y);
+	int64_t _get_fixed_position_z() const;
+	void _set_fixed_position_z(int64_t p_z);
 
 	int64_t _get_fixed_scale_x() const;
 	void _set_fixed_scale_x(int64_t p_x);
 	int64_t _get_fixed_scale_y() const;
 	void _set_fixed_scale_y(int64_t p_y);
+	int64_t _get_fixed_scale_z() const;
+	void _set_fixed_scale_z(int64_t p_z);
 
 	void transform_changed();
 

@@ -38,7 +38,7 @@ func test_deterministic_rotation():
 	t.y.y = 65348
 	assert_eq(t.get_rotation(), -4937)
 
-	t = SGFixed.transform3d(-290, SGFixed.vector2(0, 0))
+	t = SGFixed.transform3d(-290, SGFixed.vector3(0, 0, 0))
 	assert_eq(t.x.x, 65535)
 	assert_eq(t.x.y, -290)
 	assert_eq(t.y.x, 290)
@@ -46,7 +46,7 @@ func test_deterministic_rotation():
 
 	# Make sure this gives the same result on all platforms, even after
 	# rotating a lot of times and accumulating a lot of error.
-	t = SGFixed.transform3d(0, SGFixed.vector2(0, 0))
+	t = SGFixed.transform3d(0, SGFixed.vector3(0, 0, 0))
 	for i in range(320):
 		t = t.rotated(SGFixed.PI_DIV_4)
 	assert_eq(t.x.x, 65536)

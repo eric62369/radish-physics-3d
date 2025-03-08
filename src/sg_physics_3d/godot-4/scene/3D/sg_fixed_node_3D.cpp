@@ -36,6 +36,8 @@ void SGFixedNode3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_set_fixed_position_x", "x"), &SGFixedNode3D::_set_fixed_position_x);
 	ClassDB::bind_method(D_METHOD("_get_fixed_position_y"), &SGFixedNode3D::_get_fixed_position_y);
 	ClassDB::bind_method(D_METHOD("_set_fixed_position_y", "y"), &SGFixedNode3D::_set_fixed_position_y);
+	ClassDB::bind_method(D_METHOD("_get_fixed_position_z"), &SGFixedNode3D::_get_fixed_position_z);
+	ClassDB::bind_method(D_METHOD("_set_fixed_position_z", "z"), &SGFixedNode3D::_set_fixed_position_z);
 
 	ClassDB::bind_method(D_METHOD("get_fixed_scale"), &SGFixedNode3D::get_fixed_scale);
 	ClassDB::bind_method(D_METHOD("set_fixed_scale", "fixed_scale"), &SGFixedNode3D::set_fixed_scale);
@@ -43,6 +45,8 @@ void SGFixedNode3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_set_fixed_scale_x", "x"), &SGFixedNode3D::_set_fixed_scale_x);
 	ClassDB::bind_method(D_METHOD("_get_fixed_scale_y"), &SGFixedNode3D::_get_fixed_scale_y);
 	ClassDB::bind_method(D_METHOD("_set_fixed_scale_y", "y"), &SGFixedNode3D::_set_fixed_scale_y);
+	ClassDB::bind_method(D_METHOD("_get_fixed_scale_z"), &SGFixedNode3D::_get_fixed_scale_z);
+	ClassDB::bind_method(D_METHOD("_set_fixed_scale_z", "z"), &SGFixedNode3D::_set_fixed_scale_z);
 
 	ClassDB::bind_method(D_METHOD("get_fixed_rotation"), &SGFixedNode3D::get_fixed_rotation);
 	ClassDB::bind_method(D_METHOD("set_fixed_rotation", "fixed_scale"), &SGFixedNode3D::set_fixed_rotation);
@@ -120,7 +124,7 @@ void SGFixedNode3D::_update_fixed_transform_rotation_and_scale() {
 	new_xform.set_rotation_and_scale(fixed(fixed_rotation), fixed_scale->get_internal());
 	fixed_transform->get_x()->set_internal(new_xform[0]);
 	fixed_transform->get_y()->set_internal(new_xform[1]);
-	fixed_transform->get_y()->set_internal(new_xform[2]);
+	fixed_transform->get_z()->set_internal(new_xform[2]);
 	transform_changed();
 }
 
@@ -165,6 +169,15 @@ void SGFixedNode3D::_set_fixed_position_y(int64_t p_y) {
 	fixed_transform->get_origin()->set_y(p_y);
 }
 
+
+int64_t SGFixedNode3D::_get_fixed_position_z() const {
+	return fixed_transform->get_origin()->get_z();
+}
+
+void SGFixedNode3D::_set_fixed_position_z(int64_t p_z) {
+	fixed_transform->get_origin()->set_z(p_z);
+}
+
 int64_t SGFixedNode3D::_get_fixed_scale_x() const {
 	return fixed_scale->get_x();
 }
@@ -180,6 +193,15 @@ int64_t SGFixedNode3D::_get_fixed_scale_y() const {
 
 void SGFixedNode3D::_set_fixed_scale_y(int64_t p_scale_y) {
 	fixed_scale->set_y(p_scale_y);
+	_update_fixed_transform_rotation_and_scale();
+}
+
+int64_t SGFixedNode3D::_get_fixed_scale_z() const {
+	return fixed_scale->get_z();
+}
+
+void SGFixedNode3D::_set_fixed_scale_z(int64_t p_scale_z) {
+	fixed_scale->set_z(p_scale_z);
 	_update_fixed_transform_rotation_and_scale();
 }
 
