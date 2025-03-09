@@ -63,6 +63,9 @@
 		<member name="fixed_position_y" type="int" setter="_set_fixed_position_y" getter="_get_fixed_position_y" default="0">
 			[b]Do not use this property![/b] It only exists to serialize the [code]fixed_position[/code] property to scene files. Use [code]fixed_position[/code] directly instead.
 		</member>
+		<member name="fixed_position_z" type="int" setter="_set_fixed_position_z" getter="_get_fixed_position_z" default="0">
+			[b]Do not use this property![/b] It only exists to serialize the [code]fixed_position[/code] property to scene files. Use [code]fixed_position[/code] directly instead.
+		</member>
 		<member name="fixed_rotation" type="int" setter="set_fixed_rotation" getter="get_fixed_rotation" default="0">
 			The rotation of the node (in radians) as a fixed-point number.
 		</member>
@@ -74,6 +77,9 @@
 			[b]Do not use this property![/b] It only exists to serialize the [code]fixed_scale[/code] property to scene files. Use [code]fixed_scale[/code] directly instead.
 		</member>
 		<member name="fixed_scale_y" type="int" setter="_set_fixed_scale_y" getter="_get_fixed_scale_y" default="65536">
+			[b]Do not use this property![/b] It only exists to serialize the [code]fixed_scale[/code] property to scene files. Use [code]fixed_scale[/code] directly instead.
+		</member>
+		<member name="fixed_scale_z" type="int" setter="_set_fixed_scale_z" getter="_get_fixed_scale_z" default="65536">
 			[b]Do not use this property![/b] It only exists to serialize the [code]fixed_scale[/code] property to scene files. Use [code]fixed_scale[/code] directly instead.
 		</member>
 		<member name="fixed_transform" type="SGFixedTransform3D" setter="set_fixed_transform" getter="get_fixed_transform">

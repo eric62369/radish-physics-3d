@@ -1,7 +1,7 @@
-SG Physics 2D
+SG Physics 3D
 =============
 
-**SG Physics 2D** is a deterministic 2D physics engine for Godot,
+**SG Physics 3D** is a deterministic 3D physics engine for Godot,
 based on fixed-point math. It's useful for online multiplayer games, especially
 those using rollback netcode.
 

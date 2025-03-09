@@ -114,6 +114,9 @@
 		<member name="y" type="SGFixedVector3" setter="set_y" getter="get_y">
 			The Y vector.
 		</member>
+		<member name="z" type="SGFixedVector3" setter="set_z" getter="get_z">
+			The Z vector.
+		</member>
 	</members>
 	<constants>
 	</constants>

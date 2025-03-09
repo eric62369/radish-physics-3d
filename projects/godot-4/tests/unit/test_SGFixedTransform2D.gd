@@ -7,14 +7,25 @@ func test_deterministic_rotation():
 	t = SGFixed.transform3d(0, SGFixed.vector3(0, 0, 0))
 	assert_eq(t.x.x, 65536)
 	assert_eq(t.x.y, 0)
+	assert_eq(t.x.z, 0)
 	assert_eq(t.y.x, 0)
 	assert_eq(t.y.y, 65536)
+	assert_eq(t.y.z, 0)
+	assert_eq(t.z.x, 0)
+	assert_eq(t.z.y, 0)
+	assert_eq(t.z.z, 65536)
 
 	t = SGFixedTransform3D.new()
 	t.x.x = 65535
-	t.x.y = -366
-	t.y.x = 366
+	t.x.y = 0
+	t.x.z = -366
+	t.y.x = 0
 	t.y.y = 65535
+	t.y.z = 0
+	t.z.x = -366
+	t.z.y = 0
+	t.z.z = 65535
+	
 	assert_eq(t.get_rotation(), -364)
 
 	var big_t = t.scaled(SGFixed.vector3(13107200, 13107200, 13107200))

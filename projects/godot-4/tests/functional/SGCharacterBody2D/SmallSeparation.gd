@@ -8,7 +8,7 @@ var velocity := SGFixedVector3.new()
 @onready var original_fixed_position : SGFixedVector3 = kinematic.fixed_position.copy()
 
 
-func test_with_circle() -> SGKinematicCollision2D:
+func test_with_circle() -> SGKinematicCollision3D:
 	circle.disabled = false
 	square.disabled = true
 	polygon.disabled = true
@@ -20,7 +20,7 @@ func test_with_circle() -> SGKinematicCollision2D:
 	kinematic.sync_to_physics_engine() 
 	return kinematic.move_and_collide(velocity)
 
-func test_with_square() -> SGKinematicCollision2D:
+func test_with_square() -> SGKinematicCollision3D:
 	circle.disabled = true
 	square.disabled = false
 	polygon.disabled = true
@@ -32,7 +32,7 @@ func test_with_square() -> SGKinematicCollision2D:
 	kinematic.sync_to_physics_engine() 
 	return kinematic.move_and_collide(velocity)
 
-func test_with_polygon() -> SGKinematicCollision2D:
+func test_with_polygon() -> SGKinematicCollision3D:
 	circle.disabled = true
 	square.disabled = true
 	polygon.disabled = false

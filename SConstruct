@@ -39,6 +39,13 @@ for d in sg_physics_3d_subdirs:
 if env.editor_build or env.debug_features:
     sources += Glob('src/sg_physics_3d/godot-4/editor/*.cpp')
 
+if env["target"] in ["editor", "template_debug"]:
+    try:
+        doc_data = env.GodotCPPDocData("src/gen/doc_data.gen.cpp", source=Glob("src/sg_physics_3d/godot-4/doc_classes/*.xml"))
+        sources.append(doc_data)
+    except AttributeError:
+        print("Not including class reference as we're targeting a pre-4.3 baseline.")
+
 env.Append(CPPPATH=['src/'])
 
 # Platform specifics.

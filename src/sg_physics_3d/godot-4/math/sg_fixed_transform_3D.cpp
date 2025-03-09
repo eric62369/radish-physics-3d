@@ -28,11 +28,14 @@ void SGFixedTransform3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_x", "x"), &SGFixedTransform3D::set_x);
 	ClassDB::bind_method(D_METHOD("get_y"), &SGFixedTransform3D::get_y);
 	ClassDB::bind_method(D_METHOD("set_y", "y"), &SGFixedTransform3D::set_y);
+	ClassDB::bind_method(D_METHOD("get_z"), &SGFixedTransform3D::get_z);
+	ClassDB::bind_method(D_METHOD("set_z", "z"), &SGFixedTransform3D::set_z);
 	ClassDB::bind_method(D_METHOD("get_origin"), &SGFixedTransform3D::get_origin);
 	ClassDB::bind_method(D_METHOD("set_origin", "origin"), &SGFixedTransform3D::set_origin);
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "x", PROPERTY_HINT_NONE, "", 0), "set_x", "get_x");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "y", PROPERTY_HINT_NONE, "", 0), "set_y", "get_y");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "z", PROPERTY_HINT_NONE, "", 0), "set_z", "get_z");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "origin", PROPERTY_HINT_NONE, "", 0), "set_origin", "get_origin");
 
 	ClassDB::bind_method(D_METHOD("inverse"), &SGFixedTransform3D::inverse);
@@ -64,10 +67,10 @@ Transform3D SGFixedTransform3D::to_float() const {
 
 void SGFixedTransform3D::from_float(const Transform3D &p_float_transform) {
 	// TODO: someone remind me how 3D transforms are different than columns in 2D / how to get the vectors from transform 
-	// x->from_float(p_float_transform.origin.x);
-	// y->from_float(p_float_transform[1]);
-	// z->from_float(p_float_transform[2]);
-	// origin->from_float(p_float_transform[3]);
+	x->from_float(p_float_transform.get_basis().get_column(0));
+	y->from_float(p_float_transform.get_basis().get_column(1));
+	z->from_float(p_float_transform.get_basis().get_column(2));
+	origin->from_float(p_float_transform.origin);
 }
 
 Ref<SGFixedTransform3D> SGFixedTransform3D::copy() const {
