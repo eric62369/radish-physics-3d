@@ -103,7 +103,7 @@ struct fixed {
 		return *this * fixed::PI / fixed::DEG_180;
 	}
 
-	_FORCE_INLINE_ fixed rad3Deg(){
+	_FORCE_INLINE_ fixed rad2deg(){
 		return *this * fixed::DEG_180 / fixed::PI;
 	}
 

@@ -171,7 +171,6 @@ void SGFixedNode3D::_set_fixed_position_y(int64_t p_y) {
 	fixed_transform->get_origin()->set_y(p_y);
 }
 
-
 int64_t SGFixedNode3D::_get_fixed_position_z() const {
 	return fixed_transform->get_origin()->get_z();
 }

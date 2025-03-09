@@ -168,7 +168,7 @@
 				[b]Note:[/b] While fractional and negative exponents are supported, applying pow() with a negative base and a fractional exponent is not supported.
 			</description>
 		</method>
-		<method name="rad3Deg" qualifiers="const">
+		<method name="rad2deg" qualifiers="const">
 			<return type="int" />
 			<argument index="0" name="fixed_value" type="int" />
 			<description>

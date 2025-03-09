@@ -75,7 +75,7 @@ void SGFixed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("pow", "fixed_one", "fixed_two"), &SGFixed::pow);
 	ClassDB::bind_method(D_METHOD("move_toward", "fixed_from_value", "fixed_to_value", "fixed_delta_value"), &SGFixed::move_toward);
 
-	ClassDB::bind_method(D_METHOD("vector3", "fixed_x", "fixed_y"), &SGFixed::vector3);
+	ClassDB::bind_method(D_METHOD("vector3", "fixed_x", "fixed_y", "fixed_z"), &SGFixed::vector3);
 	ClassDB::bind_method(D_METHOD("from_float_vector3", "float_vector"), &SGFixed::from_float_vector3);
 
 	ClassDB::bind_method(D_METHOD("rect3", "position", "size"), &SGFixed::rect3);
@@ -199,7 +199,7 @@ int64_t SGFixed::deg_to_rad(int64_t p_fixed_value) const {
 }
 
 int64_t SGFixed::rad_to_deg(int64_t p_fixed_value) const {
-	return fixed(p_fixed_value).rad3Deg().value;
+	return fixed(p_fixed_value).rad2deg().value;
 }
 
 int64_t SGFixed::div_rounded(int64_t p_fixed_one, int64_t p_fixed_two) const {
