@@ -54,8 +54,10 @@ void SGFixedNode3D::_bind_methods() {
 	// For editor and storage.
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_position_x"), "_set_fixed_position_x", "_get_fixed_position_x");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_position_y"), "_set_fixed_position_y", "_get_fixed_position_y");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_position_z"), "_set_fixed_position_z", "_get_fixed_position_z");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_scale_x"), "_set_fixed_scale_x", "_get_fixed_scale_x");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_scale_y"), "_set_fixed_scale_y", "_get_fixed_scale_y");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_scale_z"), "_set_fixed_scale_z", "_get_fixed_scale_z");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_rotation"), "set_fixed_rotation", "get_fixed_rotation");
 
 	// For code only.
