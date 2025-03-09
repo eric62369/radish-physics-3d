@@ -127,7 +127,7 @@ SGFixedVector3Internal SGFixedVector3Internal::safe_scale(fixed p_scale) const {
 fixed SGFixedVector3Internal::length() const {
 	// By directly using 64-bit integers we can avoid a left shift, since
 	// multiplying two fixed point numbers effectively shifts them left.
-	int64_t length_squared = x.value * x.value + y.value * y.value;
+	int64_t length_squared = x.value * x.value + y.value * y.value + z.value * z.value;
 	if (length_squared == 0) {
 		return fixed::ZERO;
 	}
@@ -140,10 +140,10 @@ fixed SGFixedVector3Internal::length() const {
 }
 
 fixed SGFixedVector3Internal::length_squared() const {
-	fixed ret = x * x + y * y;
+	fixed ret = x * x + y * y + z * z;
 	// Squaring a fixed-point number smaller than 15 will be 0, which means
 	// that it's possible for ret to equal 0.
-	if (ret == fixed::ZERO && (x != fixed::ZERO || y != fixed::ZERO)) {
+	if (ret == fixed::ZERO && (x != fixed::ZERO || y != fixed::ZERO || z != fixed::ZERO)) {
 		// If the vector was non-zero, then we must return some length.
 		return fixed(1);
 	}
