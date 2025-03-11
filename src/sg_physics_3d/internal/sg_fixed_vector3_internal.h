@@ -50,10 +50,26 @@ struct SGFixedVector3Internal {
 	static const SGFixedVector3Internal ZERO;
 
 	_FORCE_INLINE_ fixed &operator[](int p_idx) {
-		return p_idx ? y : x;
+		if (p_idx == 2) {
+			return z;
+		}
+		else if (p_idx == 1) {
+			return y;
+		}
+		else {
+			return x;
+		}
 	}
 	_FORCE_INLINE_ const fixed &operator[](int p_idx) const {
-		return p_idx ? y : x;
+		if (p_idx == 2) {
+			return z;
+		}
+		else if (p_idx == 1) {
+			return y;
+		}
+		else {
+			return x;
+		}
 	}
 
 	_FORCE_INLINE_ SGFixedVector3Internal operator+(const SGFixedVector3Internal &p_v) const {
@@ -62,6 +78,7 @@ struct SGFixedVector3Internal {
 	_FORCE_INLINE_ void operator+=(const SGFixedVector3Internal &p_v) {
 		x += p_v.x;
 		y += p_v.y;
+		z += p_v.z;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator-(const SGFixedVector3Internal &p_v) const {
 		return SGFixedVector3Internal(x - p_v.x, y - p_v.y, z - p_v.z);
@@ -69,6 +86,7 @@ struct SGFixedVector3Internal {
 	_FORCE_INLINE_ void operator-=(const SGFixedVector3Internal &p_v) {
 		x -= p_v.x;
 		y -= p_v.y;
+		z -= p_v.z;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator*(const SGFixedVector3Internal &p_v) const {
 		return SGFixedVector3Internal(x * p_v.x, y * p_v.y, z * p_v.z);
@@ -76,6 +94,7 @@ struct SGFixedVector3Internal {
 	_FORCE_INLINE_ void operator*=(const SGFixedVector3Internal &p_v) {
 		x *= p_v.x;
 		y *= p_v.y;
+		z *= p_v.z;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator/(const SGFixedVector3Internal &p_v) const {
 		return SGFixedVector3Internal(x / p_v.x, y / p_v.y, z / p_v.z);
@@ -83,6 +102,7 @@ struct SGFixedVector3Internal {
 	_FORCE_INLINE_ void operator/=(const SGFixedVector3Internal &p_v) {
 		x /= p_v.x;
 		y /= p_v.y;
+		z /= p_v.z;
 	}
 
 	_FORCE_INLINE_ SGFixedVector3Internal operator+(const fixed &p_v) const {
@@ -91,6 +111,7 @@ struct SGFixedVector3Internal {
 	_FORCE_INLINE_ void operator+=(const fixed &p_v) {
 		x += p_v;
 		y += p_v;
+		z += p_v;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator-(const fixed &p_v) const {
 		return SGFixedVector3Internal(x - p_v, y - p_v, z - p_v);
@@ -98,6 +119,7 @@ struct SGFixedVector3Internal {
 	_FORCE_INLINE_ void operator-=(const fixed &p_v) {
 		x -= p_v;
 		y -= p_v;
+		z -= p_v;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator*(const fixed &p_v) const {
 		return SGFixedVector3Internal(x * p_v, y * p_v, z * p_v);
@@ -105,6 +127,7 @@ struct SGFixedVector3Internal {
 	_FORCE_INLINE_ void operator*=(const fixed &p_v) {
 		x *= p_v;
 		y *= p_v;
+		z *= p_v;
 	}
 	_FORCE_INLINE_ SGFixedVector3Internal operator/(const fixed &p_v) const {
 		return SGFixedVector3Internal(x / p_v, y / p_v, z / p_v);
@@ -112,6 +135,7 @@ struct SGFixedVector3Internal {
 	_FORCE_INLINE_ void operator/=(const fixed &p_v) {
 		x /= p_v;
 		y /= p_v;
+		z /= p_v;
 	}
 
 	bool operator==(const SGFixedVector3Internal &p_v) const;
@@ -122,6 +146,7 @@ struct SGFixedVector3Internal {
 	void set_rotation(fixed p_radians) {
 		x = p_radians.cos();
 		y = p_radians.sin(); // TODO: set rotations and operators above
+		// z = p_radians.cos(); // TODO: fix set rotation for around y axis only
 	}
 
 	_FORCE_INLINE_ SGFixedVector3Internal abs() const {
