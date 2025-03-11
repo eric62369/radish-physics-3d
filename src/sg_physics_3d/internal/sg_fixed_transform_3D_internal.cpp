@@ -25,7 +25,9 @@
 
 void SGFixedTransform3DInternal::invert() {
 	SWAP(elements[0][1], elements[1][0]);
-	elements[2] = basis_xform(-elements[2]);
+	SWAP(elements[0][2], elements[2][0]);
+	SWAP(elements[1][2], elements[2][1]);
+	elements[3] = basis_xform(-elements[3]);
 }
 
 SGFixedTransform3DInternal SGFixedTransform3DInternal::inverse() const {
@@ -39,7 +41,9 @@ void SGFixedTransform3DInternal::affine_invert() {
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND(det == fixed::ZERO);
 #endif
-	SWAP(elements[0][0], elements[1][1]);
+	SWAP(elements[0][0], elements[2][2]);
+	SWAP(elements[0][1], elements[2][1]);
+	SWAP(elements[1][0], elements[1][2]);
 	elements[0] /= SGFixedVector3Internal(det, -det, -det); // TODO: determinant 3D vector math please 
 	elements[1] /= SGFixedVector3Internal(-det, det, -det);
 	elements[2] /= SGFixedVector3Internal(-det, -det, det);
@@ -128,13 +132,16 @@ void SGFixedTransform3DInternal::translate(const SGFixedVector3Internal &p_trans
 void SGFixedTransform3DInternal::orthonormalize() {
 	SGFixedVector3Internal x = elements[0];
 	SGFixedVector3Internal y = elements[1];
+	// SGFixedVector3Internal z = elements[2];
 
 	x.normalized();
 	y = (y - x * (x.dot(y)));
 	y.normalize();
+	// z.normalize();
 
 	elements[0] = x;
 	elements[1] = y;
+	// elements[2] = z;
 }
 
 SGFixedTransform3DInternal SGFixedTransform3DInternal::orthonormalized() const {
@@ -148,7 +155,7 @@ bool SGFixedTransform3DInternal::is_equal_approx(const SGFixedTransform3DInterna
 }
 
 bool SGFixedTransform3DInternal::operator==(const SGFixedTransform3DInternal &p_transform) const {
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		if (elements[i] != p_transform.elements[i]) {
 			return false;
 		}
@@ -157,7 +164,7 @@ bool SGFixedTransform3DInternal::operator==(const SGFixedTransform3DInternal &p_
 }
 
 bool SGFixedTransform3DInternal::operator!=(const SGFixedTransform3DInternal &p_transform) const {
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		if (elements[i] != p_transform.elements[i]) {
 			return true;
 		}
@@ -166,7 +173,7 @@ bool SGFixedTransform3DInternal::operator!=(const SGFixedTransform3DInternal &p_
 }
 
 void SGFixedTransform3DInternal::operator*=(const SGFixedTransform3DInternal &p_transform) {
-	elements[2] = xform(p_transform.elements[2]);
+	elements[3] = xform(p_transform.elements[3]);
 
 	fixed x0, x1, x2, y0, y1, y2, z0, z1, z2;
 
@@ -222,7 +229,8 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::rotated(fixed p_phi) cons
 }
 
 fixed SGFixedTransform3DInternal::basis_determinant() const {
-	return elements[0].x * elements[1].y - elements[0].y * elements[1].x; // TODO: determinant how
+	 // 3D determinant: https://en.wikipedia.org/wiki/Determinant
+	return (elements[0].x * elements[1].y * elements[2].z) + (elements[1].x * elements[2].y * elements[0].z) + (elements[2].x * elements[0].y * elements[1].z) - (elements[2].x * elements[1].y * elements[0].z) - (elements[1].x * elements[0].y * elements[2].z) - (elements[0].x * elements[2].y * elements[1].z);
 }
 
 SGFixedTransform3DInternal SGFixedTransform3DInternal::interpolate_with(const SGFixedTransform3DInternal &p_transform, fixed p_c) const {

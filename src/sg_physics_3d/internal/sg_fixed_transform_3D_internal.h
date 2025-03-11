@@ -141,10 +141,18 @@ SGFixedVector3Internal SGFixedTransform3DInternal::xform_inv(const SGFixedVector
 }
 
 void SGFixedTransform3DInternal::set_rotation_and_scale(fixed p_rot, const SGFixedVector3Internal &p_scale) {
+	// TODO: is there supposed to be 0 for certain vector elements? https://en.wikipedia.org/wiki/Rotation_matrix
 	elements[0][0] = p_rot.cos() * p_scale.x;
-	elements[1][1] = p_rot.cos() * p_scale.y;
-	elements[1][0] = -p_rot.sin() * p_scale.y;
-	elements[0][1] = p_rot.sin() * p_scale.x;
+	elements[2][2] = p_rot.cos() * p_scale.z;
+	elements[2][0] = p_rot.sin() * p_scale.z;
+	elements[0][2] = -p_rot.sin() * p_scale.x;
+
+	// elements[1][0] = fixed.ZERO * p_scale.y;
+	// elements[0][1] = fixed.ZERO * p_scale.x;
+	// elements[2][1] = fixed.ZERO * p_scale.z;
+	// elements[1][2] = fixed.ZERO * p_scale.y;
+
+	elements[1][1] = p_scale.y;
 }
 
 #endif

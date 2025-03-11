@@ -23,13 +23,11 @@ transform = Transform3D(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("1")
 fixed_position_x = 4194304
 fixed_position_y = 4194304
-fixed_scale_y = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 64, 0)
 
 [node name="StaticBody1" type="SGStaticBody3D" parent="."]
 fixed_position_x = 2359296
 fixed_position_y = 2949120
-fixed_scale_y = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 45, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody1"]
@@ -40,7 +38,6 @@ transform = Transform3D(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
 [node name="StaticBody2" type="SGStaticBody3D" parent="."]
 fixed_position_x = 5767168
 fixed_position_y = 5308416
-fixed_scale_y = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 81, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody2"]
@@ -51,7 +48,6 @@ transform = Transform3D(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
 [node name="StaticBody3" type="SGStaticBody3D" parent="."]
 fixed_position_x = 10092544
 fixed_position_y = 3014656
-fixed_scale_y = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 154, 46, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody3"]
@@ -62,7 +58,6 @@ transform = Transform3D(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
 [node name="StaticBody4" type="SGStaticBody3D" parent="."]
 fixed_position_x = -2686976
 fixed_position_y = 3538944
-fixed_scale_y = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41, 54, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody4"]
@@ -73,7 +68,6 @@ transform = Transform3D(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
 [node name="StaticBody5" type="SGStaticBody3D" parent="."]
 fixed_position_x = 3866624
 fixed_position_y = -2424832
-fixed_scale_y = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59, -37, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody5"]
@@ -84,7 +78,6 @@ transform = Transform3D(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
 [node name="StaticBody6" type="SGStaticBody3D" parent="."]
 fixed_position_x = 3342336
 fixed_position_y = 10027008
-fixed_scale_y = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51, 153, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody6"]
@@ -97,7 +90,6 @@ collision_layer = 2
 collision_mask = 2
 fixed_position_x = 3211264
 fixed_position_y = 6160384
-fixed_scale_y = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49, 94, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody7"]
@@ -108,7 +100,6 @@ transform = Transform3D(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0)
 [node name="StaticBody8" type="SGStaticBody3D" parent="."]
 fixed_position_x = 9043968
 fixed_position_y = 5226496
-fixed_scale_y = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 138, 79.75, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody8"]

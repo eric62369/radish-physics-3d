@@ -173,6 +173,9 @@ fixed SGFixedVector3Internal::dot(const SGFixedVector3Internal &p_other) const {
 }
 
 fixed SGFixedVector3Internal::cross(const SGFixedVector3Internal &p_other) const {
+	// c.x = (a.y * b.z) - (a.z * b.y)
+	// c.y = (a.z * b.x) - (a.x * b.z)
+	// c.z = (a.x * b.y) - (a.y * b.x)
 	return x * p_other.y - y * p_other.x; // TODO: https://docs.godotengine.org/en/latest/tutorials/math/vector_math.html#cross-product
 }
 
