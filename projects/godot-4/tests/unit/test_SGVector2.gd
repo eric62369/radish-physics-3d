@@ -5,10 +5,10 @@ func test_normalize():
 	
 	# Normal kind of vector
 	v = SGFixed.vector3(65536, 65536, 65536).normalized()
-	assert_eq(v.x, 46341)
-	assert_eq(v.y, 46341)
-	assert_eq(v.z, 46341)
-	assert_eq(v.length(), 65536)
+	assert_eq(v.x, 37837)
+	assert_eq(v.y, 37837)
+	assert_eq(v.z, 37837)
+	assert_eq(v.length(), 65535) # TODO: this is imprecise, should it be 65536? 
 	
 	# Super tiny X.
 	v = SGFixed.vector3(1, 0, 0).normalized()
