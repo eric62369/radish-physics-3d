@@ -72,9 +72,10 @@ void SGFixedTransform3DInternal::set_rotation(fixed p_rot) {
 	fixed cr = p_rot.cos();
 	fixed sr = p_rot.sin();
 	elements[0][0] = cr;
-	elements[0][1] = sr;
-	elements[1][0] = -sr;
-	elements[1][1] = cr;
+	elements[0][2] = sr;
+	elements[1][1] = fixed::ONE;
+	elements[2][0] = -sr;
+	elements[2][2] = cr;
 	set_scale(scale);
 }
 
@@ -82,10 +83,11 @@ SGFixedTransform3DInternal::SGFixedTransform3DInternal(fixed p_rot, const SGFixe
 	fixed cr = p_rot.cos();
 	fixed sr = p_rot.sin();
 	elements[0][0] = cr;
-	elements[0][1] = sr;
-	elements[1][0] = -sr;
-	elements[1][1] = cr;
-	elements[2] = p_pos;
+	elements[0][2] = sr;
+	elements[1][1] = fixed::ONE;
+	elements[2][0] = -sr;
+	elements[2][2] = cr;
+	elements[3] = p_pos;
 }
 
 SGFixedVector3Internal SGFixedTransform3DInternal::get_scale() const {
@@ -130,18 +132,20 @@ void SGFixedTransform3DInternal::translate(const SGFixedVector3Internal &p_trans
 }
 
 void SGFixedTransform3DInternal::orthonormalize() {
+	// Gram-Schmidt Process
 	SGFixedVector3Internal x = elements[0];
 	SGFixedVector3Internal y = elements[1];
-	// SGFixedVector3Internal z = elements[2];
+	SGFixedVector3Internal z = elements[2];
 
 	x.normalized();
 	y = (y - x * (x.dot(y)));
 	y.normalize();
-	// z.normalize();
+	z = (z - x * (x.dot(z)) - y * (y.dot(z)));
+	z.normalize();
 
 	elements[0] = x;
 	elements[1] = y;
-	// elements[2] = z;
+	elements[2] = z;
 }
 
 SGFixedTransform3DInternal SGFixedTransform3DInternal::orthonormalized() const {
