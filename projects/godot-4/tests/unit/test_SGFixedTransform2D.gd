@@ -22,7 +22,7 @@ func test_deterministic_rotation():
 	t.y.x = 0
 	t.y.y = 65535
 	t.y.z = 0
-	t.z.x = -366
+	t.z.x = 366
 	t.z.y = 0
 	t.z.z = 65535
 	

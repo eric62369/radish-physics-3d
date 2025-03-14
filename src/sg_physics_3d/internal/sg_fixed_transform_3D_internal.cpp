@@ -64,7 +64,7 @@ void SGFixedTransform3DInternal::rotate(fixed p_phi) {
 }
 
 fixed SGFixedTransform3DInternal::get_rotation() const {
-	return elements[0].y.atan2(elements[0].x);
+	return elements[0].z.atan2(elements[0].x);
 }
 
 void SGFixedTransform3DInternal::set_rotation(fixed p_rot) {
