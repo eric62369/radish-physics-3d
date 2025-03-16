@@ -14,6 +14,8 @@
 
 .sconsign.dblite
 
+UsefulCommands.md
+
 *.swp
 *.o
 *.os

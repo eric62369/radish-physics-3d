@@ -23,6 +23,9 @@
 
 #include "sg_fixed_transform_3D_internal.h"
 
+#define cofac(row1, col1, row2, col2) \
+	(elements[row1][col1] * elements[row2][col2] - elements[row1][col2] * elements[row2][col1])
+
 void SGFixedTransform3DInternal::invert() {
 	SWAP(elements[0][1], elements[1][0]);
 	SWAP(elements[0][2], elements[2][0]);
@@ -37,16 +40,29 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::inverse() const {
 }
 
 void SGFixedTransform3DInternal::affine_invert() {
+// 	fixed co[3] = {
+// 		cofac(1, 1, 2, 2), cofac(1, 2, 2, 0), cofac(1, 0, 2, 1)
+// 	};
+
+// 	fixed det = basis_determinant();
+// #ifdef MATH_CHECKS
+// 	ERR_FAIL_COND(det == fixed::ZERO);
+// #endif
+// 	elements[0] = co[0] * s, cofac(0, 2, 2, 1) * s, cofac(0, 1, 1, 2) * s,
+// 	elements[1] = co[1] * s, cofac(0, 0, 2, 2) * s, cofac(0, 2, 1, 0) * s,
+// 	elements[2] = co[2] * s, cofac(0, 1, 2, 0) * s, cofac(0, 0, 1, 1) * s;
+
+
 	fixed det = basis_determinant();
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND(det == fixed::ZERO);
 #endif
-	SWAP(elements[0][0], elements[2][2]);
-	SWAP(elements[0][1], elements[2][1]);
-	SWAP(elements[1][0], elements[1][2]);
-	elements[0] /= SGFixedVector3Internal(det, -det, -det); // TODO: determinant 3D vector math please 
+	SWAP(elements[0][1], elements[1][0]);
+	SWAP(elements[0][2], elements[2][0]);
+	SWAP(elements[1][2], elements[2][1]);
+	elements[0] /= SGFixedVector3Internal(det, -det, det); // TODO: determinant 3D vector math please 
 	elements[1] /= SGFixedVector3Internal(-det, det, -det);
-	elements[2] /= SGFixedVector3Internal(-det, -det, det);
+	elements[2] /= SGFixedVector3Internal(det, -det, det);
 
 	elements[3] = basis_xform(-elements[3]);
 }

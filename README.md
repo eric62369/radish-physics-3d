@@ -5,6 +5,15 @@ SG Physics 3D
 based on fixed-point math. It's useful for online multiplayer games, especially
 those using rollback netcode.
 
+
+Documentation XML Generation
+--------
+
+# Replace "godot" with the full path to a Godot editor binary
+# if Godot is not installed in your `PATH`.
+godot --doctool ../ --gdextension-docs
+
+
 Download
 --------
 
