@@ -33,6 +33,18 @@ struct SGFixedTransform3DInternal {
 	_FORCE_INLINE_ fixed tdoty(const SGFixedVector3Internal &v) const { return elements[0][1] * v.x + elements[1][1] * v.y + elements[2][1] * v.z; }
 	_FORCE_INLINE_ fixed tdotz(const SGFixedVector3Internal &v) const { return elements[0][2] * v.x + elements[1][2] * v.y + elements[2][2] * v.z; }
 
+	_FORCE_INLINE_ void set(fixed p_xx, fixed p_xy, fixed p_xz, fixed p_yx, fixed p_yy, fixed p_yz, fixed p_zx, fixed p_zy, fixed p_zz) {
+		elements[0][0] = p_xx;
+		elements[0][1] = p_xy;
+		elements[0][2] = p_xz;
+		elements[1][0] = p_yx;
+		elements[1][1] = p_yy;
+		elements[1][2] = p_yz;
+		elements[2][0] = p_zx;
+		elements[2][1] = p_zy;
+		elements[2][2] = p_zz;
+	}
+
 	const SGFixedVector3Internal &operator[](int p_idx) const { return elements[p_idx]; }
 	SGFixedVector3Internal &operator[](int p_idx) { return elements[p_idx]; }
 

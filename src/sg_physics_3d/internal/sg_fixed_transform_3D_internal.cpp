@@ -40,29 +40,18 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::inverse() const {
 }
 
 void SGFixedTransform3DInternal::affine_invert() {
-// 	fixed co[3] = {
-// 		cofac(1, 1, 2, 2), cofac(1, 2, 2, 0), cofac(1, 0, 2, 1)
-// 	};
-
-// 	fixed det = basis_determinant();
-// #ifdef MATH_CHECKS
-// 	ERR_FAIL_COND(det == fixed::ZERO);
-// #endif
-// 	elements[0] = co[0] * s, cofac(0, 2, 2, 1) * s, cofac(0, 1, 1, 2) * s,
-// 	elements[1] = co[1] * s, cofac(0, 0, 2, 2) * s, cofac(0, 2, 1, 0) * s,
-// 	elements[2] = co[2] * s, cofac(0, 1, 2, 0) * s, cofac(0, 0, 1, 1) * s;
-
-
-	fixed det = basis_determinant();
+	// https://github.com/godotengine/godot/blob/master/core/math/basis.cpp
+	// https://github.com/godotengine/godot/blob/master/core/math/transform_2d.cpp
+	fixed co[3] = {
+		cofac(1, 1, 2, 2), cofac(1, 2, 2, 0), cofac(1, 0, 2, 1)
+	};
+	fixed det = elements[0][0] * co[0] + elements[0][1] * co[1] + elements[0][2] * co[2];
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND(det == fixed::ZERO);
 #endif
-	SWAP(elements[0][1], elements[1][0]);
-	SWAP(elements[0][2], elements[2][0]);
-	SWAP(elements[1][2], elements[2][1]);
-	elements[0] /= SGFixedVector3Internal(det, -det, det); // TODO: determinant 3D vector math please 
-	elements[1] /= SGFixedVector3Internal(-det, det, -det);
-	elements[2] /= SGFixedVector3Internal(det, -det, det);
+	set(co[0] / det, cofac(0, 2, 2, 1) / det, cofac(0, 1, 1, 2) / det,
+			co[1] / det, cofac(0, 0, 2, 2) / det, cofac(0, 2, 1, 0) / det,
+			co[2] / det, cofac(0, 1, 2, 0) / det, cofac(0, 0, 1, 1) / det);
 
 	elements[3] = basis_xform(-elements[3]);
 }
@@ -249,8 +238,9 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::rotated(fixed p_phi) cons
 }
 
 fixed SGFixedTransform3DInternal::basis_determinant() const {
-	 // 3D determinant: https://en.wikipedia.org/wiki/Determinant
-	return (elements[0].x * elements[1].y * elements[2].z) + (elements[1].x * elements[2].y * elements[0].z) + (elements[2].x * elements[0].y * elements[1].z) - (elements[2].x * elements[1].y * elements[0].z) - (elements[1].x * elements[0].y * elements[2].z) - (elements[0].x * elements[2].y * elements[1].z);
+	// 3D determinant: https://en.wikipedia.org/wiki/Determinant
+	return elements[0][0] * cofac(1, 1, 2, 2) + elements[0][1] * cofac(1, 2, 2, 0) + elements[0][2] * cofac(1, 0, 2, 1);
+	// return (elements[0].x * elements[1].y * elements[2].z) + (elements[1].x * elements[2].y * elements[0].z) + (elements[2].x * elements[0].y * elements[1].z) - (elements[2].x * elements[1].y * elements[0].z) - (elements[1].x * elements[0].y * elements[2].z) - (elements[0].x * elements[2].y * elements[1].z);
 }
 
 SGFixedTransform3DInternal SGFixedTransform3DInternal::interpolate_with(const SGFixedTransform3DInternal &p_transform, fixed p_c) const {
