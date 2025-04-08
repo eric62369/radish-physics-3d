@@ -40,12 +40,16 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::inverse() const {
 }
 
 void SGFixedTransform3DInternal::affine_invert() {
-	// https://github.com/godotengine/godot/blob/master/core/math/basis.cpp
+	// invert() at https://github.com/godotengine/godot/blob/master/core/math/basis.cpp
 	// https://github.com/godotengine/godot/blob/master/core/math/transform_2d.cpp
+
+	// https://www.eetimes.com/implementing-matrix-inversions-in-fixed-point-hardware/ is this helpful?
+
 	fixed co[3] = {
 		cofac(1, 1, 2, 2), cofac(1, 2, 2, 0), cofac(1, 0, 2, 1)
 	};
-	fixed det = elements[0][0] * co[0] + elements[0][1] * co[1] + elements[0][2] * co[2];
+	// fixed det = elements[0][0] * co[0] + elements[0][1] * co[1] + elements[0][2] * co[2];
+	fixed det = basis_determinant();
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND(det == fixed::ZERO);
 #endif

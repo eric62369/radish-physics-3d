@@ -1,3 +1,8 @@
+scons target=template_debug debug_symbols=yes
+https://www.youtube.com/watch?v=8WSIMTJWCBk
+
+
+
 SG Physics 3D
 =============
 

@@ -39,7 +39,13 @@ func test_deterministic_rotation():
 	assert_almost_eq(rounda.z, 65536, 2000)
 
 	var small_t = t.scaled(SGFixed.vector3(131, 131, 131))
+	assert_almost_eq(small_t.x.x, 131, 10) # 200 is 13107200 / 65536
+	assert_almost_eq(small_t.y.y, 131, 10)
+	assert_almost_eq(small_t.z.z, 131, 10)
 	var small_t_inv = small_t.affine_inverse()
+	assert_almost_eq(small_t_inv.x.x, 65536, 2000) # what is this supposed to be
+	assert_almost_eq(small_t_inv.y.y, 65536, 2000)
+	assert_almost_eq(small_t_inv.z.z, 65536, 2000)
 	var roundb = small_t.xform(small_t_inv.xform(SGFixed.vector3(65536, 65536, 65536)))
 	assert_almost_eq(roundb.x, 65536, 2000)
 	assert_almost_eq(roundb.y, 65536, 2000)
