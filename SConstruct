@@ -47,6 +47,7 @@ if env["target"] in ["editor", "template_debug"]:
         print("Not including class reference as we're targeting a pre-4.3 baseline.")
 
 env.Append(CPPPATH=['src/'])
+env.Append(CXXFLAGS=['-O0']) # TODO: make sure to remove later! Debug optimization option: https://stackoverflow.com/questions/25335985/lldb-couldnt-materialize-couldnt-get-the-value-of-variable
 
 # Platform specifics.
 if env["platform"] == "macos":

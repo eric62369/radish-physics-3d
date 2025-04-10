@@ -1,6 +1,8 @@
 scons target=template_debug debug_symbols=yes
 https://www.youtube.com/watch?v=8WSIMTJWCBk
 
+https://stackoverflow.com/questions/13040777/lldb-error-variable-not-available
+
 
 
 SG Physics 3D

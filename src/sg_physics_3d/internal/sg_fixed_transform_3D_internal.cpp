@@ -49,14 +49,22 @@ void SGFixedTransform3DInternal::affine_invert() {
 		cofac(1, 1, 2, 2), cofac(1, 2, 2, 0), cofac(1, 0, 2, 1)
 	};
 	// fixed det = elements[0][0] * co[0] + elements[0][1] * co[1] + elements[0][2] * co[2];
-	fixed det = basis_determinant();
+	fixed determinant = basis_determinant();
 #ifdef MATH_CHECKS
 	ERR_FAIL_COND(det == fixed::ZERO);
 #endif
-	set(co[0] / det, cofac(0, 2, 2, 1) / det, cofac(0, 1, 1, 2) / det,
-			co[1] / det, cofac(0, 0, 2, 2) / det, cofac(0, 2, 1, 0) / det,
-			co[2] / det, cofac(0, 1, 2, 0) / det, cofac(0, 0, 1, 1) / det);
-
+	set(co[0] / determinant, cofac(0, 2, 2, 1) / determinant, cofac(0, 1, 1, 2) / determinant,
+			co[1] / determinant, cofac(0, 0, 2, 2) / determinant, cofac(0, 2, 1, 0) / determinant,
+			co[2] / determinant, cofac(0, 1, 2, 0) / determinant, cofac(0, 0, 1, 1) / determinant);
+	// elements[0][0] = co[0] / determinant; // TODO: has a bug in it somehow????
+	// elements[0][1] = cofac(0, 2, 2, 1) / determinant;
+	// elements[0][2] = cofac(0, 1, 1, 2) / determinant;
+	// elements[1][0] = co[1] / determinant;
+	// elements[1][1] = cofac(0, 0, 2, 2) / determinant;
+	// elements[1][2] = cofac(0, 2, 1, 0) / determinant;
+	// elements[2][0] = co[2] / determinant;
+	// elements[2][1] = cofac(0, 1, 2, 0) / determinant;
+	// elements[2][2] = cofac(0, 0, 1, 1) / determinant;
 	elements[3] = basis_xform(-elements[3]);
 }
 
