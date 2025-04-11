@@ -32,7 +32,6 @@ class SGCollisionObject3D : public SGFixedNode3D {
 	GDCLASS(SGCollisionObject3D, SGFixedNode3D);
 
 	friend class SGCollisionShape3D;
-	friend class SGCollisionPolygon3D;
 
 	uint32_t collision_layer;
 	uint32_t collision_mask;

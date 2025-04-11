@@ -95,7 +95,7 @@ int64_t SGRectangleShape3D::_get_extents_z() const {
 	return extents->get_z();
 }
 
-void SGRectangleShape3D::_set_extents_y(int64_t p_z) {
+void SGRectangleShape3D::_set_extents_z(int64_t p_z) {
 	extents->set_z(p_z);
 }
 

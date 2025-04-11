@@ -20,7 +20,6 @@ def get_doc_classes():
         'SGCapsuleShape3D',
         'SGCircleShape3D',
         'SGCollisionObject3D',
-        'SGCollisionPolygon3D',
         'SGCollisionShape3D',
         'SGCurve3D',
         'SGFixed',
