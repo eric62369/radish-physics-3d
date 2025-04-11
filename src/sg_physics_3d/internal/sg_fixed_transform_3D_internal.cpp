@@ -265,8 +265,8 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::interpolate_with(const SG
 	SGFixedVector3Internal s1 = get_scale();
 	SGFixedVector3Internal s2 = p_transform.get_scale();
 
-	SGFixedVector3Internal v1(r1.cos(), r1.sin(), r1.sin()); // TODO: whats the z axis in this case??
-	SGFixedVector3Internal v2(r2.cos(), r2.sin(), r1.sin());
+	SGFixedVector3Internal v1(r1.cos(), fixed(1), r1.sin()); // TODO: whats the z axis in this case??
+	SGFixedVector3Internal v2(r2.cos(), fixed(1), r2.sin());
 
 	fixed dot = v1.dot(v2);
 	dot = CLAMP(dot, fixed::NEG_ONE, fixed::ONE);

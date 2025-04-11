@@ -115,8 +115,8 @@ public:
 		: SGShape3DInternal(SHAPE_RECTANGLE)
 	{
 		extents = p_extents;
-		global_vertices.resize(4);
-		global_axes.resize(2);
+		global_vertices.resize(8);
+		global_axes.resize(3);
 	}
 	SGRectangle3DInternal(fixed p_extents_w, fixed p_extents_h, fixed p_extents_d)
 		: SGRectangle3DInternal(SGFixedVector3Internal(p_extents_w, p_extents_h, p_extents_d)) { }

@@ -146,7 +146,7 @@ struct SGFixedVector3Internal {
 	void set_rotation(fixed p_radians) {
 		x = p_radians.cos();
 		// y = p_radians.sin(); // TODO: set rotations and operators above
-		z = p_radians.cos(); // TODO: fix set rotation for around y axis only
+		z = p_radians.sin(); // TODO: fix set rotation for around y axis only
 	}
 
 	_FORCE_INLINE_ SGFixedVector3Internal abs() const {
