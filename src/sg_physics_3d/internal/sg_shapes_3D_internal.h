@@ -37,7 +37,6 @@ public:
 	enum ShapeType {
 		SHAPE_RECTANGLE,
 		SHAPE_CIRCLE,
-		SHAPE_POLYGON,
 		SHAPE_CAPSULE,
 	};
 
@@ -139,25 +138,6 @@ public:
 	{
 		radius = p_radius;
 	}
-};
-
-class SGPolygon3DInternal : public SGShape3DInternal {
-protected:
-
-	std::vector<SGFixedVector3Internal> points;
-
-public:
-	_FORCE_INLINE_ std::vector<SGFixedVector3Internal> get_points() const { return points; }
-	_FORCE_INLINE_ void set_points(const std::vector<SGFixedVector3Internal> &p_points) {
-		points = p_points;
-		global_vertices.clear();
-		global_axes.clear();
-	}
-
-	virtual std::vector<SGFixedVector3Internal> get_global_vertices() const override;
-	virtual std::vector<SGFixedVector3Internal> get_global_axes() const override;
-
-	SGPolygon3DInternal() : SGShape3DInternal(SHAPE_POLYGON) { }
 };
 
 class SGCapsule3DInternal : public SGShape3DInternal {

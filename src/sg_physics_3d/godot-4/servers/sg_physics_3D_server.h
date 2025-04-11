@@ -123,7 +123,6 @@ public:
 		SHAPE_UNKNOWN = -1,
 		SHAPE_RECTANGLE = 0,
 		SHAPE_CIRCLE,
-		SHAPE_POLYGON,
 		SHAPE_CAPSULE,
 	};
 
@@ -160,9 +159,6 @@ public:
 	int64_t capsule_get_radius(RID p_shape) const;
 	void capsule_set_height(RID p_shape, int64_t p_height);
 	int64_t capsule_get_height(RID p_shape) const;
-
-	void polygon_set_points(RID p_shape, const Array &p_points);
-	Array polygon_get_points(RID p_shape) const;
 
 	RID collision_object_create(CollisionObjectType p_object_type, BodyType p_body_type = BODY_UNKNOWN);
 	CollisionObjectType collision_object_get_type(RID p_object);

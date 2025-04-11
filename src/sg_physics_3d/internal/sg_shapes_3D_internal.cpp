@@ -101,42 +101,6 @@ SGFixedVector3Internal SGRectangle3DInternal::get_closest_vertex(const SGFixedVe
 	return t.xform(vertex);
 }
 
-std::vector<SGFixedVector3Internal> SGPolygon3DInternal::get_global_vertices() const {
-	if (global_vertices_dirty) {
-		SGFixedTransform3DInternal t = get_global_transform();
-
-		// Note: will only resize if it has a different size.
-		global_vertices.resize(points.size());
-
-		for (std::size_t i = 0; i < points.size(); i++) {
-			global_vertices[i] = t.xform(points[i]);
-		}
-		global_vertices_dirty = false;
-	}
-
-	return global_vertices;
-}
-
-std::vector<SGFixedVector3Internal> SGPolygon3DInternal::get_global_axes() const {
-	if (global_axes_dirty) {
-		SGFixedTransform3DInternal t = get_global_transform();
-		t.set_origin(SGFixedVector3Internal::ZERO);
-
-		// Note: will only resize if it has a different size.
-		global_axes.resize(points.size());
-
-		for (std::size_t i = 0; i < points.size(); i++) {
-			std::size_t next_index = (i == points.size() - 1) ? 0 : i + 1;
-			SGFixedVector3Internal edge = t.xform(points[next_index] - points[i]);
-			// Get the vector perpendicular to the edge, which will be the edge normal.
-			global_axes[i] = SGFixedVector3Internal(edge.y, -edge.x, edge.z).normalized(); // TODO: what does perpendicular mean in this case
-		}
-		global_axes_dirty = false;
-	}
-
-	return global_axes;
-}
-
 SGFixedRect3Internal SGCircle3DInternal::get_bounds() const {
 	SGFixedTransform3DInternal t = get_global_transform();
 	fixed radius_scaled = radius * t.get_scale().x;

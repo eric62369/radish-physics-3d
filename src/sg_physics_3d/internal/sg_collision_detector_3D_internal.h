@@ -72,20 +72,11 @@ public:
 	static bool Circle_overlaps_Rectangle(const SGCircle3DInternal &circle, const SGRectangle3DInternal &rectangle, fixed p_margin, OverlapInfo *p_info = nullptr);
 
 	//
-	// Polygons
-	//
-
-	static bool Polygon_overlaps_Polygon(const SGPolygon3DInternal &polygon1, const SGPolygon3DInternal &polygon2, fixed p_margin, OverlapInfo *p_info = nullptr);
-	static bool Polygon_overlaps_Circle(const SGPolygon3DInternal &polygon, const SGCircle3DInternal &circle, fixed p_margin, OverlapInfo *p_info = nullptr);
-	static bool Polygon_overlaps_Rectangle(const SGPolygon3DInternal &polygon, const SGRectangle3DInternal &rectangle, fixed p_margin, OverlapInfo *p_info = nullptr);
-
-	//
 	// Capsules
 	//
 
 	static bool Capsule_overlaps_Circle(const SGCapsule3DInternal& capsule, const SGCircle3DInternal& circle, fixed p_margin, OverlapInfo* p_info = nullptr);
 	static bool Capsule_overlaps_Rectangle(const SGCapsule3DInternal& capsule, const SGRectangle3DInternal& rectangle, fixed p_margin, OverlapInfo* p_info);
-	static bool Capsule_overlaps_Polygon(const SGCapsule3DInternal& capsule, const SGPolygon3DInternal& polygon, fixed p_margin, OverlapInfo* p_info);
 	static bool Capsule_overlaps_Capsule(const SGCapsule3DInternal& capsule1, const SGCapsule3DInternal& capsule2, fixed p_margin, OverlapInfo* p_info);
 
 	//

@@ -288,9 +288,6 @@ void SGPhysics3DServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("circle_set_radius", "shape", "radius"), &SGPhysics3DServer::circle_set_radius);
 	ClassDB::bind_method(D_METHOD("circle_get_radius", "shape"), &SGPhysics3DServer::circle_get_radius);
 
-	ClassDB::bind_method(D_METHOD("polygon_set_points", "shape", "points"), &SGPhysics3DServer::polygon_set_points);
-	ClassDB::bind_method(D_METHOD("polygon_get_points", "shape"), &SGPhysics3DServer::polygon_get_points);
-
 	ClassDB::bind_method(D_METHOD("collision_object_create", "object_type", "body_type"), &SGPhysics3DServer::collision_object_create, DEFVAL(BODY_UNKNOWN));
 	ClassDB::bind_method(D_METHOD("collision_object_get_type", "object"), &SGPhysics3DServer::collision_object_get_type);
 	ClassDB::bind_method(D_METHOD("collision_object_set_data", "object", "data"), &SGPhysics3DServer::collision_object_set_data);
@@ -331,7 +328,6 @@ void SGPhysics3DServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(SHAPE_UNKNOWN);
 	BIND_ENUM_CONSTANT(SHAPE_RECTANGLE);
 	BIND_ENUM_CONSTANT(SHAPE_CIRCLE);
-	BIND_ENUM_CONSTANT(SHAPE_POLYGON);
 	BIND_ENUM_CONSTANT(SHAPE_CAPSULE);
 
 	BIND_ENUM_CONSTANT(OBJECT_UNKNOWN);
@@ -361,10 +357,6 @@ RID SGPhysics3DServer::shape_create(SGPhysics3DServer::ShapeType p_shape_type) {
 		break;
 		case SHAPE_CAPSULE: {
 			shape = memnew(SGCapsule3DInternal(fixed(655360), fixed(655360)));
-		}
-		break;
-		case SHAPE_POLYGON: {
-			shape = memnew(SGPolygon3DInternal);
 		}
 		break;
 		default:
@@ -472,38 +464,6 @@ int64_t SGPhysics3DServer::capsule_get_height(RID p_shape) const {
 	ERR_FAIL_COND_V(!internal, 0);
 	ERR_FAIL_COND_V(internal->get_shape_type() != SGShape3DInternal::SHAPE_CAPSULE, 0);
 	return ((SGCapsule3DInternal *)internal)->get_height().value;
-}
-
-void SGPhysics3DServer::polygon_set_points(RID p_shape, const Array &p_points_array) {
-	SGShape3DInternal *internal = shape_owner.get_or_null(p_shape);
-	ERR_FAIL_COND(!internal);
-	ERR_FAIL_COND(internal->get_shape_type() != SGShape3DInternal::SHAPE_POLYGON);
-
-	std::vector<SGFixedVector3Internal> points;
-	points.resize(p_points_array.size());
-
-	for (int i = 0; i < p_points_array.size(); i++) {
-		Ref<SGFixedVector3> point = p_points_array[i];
-		if (point.is_valid()) {
-			points[i] = point->get_internal();
-		}
-	}
-
-	((SGPolygon3DInternal *)internal)->set_points(points);
-}
-
-Array SGPhysics3DServer::polygon_get_points(RID p_shape) const {
-	SGShape3DInternal *internal = shape_owner.get_or_null(p_shape);
-	ERR_FAIL_COND_V(!internal, Array());
-	ERR_FAIL_COND_V(internal->get_shape_type() != SGShape3DInternal::SHAPE_POLYGON, Array());
-
-	Array ret;
-	std::vector<SGFixedVector3Internal> points = ((SGPolygon3DInternal *)internal)->get_points();
-	ret.resize(points.size());
-	for (std::size_t i = 0; i < points.size(); i++) {
-		ret[i] = SGFixedVector3::from_internal(points[i]);
-	}
-	return ret;
 }
 
 RID SGPhysics3DServer::collision_object_create(SGPhysics3DServer::CollisionObjectType p_object_type, SGPhysics3DServer::BodyType p_body_type) {

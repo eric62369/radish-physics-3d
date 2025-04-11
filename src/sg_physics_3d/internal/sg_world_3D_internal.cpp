@@ -108,23 +108,6 @@ bool SGWorld3DInternal::overlaps(SGShape3DInternal *p_shape1, SGShape3DInternal 
 		overlapping = SGCollisionDetector3DInternal::Circle_overlaps_Rectangle(*((SGCircle3DInternal *)p_shape2), *((SGRectangle3DInternal *)p_shape1), p_margin, overlap_info_ptr);
 		swap = true;
 	}
-	else if (shape1_type == ShapeType::SHAPE_POLYGON && shape2_type == ShapeType::SHAPE_POLYGON) {
-		overlapping = SGCollisionDetector3DInternal::Polygon_overlaps_Polygon(*((SGPolygon3DInternal *)p_shape1), *((SGPolygon3DInternal *)p_shape2), p_margin, overlap_info_ptr);
-	}
-	else if (shape1_type == ShapeType::SHAPE_POLYGON && shape2_type == ShapeType::SHAPE_CIRCLE) {
-		overlapping = SGCollisionDetector3DInternal::Polygon_overlaps_Circle(*((SGPolygon3DInternal *)p_shape1), *((SGCircle3DInternal *)p_shape2), p_margin, overlap_info_ptr);
-	}
-	else if (shape1_type == ShapeType::SHAPE_CIRCLE && shape2_type == ShapeType::SHAPE_POLYGON) {
-		overlapping = SGCollisionDetector3DInternal::Polygon_overlaps_Circle(*((SGPolygon3DInternal *)p_shape2), *((SGCircle3DInternal *)p_shape1), p_margin, overlap_info_ptr);
-		swap = true;
-	}
-	else if (shape1_type == ShapeType::SHAPE_POLYGON && shape2_type == ShapeType::SHAPE_RECTANGLE) {
-		overlapping = SGCollisionDetector3DInternal::Polygon_overlaps_Rectangle(*((SGPolygon3DInternal *)p_shape1), *((SGRectangle3DInternal *)p_shape2), p_margin, overlap_info_ptr);
-	}
-	else if (shape1_type == ShapeType::SHAPE_RECTANGLE && shape2_type == ShapeType::SHAPE_POLYGON) {
-		overlapping = SGCollisionDetector3DInternal::Polygon_overlaps_Rectangle(*((SGPolygon3DInternal *)p_shape2), *((SGRectangle3DInternal *)p_shape1), p_margin, overlap_info_ptr);
-		swap = true;
-	}
 	else if (shape1_type == ShapeType::SHAPE_CAPSULE && shape2_type == ShapeType::SHAPE_CIRCLE) {
 		overlapping = SGCollisionDetector3DInternal::Capsule_overlaps_Circle(*((SGCapsule3DInternal*)p_shape1), *((SGCircle3DInternal*)p_shape2), p_margin, overlap_info_ptr);
 	}
@@ -137,13 +120,6 @@ bool SGWorld3DInternal::overlaps(SGShape3DInternal *p_shape1, SGShape3DInternal 
 	}
 	else if (shape1_type == ShapeType::SHAPE_RECTANGLE && shape2_type == ShapeType::SHAPE_CAPSULE) {
 		overlapping = SGCollisionDetector3DInternal::Capsule_overlaps_Rectangle(*((SGCapsule3DInternal*)p_shape2), *((SGRectangle3DInternal*)p_shape1), p_margin, overlap_info_ptr);
-		swap = true;
-	}
-	else if (shape1_type == ShapeType::SHAPE_CAPSULE && shape2_type == ShapeType::SHAPE_POLYGON) {
-		overlapping = SGCollisionDetector3DInternal::Capsule_overlaps_Polygon(*((SGCapsule3DInternal*)p_shape1), *((SGPolygon3DInternal*)p_shape2), p_margin, overlap_info_ptr);
-	}
-	else if (shape1_type == ShapeType::SHAPE_POLYGON && shape2_type == ShapeType::SHAPE_CAPSULE) {
-		overlapping = SGCollisionDetector3DInternal::Capsule_overlaps_Polygon(*((SGCapsule3DInternal*)p_shape2), *((SGPolygon3DInternal*)p_shape1), p_margin, overlap_info_ptr);
 		swap = true;
 	}
 	else if (shape1_type == ShapeType::SHAPE_CAPSULE && shape2_type == ShapeType::SHAPE_CAPSULE) {
@@ -362,9 +338,6 @@ bool SGWorld3DInternal::segment_intersects_shape(const SGFixedVector3Internal &p
 
 	switch (shape_type) {
 		case ShapeType::SHAPE_RECTANGLE:
-		case ShapeType::SHAPE_POLYGON:
-			return SGCollisionDetector3DInternal::segment_intersects_Polygon(p_start, p_cast_to, *(SGShape3DInternal *)p_shape, p_intersection_point, p_collision_normal);
-
 		case ShapeType::SHAPE_CIRCLE:
 			return SGCollisionDetector3DInternal::segment_intersects_Circle(p_start, p_cast_to, *(SGCircle3DInternal *)p_shape, p_intersection_point, p_collision_normal);
 
