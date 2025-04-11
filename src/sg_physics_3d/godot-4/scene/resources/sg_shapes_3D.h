@@ -63,6 +63,8 @@ protected:
 	void _set_extents_x(int64_t p_x);
 	int64_t _get_extents_y() const;
 	void _set_extents_y(int64_t p_y);
+	int64_t _get_extents_z() const;
+	void _set_extents_z(int64_t p_y);
 
 public:
 	void set_extents(const Ref<SGFixedVector3>& p_extents);

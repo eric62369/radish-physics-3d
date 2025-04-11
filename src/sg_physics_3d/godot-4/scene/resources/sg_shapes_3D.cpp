@@ -44,10 +44,13 @@ void SGRectangleShape3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_set_extents_x", "x"), &SGRectangleShape3D::_set_extents_x);
 	ClassDB::bind_method(D_METHOD("_get_extents_y"), &SGRectangleShape3D::_get_extents_y);
 	ClassDB::bind_method(D_METHOD("_set_extents_y", "y"), &SGRectangleShape3D::_set_extents_y);
+	ClassDB::bind_method(D_METHOD("_get_extents_z"), &SGRectangleShape3D::_get_extents_z);
+	ClassDB::bind_method(D_METHOD("_set_extents_z", "z"), &SGRectangleShape3D::_set_extents_z);
 
 	// For editor and storage.
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "extents_x"), "_set_extents_x", "_get_extents_x");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "extents_y"), "_set_extents_y", "_get_extents_y");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "extents_z"), "_set_extents_z", "_get_extents_z");
 
 	// For code only.
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "extents", PROPERTY_HINT_NONE, "", 0), "set_extents", "get_extents");
@@ -86,6 +89,14 @@ int64_t SGRectangleShape3D::_get_extents_y() const {
 
 void SGRectangleShape3D::_set_extents_y(int64_t p_y) {
 	extents->set_y(p_y);
+}
+
+int64_t SGRectangleShape3D::_get_extents_z() const {
+	return extents->get_z();
+}
+
+void SGRectangleShape3D::_set_extents_y(int64_t p_z) {
+	extents->set_z(p_z);
 }
 
 void SGRectangleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
