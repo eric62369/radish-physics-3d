@@ -50,28 +50,28 @@ void SGCollisionShape3D::_bind_methods() {
 
 void SGCollisionShape3D::_notification(int p_what) {
 	switch (p_what) {
-		// case NOTIFICATION_DRAW: { // TODO: 3D draw notification
-		// 	if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_collisions_hint()) {
-		// 		break;
-		// 	}
+		case NOTIFICATION_DRAW: { // TODO: 3D draw notification
+			if (!Engine::get_singleton()->is_editor_hint() && !get_tree()->is_debugging_collisions_hint()) {
+				break;
+			}
 
-		// 	if (!shape.is_valid()) {
-		// 		break;
-		// 	}
+			if (!shape.is_valid()) {
+				break;
+			}
 
-		// 	// @todo Get access to the debug collision color from GDExtension
-		// 	//Color draw_col = get_tree()->get_debug_collisions_color();
-		// 	Color draw_col = debug_color;
-		// 	if (disabled) {
-		// 		float g = draw_col.get_v();
-		// 		draw_col.r = g;
-		// 		draw_col.g = g;
-		// 		draw_col.b = g;
-		// 		draw_col.a *= 0.5;
-		// 	}
+			// @todo Get access to the debug collision color from GDExtension
+			//Color draw_col = get_tree()->get_debug_collisions_color();
+			Color draw_col = debug_color;
+			if (disabled) {
+				float g = draw_col.get_v();
+				draw_col.r = g;
+				draw_col.g = g;
+				draw_col.b = g;
+				draw_col.a *= 0.5;
+			}
 
-		// 	shape->draw(get_canvas_item(), draw_col);
-		// } break;
+			shape->draw(get_canvas_item(), draw_col);
+		} break;
 
 		case NOTIFICATION_PARENTED: {
 			SGCollisionObject3D *parent_node = Object::cast_to<SGCollisionObject3D>(get_parent());

@@ -21,6 +21,8 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+// https://github.com/godotengine/godot/blob/master/scene/3d/physics/collision_shape_3d.h
+
 #ifndef SG_COLLISION_SHAPE_3D_H
 #define SG_COLLISION_SHAPE_3D_H
 

@@ -21,6 +21,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
 
+// https://github.com/godotengine/godot/blob/7b9c5122faafb6b4a655e31ae27bcffeb5cf254f/editor/plugins/collision_shape_2d_editor_plugin.cpp
+// https://github.com/godotengine/godot/blob/7b9c5122faafb6b4a655e31ae27bcffeb5cf254f/editor/plugins/gizmos/collision_shape_3d_gizmo_plugin.cpp
+
 #include "sg_collision_shape_3D_editor_plugin.h"
 
 #include <godot_cpp/classes/editor_interface.hpp>
