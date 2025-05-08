@@ -37,6 +37,53 @@ SGShape3D::SGShape3D() {
 SGShape3D::~SGShape3D() {
 }
 
+Ref<ArrayMesh> SGShape3D::get_debug_mesh() {
+	if (debug_mesh_cache.is_valid()) {
+		return debug_mesh_cache;
+	}
+
+	Vector<Vector3> lines = get_debug_mesh_lines();
+
+	debug_mesh_cache.instantiate();
+
+	if (!lines.is_empty()) {
+		//make mesh
+		Vector<Vector3> array;
+		array.resize(lines.size());
+		Vector3 *v = array.ptrw();
+
+		Vector<Color> arraycol;
+		arraycol.resize(lines.size());
+		Color *c = arraycol.ptrw();
+
+		for (int i = 0; i < lines.size(); i++) {
+			v[i] = lines[i];
+			c[i] = debug_color;
+		}
+
+		Array lines_array;
+		lines_array.resize(Mesh::ARRAY_MAX);
+		lines_array[Mesh::ARRAY_VERTEX] = array;
+		lines_array[Mesh::ARRAY_COLOR] = arraycol;
+
+		// Ref<StandardMaterial3D> material = get_debug_collision_material();
+
+		debug_mesh_cache->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, lines_array);
+		// debug_mesh_cache->surface_set_material(0, material);
+
+		if (debug_fill) {
+			Ref<ArrayMesh> array_mesh = get_debug_arraymesh_faces(debug_color * Color(1.0, 1.0, 1.0, 0.0625));
+			if (array_mesh.is_valid() && array_mesh->get_surface_count() > 0) {
+				Array solid_array = array_mesh->surface_get_arrays(0);
+				debug_mesh_cache->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, solid_array);
+				// debug_mesh_cache->surface_set_material(1, material);
+			}
+		}
+	}
+
+	return debug_mesh_cache;
+}
+
 void SGRectangleShape3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_extents"), &SGRectangleShape3D::get_extents);
 	ClassDB::bind_method(D_METHOD("set_extents", "extents"), &SGRectangleShape3D::set_extents);
@@ -106,6 +153,12 @@ void SGRectangleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
 void SGRectangleShape3D::draw(const RID &p_to_rid, const Color &p_color) {  // TODO: draw rectangle3D?
 	Vector3 float_extents = extents->to_float();
 	// TODO: drawing is hard https://github.com/godotengine/godot/blob/master/scene/resources/3d/box_shape_3d.cpp
+	// https://www.youtube.com/watch?v=tNv_07uMKXw
+	// https://github.com/godotengine/godot/blob/215acd52e82f4c575abb715e25e54558deeef998/scene/3d/physics/collision_object_3d.cpp#L366
+	
+	Ref<Mesh> mesh = get_debug_mesh();
+	RenderingServer::get_singleton()->instance_set_base(p_to_rid, mesh->get_rid());
+	
 	// RenderingServer::get_singleton()->canvas_item_add_aabb(p_to_rid, AABB(-float_extents, float_extents * 2.0), p_color);
 }
 
