@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bb7gg8q1kpqw8"]
+
+[ext_resource type="Script" path="res://tests/functional/SGArea2D/debug_camera.gd" id="1_s1ojb"]
+
+[node name="Camera3D" type="Camera3D"]
+script = ExtResource("1_s1ojb")

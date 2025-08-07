@@ -32,3 +32,4 @@ func test_initial_scale():
 	assert_eq(n.fixed_transform.z.x, 0)
 	assert_eq(n.fixed_transform.z.y, 0)
 	assert_eq(n.fixed_transform.z.z, 65536)
+	n.free()

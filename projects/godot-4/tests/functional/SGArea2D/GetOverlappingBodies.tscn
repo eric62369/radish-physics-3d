@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://57bhfe2kukuf"]
+[gd_scene load_steps=12 format=3 uid="uid://57bhfe2kukuf"]
 
 [ext_resource type="Script" path="res://tests/functional/SGArea2D/GetOverlappingBodies.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bb7gg8q1kpqw8" path="res://tests/debug_camera_3d.tscn" id="2_smj7t"]
 
 [sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_rhqf7"]
 
@@ -96,3 +97,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 138, 79.75, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody8"]
 shape = SubResource("SGRectangleShape3D_3iaj2")
+
+[node name="Camera3D" parent="." instance=ExtResource("2_smj7t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 31.259)
