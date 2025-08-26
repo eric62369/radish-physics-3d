@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://57bhfe2kukuf"]
 
 [ext_resource type="Script" path="res://tests/functional/SGArea2D/GetOverlappingBodies.gd" id="1"]
-[ext_resource type="PackedScene" uid="uid://bb7gg8q1kpqw8" path="res://tests/debug_camera_3d.tscn" id="2_smj7t"]
+[ext_resource type="PackedScene" uid="uid://bcjtflkpuopaq" path="res://camera_pivot.tscn" id="2_27k68"]
 
 [sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_rhqf7"]
 
@@ -36,23 +36,20 @@ fixed_position_y = 4194304
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 64, 0)
 
 [node name="StaticBody1" type="SGStaticBody3D" parent="."]
-fixed_position_x = 2359296
-fixed_position_y = 2949120
+fixed_position_y = 3049120
 fixed_scale_x = 655360
 fixed_scale_y = 655360
 fixed_scale_z = 655360
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 36, 45, 0)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 46.5259, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody1"]
 shape = SubResource("SGRectangleShape3D_eg8ih")
 
 [node name="StaticBody2" type="SGStaticBody3D" parent="."]
-fixed_position_x = 5767168
-fixed_position_y = 5308416
 fixed_scale_x = 655360
 fixed_scale_y = 655360
 fixed_scale_z = 655360
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 88, 81, 0)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody2"]
 shape = SubResource("SGRectangleShape3D_pg6ma")
@@ -71,10 +68,11 @@ shape = SubResource("SGRectangleShape3D_7nvk1")
 [node name="StaticBody4" type="SGStaticBody3D" parent="."]
 fixed_position_x = -2686976
 fixed_position_y = 3538944
+fixed_position_z = -2686976
 fixed_scale_x = 655360
 fixed_scale_y = 655360
 fixed_scale_z = 655360
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -41, 54, 0)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -41, 54, -41)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody4"]
 shape = SubResource("SGRectangleShape3D_sjro7")
@@ -91,12 +89,11 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 59, -37, 0)
 shape = SubResource("SGRectangleShape3D_fn2hw")
 
 [node name="StaticBody6" type="SGStaticBody3D" parent="."]
-fixed_position_x = 3342336
-fixed_position_y = 10027008
+fixed_position_z = -10000000
 fixed_scale_x = 655360
 fixed_scale_y = 655360
 fixed_scale_z = 655360
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 51, 153, 0)
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, -152.588)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody6"]
 shape = SubResource("SGRectangleShape3D_1snfm")
@@ -125,6 +122,4 @@ transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 138, 79.75, 0)
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody8"]
 shape = SubResource("SGRectangleShape3D_3iaj2")
 
-[node name="Camera3D" parent="." instance=ExtResource("2_smj7t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 184.598)
-speed = 3.0
+[node name="CameraPivot" parent="." instance=ExtResource("2_27k68")]
