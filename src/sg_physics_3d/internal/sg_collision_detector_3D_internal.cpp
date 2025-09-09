@@ -114,7 +114,7 @@ fixed p_margin, SGFixedVector3Internal &best_separation_vector, fixed &best_sepa
 
 			// if the correction is too small it will be set to 0 and the overlap won't be corrected
 			// in that case we don't consider it an overlap
-			if ((axis.x == fixed::ZERO || separation_vector.x != fixed::ZERO) && (axis.y == fixed::ZERO || separation_vector.y != fixed::ZERO))
+			if ((axis.x == fixed::ZERO || separation_vector.x != fixed::ZERO) && (axis.y == fixed::ZERO || separation_vector.y != fixed::ZERO) && (axis.z == fixed::ZERO || separation_vector.z != fixed::ZERO))
 			{
 				fixed separation_length = separation_component.abs();
 				if (best_separation_vector == SGFixedVector3Internal::ZERO || separation_length < best_separation_length) {

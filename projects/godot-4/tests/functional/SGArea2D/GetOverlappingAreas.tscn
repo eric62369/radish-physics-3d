@@ -1,16 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://50y8tnupw1d3"]
+[gd_scene load_steps=6 format=3 uid="uid://50y8tnupw1d3"]
 
 [ext_resource type="Script" path="res://tests/functional/SGArea2D/GetOverlappingAreas.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bcjtflkpuopaq" path="res://camera_pivot.tscn" id="2_3vc7d"]
 
-[sub_resource type="SGRectangleShape2D" id="1"]
-resource_local_to_scene = false
-resource_name = ""
-extents_x = 4194304
-extents_y = 4194304
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_2lfoc"]
+height = 6655360
 
-[sub_resource type="SGRectangleShape2D" id="2"]
-resource_local_to_scene = false
-resource_name = ""
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_nsy8f"]
+height = 6553600
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_kv378"]
+radius = 6553600
+height = 6553600
 
 [node name="GetOverlappingAreas" type="Node2D"]
 script = ExtResource("1")
@@ -18,7 +19,7 @@ script = ExtResource("1")
 [node name="Area2D1" type="SGArea3D" parent="."]
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area2D1"]
-shape = SubResource("1")
+shape = SubResource("SGCapsuleShape3D_2lfoc")
 fixed_position_x = 4194304
 fixed_position_y = 4194304
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 64, 0)
@@ -29,7 +30,7 @@ fixed_position_y = 2949120
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 45, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area2D2"]
-shape = SubResource("2")
+shape = SubResource("SGCapsuleShape3D_nsy8f")
 
 [node name="Area2D3" type="SGArea3D" parent="."]
 monitorable = false
@@ -38,4 +39,6 @@ fixed_position_y = 5358852
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 87.6188, 81.7696, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area2D3"]
-shape = SubResource("2")
+shape = SubResource("SGCapsuleShape3D_kv378")
+
+[node name="CameraPivot" parent="." instance=ExtResource("2_3vc7d")]
