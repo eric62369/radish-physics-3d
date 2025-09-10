@@ -296,37 +296,97 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Rectangle(const SGCapsule3D
 	return true;
 }
 
-bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DInternal& capsule1, const SGCapsule3DInternal& capsule2, fixed p_margin, OverlapInfo* p_info) {
-	SGFixedVector3Internal best_separation_vector;
-	fixed best_separation_length;
-	SGFixedVector3Internal collision_normal;
-	std::vector<SGFixedVector3Internal> axes;
-	// Capsule width axis
-	axes.push_back(capsule1.get_global_transform().elements[0].normalized());
-	axes.push_back(capsule2.get_global_transform().elements[0].normalized());
-	if (!sat_test(capsule1, capsule2, axes, p_margin, best_separation_vector, best_separation_length, collision_normal)) {
-		return false;
-	}
+SGFixedVector3Internal ClosestPointOnLineSegment(SGFixedVector3Internal A, SGFixedVector3Internal B, SGFixedVector3Internal Point)
+{
+	SGFixedVector3Internal AB = B - A;
+	fixed t = ((Point - A).dot(AB)) / (AB.dot(AB));
+	return A + MIN(MAX(t, fixed(0)), fixed(1))
+	// return A + saturate(t) * AB; // saturate(t) can be written as: min((max(t, 0), 1)
+}
 
-	// Internal endpoints to internal endpoints
+bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DInternal& capsule1, const SGCapsule3DInternal& capsule2, fixed p_margin, OverlapInfo* p_info) {
+	// https://wickedengine.net/2020/04/capsule-collision-detection/
+	// capsule A:
 	const std::vector<SGFixedVector3Internal> capsule1_endpoints = capsule1.get_global_vertices();
 	const std::vector<SGFixedVector3Internal> capsule2_endpoints = capsule2.get_global_vertices();
-	axes.clear();
-	axes.push_back((capsule1_endpoints[0] - capsule2_endpoints[0]).normalized());
-	axes.push_back((capsule1_endpoints[0] - capsule2_endpoints[1]).normalized());
-	axes.push_back((capsule1_endpoints[1] - capsule2_endpoints[0]).normalized());
-	axes.push_back((capsule1_endpoints[1] - capsule2_endpoints[1]).normalized());
 
-	if (!sat_test(capsule1, capsule2, axes, p_margin, best_separation_vector, best_separation_length, collision_normal)) {
-		return false;
+	SGFixedVector3Internal a_Normal = (capsule1_endpoints[1] - capsule1_endpoints[0]).normalized(); // TODO: which endpoint is the tip and base?
+	SGFixedVector3Internal a_LineEndOffset = a_Normal * capsule1.get_radius(); 
+	SGFixedVector3Internal a_A = capsule1_endpoints[0] + a_LineEndOffset; // which one's base?
+	SGFixedVector3Internal a_B = capsule1_endpoints[1] - a_LineEndOffset; // which one's tip?
+
+	// capsule B:
+	SGFixedVector3Internal b_Normal = (capsule2_endpoints[1] - capsule2_endpoints[0]).normalized();
+	SGFixedVector3Internal b_LineEndOffset = b_Normal * capsule2.get_radius(); 
+	SGFixedVector3Internal b_A = capsule2_endpoints[0] + b_LineEndOffset; 
+	SGFixedVector3Internal b_B = capsule2_endpoints[1] - b_LineEndOffset;
+
+	// vectors between line endpoints:
+	SGFixedVector3Internal v0 = b_A - a_A; 
+	SGFixedVector3Internal v1 = b_B - a_A; 
+	SGFixedVector3Internal v2 = b_A - a_B; 
+	SGFixedVector3Internal v3 = b_B - a_B;
+
+	// squared distances:
+	fixed d0 = v0.dot(v0); 
+	fixed d1 = v1.dot(v1); 
+	fixed d2 = v2.dot(v2); 
+	fixed d3 = v3.dot(v3);
+
+	// select best potential endpoint on capsule A:
+	SGFixedVector3Internal bestA;
+	if (d2 < d0 || d2 < d1 || d3 < d0 || d3 < d1) {
+		bestA = a_B;
+	}
+	else {
+		bestA = a_A;
 	}
 
-	if (p_info) {
-		p_info->collision_normal = collision_normal;
-		p_info->separation = best_separation_vector;
-	}
+	// select point on capsule B line segment nearest to best potential endpoint on A capsule:
+	SGFixedVector3Internal bestB = ClosestPointOnLineSegment(b_A, b_B, bestA);
 
-	return true;
+	// now do the same for capsule A segment:
+	bestA = ClosestPointOnLineSegment(a_A, a_B, bestB);
+
+	// We selected the two best possible candidates on both capsule axes. What remains is to place spheres on those points and perform the sphere intersection routine:
+	SGFixedVector3Internal penetration_normal = bestA - bestB;
+	fixed len = penetration_normal.length();
+	penetration_normal /= len;  // normalize
+	fixed penetration_depth = capsule1.get_radius() + capsule2.get_radius() - len;
+	bool intersects = penetration_depth > fixed(0);
+
+
+
+	// SGFixedVector3Internal best_separation_vector;
+	// fixed best_separation_length;
+	// SGFixedVector3Internal collision_normal;
+	// std::vector<SGFixedVector3Internal> axes;
+	// // Capsule width axis
+	// axes.push_back(capsule1.get_global_transform().elements[0].normalized());
+	// axes.push_back(capsule2.get_global_transform().elements[0].normalized());
+	// if (!sat_test(capsule1, capsule2, axes, p_margin, best_separation_vector, best_separation_length, collision_normal)) {
+	// 	return false;
+	// }
+
+	// // Internal endpoints to internal endpoints
+	// const std::vector<SGFixedVector3Internal> capsule1_endpoints = capsule1.get_global_vertices();
+	// const std::vector<SGFixedVector3Internal> capsule2_endpoints = capsule2.get_global_vertices();
+	// axes.clear();
+	// axes.push_back((capsule1_endpoints[0] - capsule2_endpoints[0]).normalized());
+	// axes.push_back((capsule1_endpoints[0] - capsule2_endpoints[1]).normalized());
+	// axes.push_back((capsule1_endpoints[1] - capsule2_endpoints[0]).normalized());
+	// axes.push_back((capsule1_endpoints[1] - capsule2_endpoints[1]).normalized());
+
+	// if (!sat_test(capsule1, capsule2, axes, p_margin, best_separation_vector, best_separation_length, collision_normal)) {
+	// 	return false;
+	// }
+
+	// if (p_info) {
+	// 	p_info->collision_normal = collision_normal;
+	// 	p_info->separation = best_separation_vector;
+	// }
+
+	// return true;
 }
 
 bool SGCollisionDetector3DInternal::segment_intersects_Capsule(const SGFixedVector3Internal& p_start, const SGFixedVector3Internal& p_cast_to, const SGCapsule3DInternal& capsule, SGFixedVector3Internal& p_intersection_point, SGFixedVector3Internal& p_collision_normal) {

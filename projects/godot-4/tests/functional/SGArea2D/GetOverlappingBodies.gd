@@ -21,14 +21,12 @@ func _process(delta):
 				capsule_mesh.height = SGFixed.to_float(shape.height)
 				capsule_mesh.radial_segments = 18
 				capsule_mesh.rings = 6
+				
+				var color = Color(1, 0, 0, 1)
+				if child is SGArea3D:
+					color = Color (0, 1, 0, 1)
 
-				#DebugDraw.draw_cube(Vector3(0,0,0), 10, Color(1, 0, 1, 1))
-				DebugDraw.draw_mesh(capsule_mesh, sg.transform, Color(1, 0, 1, 1))
-				#DebugDraw.draw_mesh(capsule_mesh, Transform3D(Vector3(1, 0, 0),
-													#Vector3(0, 1, 0),
-													#Vector3(0, 0, 1),
-													#Vector3(0, 0, 0)
-													#), Color(1, 1, 1, 1))
+				DebugDraw.draw_mesh(capsule_mesh, sg.transform, color)
 		else:
 			continue
 
