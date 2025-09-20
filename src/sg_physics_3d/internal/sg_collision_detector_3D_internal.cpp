@@ -300,7 +300,7 @@ SGFixedVector3Internal ClosestPointOnLineSegment(SGFixedVector3Internal A, SGFix
 {
 	SGFixedVector3Internal AB = B - A;
 	fixed t = ((Point - A).dot(AB)) / (AB.dot(AB));
-	return A + MIN(MAX(t, fixed(0)), fixed(1))
+	return A + MIN(MAX(t, fixed(0)), fixed(1)); 
 	// return A + saturate(t) * AB; // saturate(t) can be written as: min((max(t, 0), 1)
 }
 
