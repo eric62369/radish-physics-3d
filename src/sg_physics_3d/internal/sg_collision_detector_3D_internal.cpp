@@ -354,6 +354,8 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DIn
 	penetration_normal /= len;  // normalize
 	fixed penetration_depth = capsule1.get_radius() + capsule2.get_radius() - len;
 	bool intersects = penetration_depth > fixed(0);
+	
+	return intersects;
 
 
 
