@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://bcjtflkpuopaq" path="res://camera_pivot.tscn" id="2_27k68"]
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_peidw"]
-radius = 6553600
 height = 6553600
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_rnabo"]
