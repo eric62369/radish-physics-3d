@@ -6,23 +6,29 @@ extends Node2D
 
 var colliding = [false, false, false]
 
-func move_capsule(move_object):
+func move_capsule(move_object: SGArea3D):
 	var magnitude = 1
 	var input_dir := Input.get_vector("debug_left", "debug_right", "debug_forward", "debug_backward")
 	var direction := (Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	if (direction):
-		move_object.position.x += direction.x * magnitude
-		move_object.position.z += direction.z * magnitude
+		move_object.fixed_position.x += direction.x * magnitude * 65536
+		move_object.fixed_position.z += direction.z * magnitude * 65536
 	
 	if Input.is_action_pressed("debug_up"):
-		move_object.position.y += magnitude
+		move_object.fixed_position.y += magnitude * 65536
 	elif Input.is_action_pressed("debug_down"):
-		move_object.position.y += -magnitude
+		move_object.fixed_position.y += -magnitude * 65536
 	move_object.orthonormalize()
+
+func sync_to_physics_engine():
+	area1.sync_to_physics_engine()
+	area2.sync_to_physics_engine()
+	area3.sync_to_physics_engine()
 
 func _physics_process(delta):
 	move_capsule(area1)
+	sync_to_physics_engine()
 	do_get_overlapping_areas()
 	#if (area1.get_overlapping_bodies().size() > 0):
 		#colliding[0] = true

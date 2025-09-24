@@ -196,6 +196,15 @@ bool SGCollisionDetector3DInternal::Circle_overlaps_Circle(const SGCircle3DInter
 		p_info->separation = separation_vector;
 	}
 
+	godot::UtilityFunctions::print("Total capsule radius: ", (circle1.get_radius() + circle2.get_radius()).to_int());
+	godot::UtilityFunctions::print("Pen. Distance: ", line_length.to_int());
+	godot::UtilityFunctions::print("Sphere 0 Endpoint x: ", t1.get_origin().x.to_int());
+	godot::UtilityFunctions::print("Sphere 0 Endpoint y: ", t1.get_origin().y.to_int());
+	godot::UtilityFunctions::print("Sphere 0 Endpoint z: ", t1.get_origin().z.to_int());
+	godot::UtilityFunctions::print("Sphere 1 Endpoint x: ", t2.get_origin().x.to_int());
+	godot::UtilityFunctions::print("Sphere 1 Endpoint y: ", t2.get_origin().y.to_int());
+	godot::UtilityFunctions::print("Sphere 1 Endpoint z: ", t2.get_origin().z.to_int());
+
 	return overlapping;
 }
 
@@ -306,6 +315,12 @@ SGFixedVector3Internal ClosestPointOnLineSegment(SGFixedVector3Internal A, SGFix
 }
 
 bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DInternal& capsule1, const SGCapsule3DInternal& capsule2, fixed p_margin, OverlapInfo* p_info) {
+	SGFixedVector3Internal best_separation_vector;
+	fixed best_separation_length;
+	SGFixedVector3Internal collision_normal;
+	const SGFixedTransform3DInternal capsule_transform1 = capsule1.get_global_transform();
+	const SGFixedTransform3DInternal capsule_transform2 = capsule2.get_global_transform();
+
 	// https://wickedengine.net/2020/04/capsule-collision-detection/
 	// capsule A:
 	const std::vector<SGFixedVector3Internal> capsule1_endpoints = capsule1.get_global_vertices();
@@ -356,8 +371,14 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DIn
 	fixed penetration_depth = capsule1.get_radius() + capsule2.get_radius() - len;
 	bool intersects = penetration_depth > fixed(0);
 
-	godot::UtilityFunctions::print("Total capsule radius: ", capsule1.get_radius() + capsule2.get_radius());
-	godot::UtilityFunctions::print("Pen. Distance: ", len);
+	godot::UtilityFunctions::print("Total capsule radius: ", (capsule1.get_radius() + capsule2.get_radius()).to_int());
+	godot::UtilityFunctions::print("Pen. Distance: ", len.to_int());
+	godot::UtilityFunctions::print("Capsule 0 Endpoint x: ", capsule1_endpoints[0].x.to_int());
+	godot::UtilityFunctions::print("Capsule 0 Endpoint y: ", capsule1_endpoints[0].y.to_int());
+	godot::UtilityFunctions::print("Capsule 0 Endpoint z: ", capsule1_endpoints[0].z.to_int());
+	godot::UtilityFunctions::print("Capsule 1 Endpoint x: ", capsule1_endpoints[1].x.to_int());
+	godot::UtilityFunctions::print("Capsule 1 Endpoint y: ", capsule1_endpoints[1].y.to_int());
+	godot::UtilityFunctions::print("Capsule 1 Endpoint z: ", capsule1_endpoints[1].z.to_int());
 	
 	return intersects;
 	// SGFixedVector3Internal best_separation_vector;
