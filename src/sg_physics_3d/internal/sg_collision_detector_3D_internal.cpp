@@ -20,9 +20,10 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
+#include <godot_cpp/variant/utility_functions.hpp> // TODO: remove this later
 #include "sg_collision_detector_3D_internal.h"
 #include <algorithm>
+
 
 using Interval = SGCollisionDetector3DInternal::Interval;
 
@@ -300,7 +301,7 @@ SGFixedVector3Internal ClosestPointOnLineSegment(SGFixedVector3Internal A, SGFix
 {
 	SGFixedVector3Internal AB = B - A;
 	fixed t = ((Point - A).dot(AB)) / (AB.dot(AB));
-	return A + MIN(MAX(t, fixed(0)), fixed(1)); 
+	return A + (AB * MIN(MAX(t, fixed(0)), fixed(1))); 
 	// return A + saturate(t) * AB; // saturate(t) can be written as: min((max(t, 0), 1)
 }
 
@@ -354,11 +355,11 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DIn
 	penetration_normal /= len;  // normalize
 	fixed penetration_depth = capsule1.get_radius() + capsule2.get_radius() - len;
 	bool intersects = penetration_depth > fixed(0);
+
+	godot::UtilityFunctions::print("Total capsule radius: ", capsule1.get_radius() + capsule2.get_radius());
+	godot::UtilityFunctions::print("Pen. Distance: ", len);
 	
 	return intersects;
-
-
-
 	// SGFixedVector3Internal best_separation_vector;
 	// fixed best_separation_length;
 	// SGFixedVector3Internal collision_normal;

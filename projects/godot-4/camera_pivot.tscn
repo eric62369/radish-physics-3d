@@ -6,6 +6,7 @@
 [node name="CameraPivot" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 184.598)
 script = ExtResource("1_4x2u6")
+speed = 3.0
 
 [node name="Camera3D" parent="." instance=ExtResource("2_pct3j")]
 script = null

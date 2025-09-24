@@ -7,7 +7,6 @@ extends Node2D
 func do_get_overlapping_bodies() -> Array:
 	return area.get_overlapping_bodies()
 
-
 func _process(delta):
 	for child in self.get_children():
 		if child is SGArea3D or child is SGStaticBody3D:
@@ -29,29 +28,3 @@ func _process(delta):
 				DebugDraw.draw_mesh(capsule_mesh, sg.transform, color)
 		else:
 			continue
-
-
-#func _process(delta):
-	#for child in self.get_children():
-		#if child is SGArea3D:
-			#var sg: SGFixedNode3D = child
-			#DebugDraw.draw_box(Vector3(
-					#SGFixed.to_float(sg.fixed_position.x), 
-					#SGFixed.to_float(sg.fixed_position.y), 
-					#SGFixed.to_float(sg.fixed_position.z)), 
-				#Vector3(
-					#SGFixed.to_float(sg.fixed_scale.x),
-					#SGFixed.to_float(sg.fixed_scale.y),
-					#SGFixed.to_float(sg.fixed_scale.z)), Color(0, 1, 0))
-		#elif child is SGStaticBody3D:
-			#var sg: SGFixedNode3D = child
-			#DebugDraw.draw_box(Vector3(
-					#SGFixed.to_float(sg.fixed_position.x), 
-					#SGFixed.to_float(sg.fixed_position.y), 
-					#SGFixed.to_float(sg.fixed_position.z)), 
-				#Vector3(
-					#SGFixed.to_float(sg.fixed_scale.x),
-					#SGFixed.to_float(sg.fixed_scale.y),
-					#SGFixed.to_float(sg.fixed_scale.z)), Color(1, 1, 0))
-		#else:
-			#continue
