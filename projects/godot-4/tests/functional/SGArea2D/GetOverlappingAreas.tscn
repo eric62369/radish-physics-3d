@@ -6,11 +6,11 @@
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_2lfoc"]
 height = 6655360
 
-[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_nsy8f"]
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_3vl1j"]
+radius = 4655360
 height = 6553600
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_kv378"]
-radius = 6553600
 height = 6553600
 
 [node name="GetOverlappingAreas" type="Node2D"]
@@ -20,23 +20,17 @@ script = ExtResource("1")
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area2D1"]
 shape = SubResource("SGCapsuleShape3D_2lfoc")
-fixed_position_x = 4194304
-fixed_position_y = 4194304
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 64, 0)
 
 [node name="Area2D2" type="SGArea3D" parent="."]
-fixed_position_x = 2359296
-fixed_position_y = 2949120
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 45, 0)
+fixed_position_x = 2000001
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.5176, 0, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area2D2"]
-shape = SubResource("SGCapsuleShape3D_nsy8f")
+shape = SubResource("SGCapsuleShape3D_3vl1j")
 
 [node name="Area2D3" type="SGArea3D" parent="."]
-monitorable = false
-fixed_position_x = 5742185
-fixed_position_y = 5358852
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 87.6188, 81.7696, 0)
+fixed_position_x = -4000002
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.0352, 0, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area2D3"]
 shape = SubResource("SGCapsuleShape3D_kv378")

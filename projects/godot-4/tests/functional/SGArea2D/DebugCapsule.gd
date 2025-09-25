@@ -53,7 +53,7 @@ func _process(delta):
 				# (Optional) Customize the CapsuleMesh properties
 				capsule_mesh.radius = SGFixed.to_float(shape.radius)
 				if (shape is SGCapsuleShape3D):
-					capsule_mesh.height = SGFixed.to_float(shape.height)
+					capsule_mesh.height = SGFixed.to_float(shape.height + shape.radius*2)
 				else:
 					capsule_mesh.height = SGFixed.to_float(shape.radius)*2
 				capsule_mesh.radial_segments = 18
