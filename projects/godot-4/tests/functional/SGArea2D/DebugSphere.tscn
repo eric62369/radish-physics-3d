@@ -26,3 +26,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 87.6188, 81.7696, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area2"]
 shape = SubResource("SGCircleShape3D_rh1n5")
+
+[node name="Area3" type="SGArea3D" parent="."]
+
+[node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area3"]
+shape = SubResource("SGCircleShape3D_rh1n5")

@@ -4,19 +4,17 @@ extends Node2D
 
 @onready var area1 = $Area1
 @onready var area2 = $Area2
+@onready var area3 = $Area3
 
-var colliding: Array = [false, false]
+@onready var areas = [area1, area2, area3]
+var colliding: Array = [false, false, false]
 
 func do_get_overlapping_bodies() -> Array:
-	if (area1.get_overlapping_areas().size() > 0):
-		colliding[0] = true
-	else:
-		colliding[0] = false
-	
-	if (area2.get_overlapping_areas().size() > 0):
-		colliding[1] = true
-	else:
-		colliding[1] = false
+	for i in range(0, len(areas)):
+		if (areas[i].get_overlapping_areas().size() > 0):
+			colliding[i] = true
+		else:
+			colliding[i] = false
 	return area1.get_overlapping_bodies()
 
 func move_capsule(move_object: SGArea3D, mod=1):
@@ -50,19 +48,21 @@ func _process(delta):
 			var sg = child
 			var capsule_mesh = CapsuleMesh.new()
 			var shape = sg.get_child(0)
-			if (shape is SGCollisionShape3D and shape.shape is SGCapsuleShape3D):
+			if (shape is SGCollisionShape3D):
 				shape = shape.shape
 				# (Optional) Customize the CapsuleMesh properties
 				capsule_mesh.radius = SGFixed.to_float(shape.radius)
-				capsule_mesh.height = SGFixed.to_float(shape.height)
+				if (shape is SGCapsuleShape3D):
+					capsule_mesh.height = SGFixed.to_float(shape.height)
+				else:
+					capsule_mesh.height = SGFixed.to_float(shape.radius)*2
 				capsule_mesh.radial_segments = 18
 				capsule_mesh.rings = 6
 				
 				var color = Color(1, 0, 0, 1)
-				if child.name == area1.name and colliding[0]:
-					color = Color (0, 1, 0, 1)
-				if child.name == area2.name and colliding[1]:
-					color = Color (0, 1, 0, 1)
+				for i in range(0, len(areas)):
+					if child.name == areas[i].name and colliding[i]:
+						color = Color (0, 1, 0, 1)
 
 				DebugDraw.draw_mesh(capsule_mesh, sg.transform, color)
 		else:

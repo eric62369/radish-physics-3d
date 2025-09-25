@@ -29,3 +29,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 87.6188, 81.7696, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area2"]
 shape = SubResource("SGCapsuleShape3D_jmfxl")
+
+[node name="Area3" type="SGArea3D" parent="."]
+fixed_scale_x = 65532
+fixed_scale_z = 65531
+fixed_rotation = -16779
+transform = Transform3D(0.967221, 0, 0.2538, 0, 1, 0, -0.253807, 0, 0.967196, 0, 0, 0)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area3"]
+shape = SubResource("SGCapsuleShape3D_jmfxl")

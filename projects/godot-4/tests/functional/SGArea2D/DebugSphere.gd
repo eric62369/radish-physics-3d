@@ -4,19 +4,17 @@ extends Node2D
 
 @onready var area1 = $Area1
 @onready var area2 = $Area2
+@onready var area3 = $Area3
 
-var colliding: Array = [false, false]
+@onready var areas = [area1, area2, area3]
+var colliding: Array = [false, false, false]
 
 func do_get_overlapping_bodies() -> Array:
-	if (area1.get_overlapping_areas().size() > 0):
-		colliding[0] = true
-	else:
-		colliding[0] = false
-	
-	if (area2.get_overlapping_areas().size() > 0):
-		colliding[1] = true
-	else:
-		colliding[1] = false
+	for i in range(0, len(areas)):
+		if (areas[i].get_overlapping_areas().size() > 0):
+			colliding[i] = true
+		else:
+			colliding[i] = false
 	return area1.get_overlapping_bodies()
 
 func move_capsule(move_object: SGArea3D, mod=1):
@@ -59,10 +57,9 @@ func _process(delta):
 				mesh.rings = 6
 				
 				var color = Color(1, 0, 0, 1)
-				if child.name == area1.name and colliding[0]:
-					color = Color (0, 1, 0, 1)
-				if child.name == area2.name and colliding[1]:
-					color = Color (0, 1, 0, 1)
+				for i in range(0, len(areas)):
+					if child.name == areas[i].name and colliding[i]:
+						color = Color (0, 1, 0, 1)
 
 				DebugDraw.draw_mesh(mesh, sg.transform, color)
 		else:
