@@ -37,52 +37,52 @@ SGShape3D::SGShape3D() {
 SGShape3D::~SGShape3D() {
 }
 
-Ref<ArrayMesh> SGShape3D::get_debug_mesh() {
-	if (debug_mesh_cache.is_valid()) {
-		return debug_mesh_cache;
-	}
+// Ref<ArrayMesh> SGShape3D::get_debug_mesh() {
+// 	if (debug_mesh_cache.is_valid()) {
+// 		return debug_mesh_cache;
+// 	}
 
-	Vector<Vector3> lines = get_debug_mesh_lines();
+// 	Vector<Vector3> lines = get_debug_mesh_lines();
 
-	debug_mesh_cache.instantiate();
+// 	debug_mesh_cache.instantiate();
 
-	if (!lines.is_empty()) {
-		//make mesh
-		Vector<Vector3> array;
-		array.resize(lines.size());
-		Vector3 *v = array.ptrw();
+// 	if (!lines.is_empty()) {
+// 		//make mesh
+// 		Vector<Vector3> array;
+// 		array.resize(lines.size());
+// 		Vector3 *v = array.ptrw();
 
-		Vector<Color> arraycol;
-		arraycol.resize(lines.size());
-		Color *c = arraycol.ptrw();
+// 		Vector<Color> arraycol;
+// 		arraycol.resize(lines.size());
+// 		Color *c = arraycol.ptrw();
 
-		for (int i = 0; i < lines.size(); i++) {
-			v[i] = lines[i];
-			c[i] = debug_color;
-		}
+// 		for (int i = 0; i < lines.size(); i++) {
+// 			v[i] = lines[i];
+// 			c[i] = debug_color;
+// 		}
 
-		Array lines_array;
-		lines_array.resize(Mesh::ARRAY_MAX);
-		lines_array[Mesh::ARRAY_VERTEX] = array;
-		lines_array[Mesh::ARRAY_COLOR] = arraycol;
+// 		Array lines_array;
+// 		lines_array.resize(Mesh::ARRAY_MAX);
+// 		lines_array[Mesh::ARRAY_VERTEX] = array;
+// 		lines_array[Mesh::ARRAY_COLOR] = arraycol;
 
-		// Ref<StandardMaterial3D> material = get_debug_collision_material();
+// 		// Ref<StandardMaterial3D> material = get_debug_collision_material();
 
-		debug_mesh_cache->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, lines_array);
-		// debug_mesh_cache->surface_set_material(0, material);
+// 		debug_mesh_cache->add_surface_from_arrays(Mesh::PRIMITIVE_LINES, lines_array);
+// 		// debug_mesh_cache->surface_set_material(0, material);
 
-		if (debug_fill) {
-			Ref<ArrayMesh> array_mesh = get_debug_arraymesh_faces(debug_color * Color(1.0, 1.0, 1.0, 0.0625));
-			if (array_mesh.is_valid() && array_mesh->get_surface_count() > 0) {
-				Array solid_array = array_mesh->surface_get_arrays(0);
-				debug_mesh_cache->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, solid_array);
-				// debug_mesh_cache->surface_set_material(1, material);
-			}
-		}
-	}
+// 		if (debug_fill) {
+// 			Ref<ArrayMesh> array_mesh = get_debug_arraymesh_faces(debug_color * Color(1.0, 1.0, 1.0, 0.0625));
+// 			if (array_mesh.is_valid() && array_mesh->get_surface_count() > 0) {
+// 				Array solid_array = array_mesh->surface_get_arrays(0);
+// 				debug_mesh_cache->add_surface_from_arrays(Mesh::PRIMITIVE_TRIANGLES, solid_array);
+// 				// debug_mesh_cache->surface_set_material(1, material);
+// 			}
+// 		}
+// 	}
 
-	return debug_mesh_cache;
-}
+// 	return debug_mesh_cache;
+// }
 
 void SGRectangleShape3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_extents"), &SGRectangleShape3D::get_extents);
@@ -150,17 +150,17 @@ void SGRectangleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
 	SGPhysics3DServer::get_singleton()->rectangle_set_extents(p_internal_shape, extents);
 }
 
-void SGRectangleShape3D::draw(const RID &p_to_rid, const Color &p_color) {  // TODO: draw rectangle3D?
-	Vector3 float_extents = extents->to_float();
-	// TODO: drawing is hard https://github.com/godotengine/godot/blob/master/scene/resources/3d/box_shape_3d.cpp
-	// https://www.youtube.com/watch?v=tNv_07uMKXw
-	// https://github.com/godotengine/godot/blob/215acd52e82f4c575abb715e25e54558deeef998/scene/3d/physics/collision_object_3d.cpp#L366
+// void SGRectangleShape3D::draw(const RID &p_to_rid, const Color &p_color) {  // TODO: draw rectangle3D?
+// 	Vector3 float_extents = extents->to_float();
+// 	// TODO: drawing is hard https://github.com/godotengine/godot/blob/master/scene/resources/3d/box_shape_3d.cpp
+// 	// https://www.youtube.com/watch?v=tNv_07uMKXw
+// 	// https://github.com/godotengine/godot/blob/215acd52e82f4c575abb715e25e54558deeef998/scene/3d/physics/collision_object_3d.cpp#L366
 	
-	Ref<Mesh> mesh = get_debug_mesh();
-	RenderingServer::get_singleton()->instance_set_base(p_to_rid, mesh->get_rid());
+// 	Ref<Mesh> mesh = get_debug_mesh();
+// 	RenderingServer::get_singleton()->instance_set_base(p_to_rid, mesh->get_rid());
 	
-	// RenderingServer::get_singleton()->canvas_item_add_aabb(p_to_rid, AABB(-float_extents, float_extents * 2.0), p_color);
-}
+// 	// RenderingServer::get_singleton()->canvas_item_add_aabb(p_to_rid, AABB(-float_extents, float_extents * 2.0), p_color);
+// }
 
 SGRectangleShape3D::SGRectangleShape3D() : SGShape3D(),
 	extents(Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed(655360), fixed(655360), fixed(655360))))))
@@ -197,20 +197,20 @@ void SGCircleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
 	SGPhysics3DServer::get_singleton()->circle_set_radius(p_internal_shape, radius);
 }
 
-void SGCircleShape3D::draw(const RID &p_to_rid, const Color &p_color) {
-	float float_radius = fixed(radius).to_float();
+// void SGCircleShape3D::draw(const RID &p_to_rid, const Color &p_color) {
+// 	float float_radius = fixed(radius).to_float();
 
-	PackedVector3Array points;
-	// TODO: draw 3D circle
-	// for (int i = 0; i < 24; i++) {
+// 	PackedVector3Array points;
+// 	// TODO: draw 3D circle
+// 	// for (int i = 0; i < 24; i++) {
 
-	// 	points.push_back(Vector2(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius);
-	// }
+// 	// 	points.push_back(Vector2(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius);
+// 	// }
 
-	// PackedColorArray col;
-	// col.push_back(p_color);
-	// RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
-}
+// 	// PackedColorArray col;
+// 	// col.push_back(p_color);
+// 	// RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
+// }
 
 SGCircleShape3D::SGCircleShape3D() : SGShape3D(),
 	radius(655360)
@@ -259,22 +259,22 @@ void SGCapsuleShape3D::sync_to_physics_engine(RID p_internal_shape) const {
 	physics_server->capsule_set_height(p_internal_shape, height);
 }
 
-void SGCapsuleShape3D::draw(const RID& p_to_rid, const Color& p_color) {
-	float float_height = fixed(height).to_float();
-	float float_radius = fixed(radius).to_float();
-	// TODO: draw 3D capsule
-	// PackedVector3Array points;
-	// for (int i = 12; i < 24; i++) {
-	// 	points.push_back(Vector3(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius + Vector2(0, -float_height/2));
-	// }
-	// for (int i = 0; i < 12; i++) {
-	// 	points.push_back(Vector3(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius + Vector2(0, float_height / 2));
-	// }
+// void SGCapsuleShape3D::draw(const RID& p_to_rid, const Color& p_color) {
+// 	float float_height = fixed(height).to_float();
+// 	float float_radius = fixed(radius).to_float();
+// 	// TODO: draw 3D capsule
+// 	// PackedVector3Array points;
+// 	// for (int i = 12; i < 24; i++) {
+// 	// 	points.push_back(Vector3(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius + Vector2(0, -float_height/2));
+// 	// }
+// 	// for (int i = 0; i < 12; i++) {
+// 	// 	points.push_back(Vector3(Math::cos(i * Math_PI * 2 / 24.0), Math::sin(i * Math_PI * 2 / 24.0)) * float_radius + Vector2(0, float_height / 2));
+// 	// }
 
-	// PackedColorArray col;
-	// col.push_back(p_color);
-	// RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
-}
+// 	// PackedColorArray col;
+// 	// col.push_back(p_color);
+// 	// RenderingServer::get_singleton()->canvas_item_add_polygon(p_to_rid, points, col);
+// }
 
 SGCapsuleShape3D::SGCapsuleShape3D() : SGShape3D(),
 radius(655360),

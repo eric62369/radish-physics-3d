@@ -20,9 +20,10 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-
+#include <godot_cpp/variant/utility_functions.hpp> // TODO: remove this later
 #include "sg_collision_detector_3D_internal.h"
 #include <algorithm>
+
 
 using Interval = SGCollisionDetector3DInternal::Interval;
 
@@ -114,7 +115,7 @@ fixed p_margin, SGFixedVector3Internal &best_separation_vector, fixed &best_sepa
 
 			// if the correction is too small it will be set to 0 and the overlap won't be corrected
 			// in that case we don't consider it an overlap
-			if ((axis.x == fixed::ZERO || separation_vector.x != fixed::ZERO) && (axis.y == fixed::ZERO || separation_vector.y != fixed::ZERO))
+			if ((axis.x == fixed::ZERO || separation_vector.x != fixed::ZERO) && (axis.y == fixed::ZERO || separation_vector.y != fixed::ZERO) && (axis.z == fixed::ZERO || separation_vector.z != fixed::ZERO))
 			{
 				fixed separation_length = separation_component.abs();
 				if (best_separation_vector == SGFixedVector3Internal::ZERO || separation_length < best_separation_length) {
@@ -296,7 +297,81 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Rectangle(const SGCapsule3D
 	return true;
 }
 
+SGFixedVector3Internal ClosestPointOnLineSegment(SGFixedVector3Internal A, SGFixedVector3Internal B, SGFixedVector3Internal Point)
+{
+	SGFixedVector3Internal AB = B - A;
+	fixed t = ((Point - A).dot(AB)) / (AB.dot(AB));
+	return A + (AB * MIN(MAX(t, fixed(0)), fixed(1))); 
+	// return A + saturate(t) * AB; // saturate(t) can be written as: min((max(t, 0), 1)
+}
+
 bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DInternal& capsule1, const SGCapsule3DInternal& capsule2, fixed p_margin, OverlapInfo* p_info) {
+	// SGFixedVector3Internal best_separation_vector;
+	// fixed best_separation_length;
+	// SGFixedVector3Internal collision_normal;
+	// // const SGFixedTransform3DInternal capsule_transform1 = capsule1.get_global_transform();
+	// // const SGFixedTransform3DInternal capsule_transform2 = capsule2.get_global_transform();
+
+	// // https://wickedengine.net/2020/04/capsule-collision-detection/
+	// // capsule A:
+	// const std::vector<SGFixedVector3Internal> capsule1_endpoints = capsule1.get_global_vertices();
+	// const std::vector<SGFixedVector3Internal> capsule2_endpoints = capsule2.get_global_vertices();
+
+	// SGFixedVector3Internal a_Normal = (capsule1_endpoints[1] - capsule1_endpoints[0]).normalized(); // TODO: which endpoint is the tip and base?
+	// SGFixedVector3Internal a_LineEndOffset = a_Normal * capsule1.get_radius(); 
+	// SGFixedVector3Internal a_A = capsule1_endpoints[0] + a_LineEndOffset; // which one's base?
+	// SGFixedVector3Internal a_B = capsule1_endpoints[1] - a_LineEndOffset; // which one's tip?
+
+	// // capsule B:
+	// SGFixedVector3Internal b_Normal = (capsule2_endpoints[1] - capsule2_endpoints[0]).normalized();
+	// SGFixedVector3Internal b_LineEndOffset = b_Normal * capsule2.get_radius(); 
+	// SGFixedVector3Internal b_A = capsule2_endpoints[0] + b_LineEndOffset; 
+	// SGFixedVector3Internal b_B = capsule2_endpoints[1] - b_LineEndOffset;
+
+	// // vectors between line endpoints:
+	// SGFixedVector3Internal v0 = b_A - a_A; 
+	// SGFixedVector3Internal v1 = b_B - a_A; 
+	// SGFixedVector3Internal v2 = b_A - a_B; 
+	// SGFixedVector3Internal v3 = b_B - a_B;
+
+	// // squared distances:
+	// fixed d0 = v0.dot(v0); 
+	// fixed d1 = v1.dot(v1); 
+	// fixed d2 = v2.dot(v2); 
+	// fixed d3 = v3.dot(v3);
+
+	// // select best potential endpoint on capsule A:
+	// SGFixedVector3Internal bestA;
+	// if (d2 < d0 || d2 < d1 || d3 < d0 || d3 < d1) {
+	// 	bestA = a_B;
+	// }
+	// else {
+	// 	bestA = a_A;
+	// }
+
+	// // select point on capsule B line segment nearest to best potential endpoint on A capsule:
+	// SGFixedVector3Internal bestB = ClosestPointOnLineSegment(b_A, b_B, bestA);
+
+	// // now do the same for capsule A segment:
+	// bestA = ClosestPointOnLineSegment(a_A, a_B, bestB);
+
+	// // We selected the two best possible candidates on both capsule axes. What remains is to place spheres on those points and perform the sphere intersection routine:
+	// SGFixedVector3Internal penetration_normal = bestA - bestB;
+	// fixed len = penetration_normal.length();
+	// penetration_normal /= len;  // normalize
+	// fixed penetration_depth = capsule1.get_radius() + capsule2.get_radius() - len;
+	// bool intersects = penetration_depth > fixed(0);
+
+	// // godot::UtilityFunctions::print("Total capsule radius: ", (capsule1.get_radius() + capsule2.get_radius()).to_int());
+	// godot::UtilityFunctions::print("Pen. Distance: ", len.to_int());
+	// godot::UtilityFunctions::print("Best A Endpoint x: ", bestA.x.to_int());
+	// godot::UtilityFunctions::print("Best A Endpoint y: ", bestA.y.to_int());
+	// godot::UtilityFunctions::print("Best A Endpoint z: ", bestA.z.to_int());
+	// godot::UtilityFunctions::print("Best B Endpoint x: ", bestB.x.to_int());
+	// godot::UtilityFunctions::print("Best B Endpoint y: ", bestB.y.to_int());
+	// godot::UtilityFunctions::print("Best B Endpoint z: ", bestB.z.to_int());
+	// return intersects;
+
 	SGFixedVector3Internal best_separation_vector;
 	fixed best_separation_length;
 	SGFixedVector3Internal collision_normal;

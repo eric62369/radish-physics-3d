@@ -37,10 +37,10 @@ class SGShape3D : public Resource {
 
 	friend class SGCollisionShape3D;
 
-	Ref<ArrayMesh> debug_mesh_cache;
+	// Ref<ArrayMesh> debug_mesh_cache;
 	
-	Color debug_color = Color(0.0, 0.0, 0.0, 0.0);
-	bool debug_fill = true;
+	// Color debug_color = Color(0.0, 0.0, 0.0, 0.0);
+	// bool debug_fill = true;
 #ifdef DEBUG_ENABLED
 	bool debug_properties_edited = false;
 #endif // DEBUG_ENABLED
@@ -50,15 +50,15 @@ protected:
 
 	virtual RID create_internal_shape() const { return RID(); }
 
-	virtual Vector<Vector3> get_debug_mesh_lines() const = 0; // { return Vector<Vector3>(); }
-	virtual Ref<ArrayMesh> get_debug_arraymesh_faces(const Color &p_modulate) const = 0;
-	Ref<ArrayMesh> get_debug_mesh();
+	// virtual Vector<Vector3> get_debug_mesh_lines() const = 0; // { return Vector<Vector3>(); }
+	// virtual Ref<ArrayMesh> get_debug_arraymesh_faces(const Color &p_modulate) const = 0;
+	// Ref<ArrayMesh> get_debug_mesh();
 
 	SGShape3D();
 public:
 	virtual void sync_to_physics_engine(RID p_internal_shape) const {}
 
-	virtual void draw(const RID &p_to_rid, const Color &p_color) {}
+	// virtual void draw(const RID &p_to_rid, const Color &p_color) {}
 
 	virtual ~SGShape3D();
 };
@@ -88,7 +88,7 @@ public:
 
 	virtual void sync_to_physics_engine(RID p_internal_shape) const override;
 
-	virtual void draw(const RID &p_to_rid, const Color &p_color) override;
+	// virtual void draw(const RID &p_to_rid, const Color &p_color) override;
 
 	SGRectangleShape3D();
 	~SGRectangleShape3D();
@@ -110,7 +110,7 @@ public:
 
 	virtual void sync_to_physics_engine(RID p_internal_shape) const override;
 
-	virtual void draw(const RID &p_to_rid, const Color &p_color) override;
+	// virtual void draw(const RID &p_to_rid, const Color &p_color) override;
 
 	SGCircleShape3D();
 	~SGCircleShape3D();
@@ -135,7 +135,7 @@ public:
 
 	virtual void sync_to_physics_engine(RID p_internal_shape) const override;
 
-	virtual void draw(const RID& p_to_rid, const Color& p_color) override;
+	// virtual void draw(const RID& p_to_rid, const Color& p_color) override;
 
 	SGCapsuleShape3D();
 	~SGCapsuleShape3D();

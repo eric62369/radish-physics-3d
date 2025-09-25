@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://coi6qvkhsr3oq"]
+
+[ext_resource type="Script" path="res://tests/functional/SGArea2D/DebugSphere.gd" id="1_7q3e6"]
+[ext_resource type="PackedScene" uid="uid://bcjtflkpuopaq" path="res://camera_pivot.tscn" id="2_p6j2r"]
+
+[sub_resource type="SGCircleShape3D" id="SGCircleShape3D_gr570"]
+
+[sub_resource type="SGCircleShape3D" id="SGCircleShape3D_rh1n5"]
+
+[node name="DebugSphere" type="Node2D"]
+script = ExtResource("1_7q3e6")
+
+[node name="CameraPivot" parent="." instance=ExtResource("2_p6j2r")]
+
+[node name="Area1" type="SGArea3D" parent="."]
+fixed_position_y = 2949120
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 45, 0)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area1"]
+shape = SubResource("SGCircleShape3D_gr570")
+
+[node name="Area2" type="SGArea3D" parent="."]
+fixed_position_x = 5742185
+fixed_position_y = 5358852
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 87.6188, 81.7696, 0)
+
+[node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area2"]
+shape = SubResource("SGCircleShape3D_rh1n5")
+
+[node name="Area3" type="SGArea3D" parent="."]
+
+[node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area3"]
+shape = SubResource("SGCircleShape3D_rh1n5")

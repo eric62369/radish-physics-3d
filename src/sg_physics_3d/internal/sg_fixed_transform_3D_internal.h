@@ -49,11 +49,11 @@ struct SGFixedTransform3DInternal {
 	SGFixedVector3Internal &operator[](int p_idx) { return elements[p_idx]; }
 
 	_FORCE_INLINE_ SGFixedVector3Internal get_axis(int p_axis) const {
-		ERR_FAIL_INDEX_V(p_axis, 3, SGFixedVector3Internal());
+		ERR_FAIL_INDEX_V(p_axis, 4, SGFixedVector3Internal());
 		return elements[p_axis];
 	}
 	_FORCE_INLINE_ void set_axis(int p_axis, const SGFixedVector3Internal &p_vec) {
-		ERR_FAIL_INDEX(p_axis, 3);
+		ERR_FAIL_INDEX(p_axis, 4);
 		elements[p_axis] = p_vec;
 	}
 
@@ -78,8 +78,8 @@ struct SGFixedTransform3DInternal {
 	SGFixedVector3Internal get_scale() const;
 	void set_scale(const SGFixedVector3Internal &p_scale);
 
-	_FORCE_INLINE_ const SGFixedVector3Internal &get_origin() const { return elements[2]; }
-	_FORCE_INLINE_ void set_origin(const SGFixedVector3Internal &p_origin) { elements[2] = p_origin; }
+	_FORCE_INLINE_ const SGFixedVector3Internal &get_origin() const { return elements[3]; }
+	_FORCE_INLINE_ void set_origin(const SGFixedVector3Internal &p_origin) { elements[3] = p_origin; }
 
 	SGFixedTransform3DInternal scaled(const SGFixedVector3Internal &p_scale) const;
 	SGFixedTransform3DInternal basis_scaled(const SGFixedVector3Internal &p_scale) const;
