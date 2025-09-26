@@ -27,6 +27,8 @@ func test_get_overlapping_bodies() -> void:
 
 		remove_child(scene)
 		scene.queue_free()
+		scene.free() # extreme free-ing for test orphans
+	#print_orphan_nodes()
 
 func test_get_overlapping_areas() -> void:
 	var GetOverlappingAreas = load("res://tests/functional/SGArea2D/GetOverlappingAreas.tscn")
@@ -41,6 +43,7 @@ func test_get_overlapping_areas() -> void:
 
 	remove_child(scene)
 	scene.queue_free()
+	scene.free()
 #
 #func test_get_overlapping_area_shape_collisions() -> void:
 	#var GetOverlappingShapeCollisions = load("res://tests/functional/SGArea2D/GetOverlappingShapeCollisions.tscn")
