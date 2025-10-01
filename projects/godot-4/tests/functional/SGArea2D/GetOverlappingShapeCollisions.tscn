@@ -11,9 +11,8 @@ height = 6553600
 radius = 6553600
 height = 6553600
 
-[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_ckdep"]
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_y3nrb"]
 radius = 6553600
-height = 6553600
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_ybt0u"]
 height = 65536000
@@ -49,7 +48,7 @@ fixed_position_z = -16330719
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 534.292, 0, -249.187)
 
 [node name="Shape1" type="SGCollisionShape3D" parent="CollidingArea"]
-shape = SubResource("SGCapsuleShape3D_ckdep")
+shape = SubResource("SGCapsuleShape3D_y3nrb")
 fixed_position_x = -2427538
 fixed_position_z = -24275386
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0413, 0, -370.413)

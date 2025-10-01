@@ -206,6 +206,7 @@ void SGCollisionShape3DEditorPlugin::_node_removed(Node *p_node) {
 
 Transform3D SGCollisionShape3DEditorPlugin::get_canvas_transform() const {
     // TODO: 3D canvas how?
+	return Transform3D(Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0));
 	// return get_tree()->get_edited_scene_root()->get_viewport()->get_global_canvas_transform();
 }
 
