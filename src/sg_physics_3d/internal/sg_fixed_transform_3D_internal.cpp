@@ -80,8 +80,33 @@ void SGFixedTransform3DInternal::rotate(fixed p_phi) {
 	set_scale(scale);
 }
 
-fixed SGFixedTransform3DInternal::get_rotation() const {
-	return elements[0].z.atan2(elements[0].x);
+SGFixedVector3Internal SGFixedTransform3DInternal::get_rotation() const {
+	// https://stackoverflow.com/questions/21622956/how-to-convert-direction-vector-to-euler-angles
+	const fixed epsilon = fixed(25);
+	fixed euler_x;
+	fixed euler_y;
+	fixed euler_z;
+	
+	fixed sz = elements[1][0];
+	if (sz < (fixed::ONE - epsilon)) {
+		if (sz > -(fixed::ONE - epsilon)) {
+			euler_x = -elements[1].z.atan2(elements[1].y);
+			euler_y = -elements[2][0].atan2(elements[0][0]);
+			euler_z = sz.asin();
+		} else {
+			// It's -1
+			euler_x = elements[2][1].atan2(elements[2][2]);
+			euler_y = fixed::ZERO;
+			euler_z = -fixed::PI_DIV_2;
+		}
+	} else {
+		// It's 1
+		euler_x = elements[2][1].atan2(elements[2][2]);
+		euler_y = fixed::ZERO;
+		euler_z = fixed::PI_DIV_2;
+	}
+	return SGFixedVector3Internal(euler_x, euler_y, euler_z);
+	// return elements[0].z.atan2(elements[0].x);
 }
 
 void SGFixedTransform3DInternal::set_rotation(fixed p_rot) {
@@ -109,7 +134,7 @@ SGFixedTransform3DInternal::SGFixedTransform3DInternal(fixed p_rot, const SGFixe
 
 SGFixedVector3Internal SGFixedTransform3DInternal::get_scale() const {
 	fixed det_sign = FIXED_SGN(basis_determinant());
-	return SGFixedVector3Internal(elements[0].length(), det_sign * elements[1].length(), det_sign * elements[2].length()); // TODO: determinant vector math
+	return SGFixedVector3Internal(elements[0].length(), det_sign * elements[1].length(), det_sign * elements[2].length());
 }
 
 void SGFixedTransform3DInternal::set_scale(const SGFixedVector3Internal &p_scale) {
@@ -259,14 +284,14 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::interpolate_with(const SG
 	SGFixedVector3Internal p1 = get_origin();
 	SGFixedVector3Internal p2 = p_transform.get_origin();
 
-	fixed r1 = get_rotation();
-	fixed r2 = p_transform.get_rotation();
+	SGFixedVector3Internal r1 = get_rotation();
+	SGFixedVector3Internal r2 = p_transform.get_rotation();
 
 	SGFixedVector3Internal s1 = get_scale();
 	SGFixedVector3Internal s2 = p_transform.get_scale();
 
-	SGFixedVector3Internal v1(r1.cos(), fixed(1), r1.sin()); // TODO: whats the z axis in this case??
-	SGFixedVector3Internal v2(r2.cos(), fixed(1), r2.sin());
+	SGFixedVector3Internal v1(r1.y.cos(), fixed(1), r1.y.sin()); // TODO: how to rotation interpolate?
+	SGFixedVector3Internal v2(r2.y.cos(), fixed(1), r2.y.sin());
 
 	fixed dot = v1.dot(v2);
 	dot = CLAMP(dot, fixed::NEG_ONE, fixed::ONE);

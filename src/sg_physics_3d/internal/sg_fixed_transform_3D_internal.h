@@ -64,7 +64,7 @@ struct SGFixedTransform3DInternal {
 	SGFixedTransform3DInternal affine_inverse() const;
 
 	void set_rotation(fixed p_rot);
-	fixed get_rotation() const;
+	SGFixedVector3Internal get_rotation() const;
 	_FORCE_INLINE_ void set_rotation_and_scale(fixed p_rot, const SGFixedVector3Internal &p_scale);
 	void rotate(fixed p_phi);
 

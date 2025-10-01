@@ -116,7 +116,7 @@ Ref<SGFixedTransform3D> SGFixedTransform3D::affine_inverse() const {
 
 int64_t SGFixedTransform3D::get_rotation() const {
 	SGFixedTransform3DInternal internal = get_internal();
-	return internal.get_rotation().value;
+	return internal.get_rotation().y.to_int(); // TODO: update to euler vector?
 }
 
 Ref<SGFixedTransform3D> SGFixedTransform3D::rotated(int64_t p_radians) const {
