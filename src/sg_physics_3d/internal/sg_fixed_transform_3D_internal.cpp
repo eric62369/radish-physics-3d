@@ -56,7 +56,7 @@ void SGFixedTransform3DInternal::affine_invert() {
 	set(co[0] / determinant, cofac(0, 2, 2, 1) / determinant, cofac(0, 1, 1, 2) / determinant,
 			co[1] / determinant, cofac(0, 0, 2, 2) / determinant, cofac(0, 2, 1, 0) / determinant,
 			co[2] / determinant, cofac(0, 1, 2, 0) / determinant, cofac(0, 0, 1, 1) / determinant);
-	// elements[0][0] = co[0] / determinant; // TODO: has a bug in it somehow????
+	// elements[0][0] = co[0] / determinant;
 	// elements[0][1] = cofac(0, 2, 2, 1) / determinant;
 	// elements[0][2] = cofac(0, 1, 1, 2) / determinant;
 	// elements[1][0] = co[1] / determinant;

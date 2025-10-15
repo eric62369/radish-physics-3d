@@ -132,7 +132,7 @@ void SGFixedNode3D::_changed_callback(Object *p_changed, const char *p_prop) {
 
 void SGFixedNode3D::_update_fixed_transform_rotation_and_scale() {
 	SGFixedTransform3DInternal new_xform;
-	new_xform.set_rotation_and_scale(fixed(fixed_rotation->get_y()), fixed_scale->get_internal());
+	new_xform.set_rotation_and_scale(fixed_rotation->get_internal().y, fixed_scale->get_internal());
 	fixed_transform->get_x()->set_internal(new_xform[0]);
 	fixed_transform->get_y()->set_internal(new_xform[1]);
 	fixed_transform->get_z()->set_internal(new_xform[2]);
@@ -290,25 +290,24 @@ Ref<SGFixedVector3> SGFixedNode3D::get_fixed_scale() const {
 	return fixed_scale;
 }
 
-void SGFixedNode3D::set_fixed_rotation(int64_t p_fixed_rotation) {
-#if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
-	//disable to avoid loop of updates of transform
-	// CanvasItem::set_notify_transform(false);
-#endif
-	fixed_rotation = p_fixed_rotation;
+void SGFixedNode3D::set_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation) {
+	ERR_FAIL_COND(!p_fixed_rotation.is_valid());
+
+	fixed_rotation->set_internal(p_fixed_rotation->get_internal());
 	_update_fixed_transform_rotation_and_scale();
+
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (Engine::get_singleton()->is_editor_hint()) {
 		updating_transform = true;
-		set_rotation(Vector3(0, fixed(fixed_rotation->get_y()).to_float(), 0));
+		set_rotation(fixed_rotation->to_float());
 		updating_transform = false;
 	}
 	// CanvasItem::set_notify_transform(true);
 #endif
 }
 
-int64_t SGFixedNode3D::get_fixed_rotation() const {
-	return fixed_rotation->get_y();
+Ref<SGFixedVector3> SGFixedNode3D::get_fixed_rotation() const {
+	return fixed_rotation;
 }
 
 void SGFixedNode3D::set_global_fixed_transform(const Ref<SGFixedTransform3D> &p_global_transform) {
@@ -346,19 +345,19 @@ void SGFixedNode3D::set_global_fixed_position_internal(const SGFixedVector3Inter
 }
 
 
-void SGFixedNode3D::set_global_fixed_rotation(int64_t p_fixed_rotation) {
+void SGFixedNode3D::set_global_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation) {
 	SGFixedNode3D *fixed_parent = Object::cast_to<SGFixedNode3D>(get_parent());
 	if (fixed_parent) {
-		fixed parent_rotation = fixed_parent->get_global_fixed_transform_internal().get_rotation().y; // TODO: to euler vector?
-		set_fixed_rotation(p_fixed_rotation - parent_rotation.value);
+		SGFixedVector3Internal parent_rotation = fixed_parent->get_global_fixed_transform_internal().get_rotation(); // TODO: to euler vector?
+		set_fixed_rotation(p_fixed_rotation - parent_rotation);
 	}
 	else {
 		set_fixed_rotation(p_fixed_rotation);
 	}
 }
 
-int64_t SGFixedNode3D::get_global_fixed_rotation() const {
-	return get_global_fixed_transform_internal().get_rotation().y.to_int(); // TODO: to euler vector?
+Ref<SGFixedVector3> SGFixedNode3D::get_global_fixed_rotation() const {
+	return SGFixedVector3::from_internal(get_global_fixed_transform_internal().get_rotation()); // TODO: to euler vector?
 }
 
 void SGFixedNode3D::update_float_transform() {

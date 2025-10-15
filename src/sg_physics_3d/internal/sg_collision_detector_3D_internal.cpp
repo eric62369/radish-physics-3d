@@ -20,7 +20,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-#include <godot_cpp/variant/utility_functions.hpp> // TODO: remove this later
+// #include <godot_cpp/variant/utility_functions.hpp> // TODO: remove this later
 #include "sg_collision_detector_3D_internal.h"
 #include <algorithm>
 
