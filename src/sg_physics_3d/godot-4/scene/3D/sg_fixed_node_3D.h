@@ -95,6 +95,7 @@ public:
 	Ref<SGFixedVector3> get_fixed_scale() const;
 
 	void set_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation);
+	void set_fixed_rotation_internal(const SGFixedVector3Internal &p_fixed_rotation);
 	Ref<SGFixedVector3> get_fixed_rotation() const;
 
 	void set_global_fixed_transform(const Ref<SGFixedTransform3D> &p_global_transform);
@@ -106,8 +107,9 @@ public:
 	void set_fixed_position_internal(const SGFixedVector3Internal &p_fixed_position);
 	void set_global_fixed_position_internal(const SGFixedVector3Internal &p_fixed_position);
 
-	void set_global_fixed_rotation(int64_t p_fixed_rotation);
-	int64_t get_global_fixed_rotation() const;
+	void set_global_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation);
+	void set_global_fixed_rotation_internal(const SGFixedVector3Internal &p_fixed_rotation);
+	Ref<SGFixedVector3> get_global_fixed_rotation() const;
 
 	void update_float_transform();
 

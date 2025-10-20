@@ -74,7 +74,7 @@ public:
 	Ref<SGKinematicCollision3D> get_last_slide_collision();
 
 	bool move_and_slide();
-	bool rotate_and_slide(int64_t p_rotation);
+	bool rotate_and_slide(const Ref<SGFixedVector3> &p_rotation);
 
 	SGCharacterBody3D();
 	~SGCharacterBody3D();

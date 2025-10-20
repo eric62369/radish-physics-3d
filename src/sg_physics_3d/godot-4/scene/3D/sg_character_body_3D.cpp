@@ -220,8 +220,13 @@ bool SGCharacterBody3D::move_and_slide() {
 	return collided;
 }
 
-bool SGCharacterBody3D::rotate_and_slide(int64_t p_rotation) {
-	set_fixed_rotation(get_fixed_rotation() + p_rotation);
+bool SGCharacterBody3D::rotate_and_slide(const Ref<SGFixedVector3> &p_rotation) {
+	SGFixedVector3Internal rotation(fixed::ZERO, fixed::ZERO, fixed::ZERO);
+	if (p_rotation.is_valid()) {
+		rotation = p_rotation->get_internal();
+	}
+	rotation = rotation + get_fixed_rotation()->get_internal();
+	set_fixed_rotation_internal(rotation);
 
 	sync_to_physics_engine();
 	bool stuck = SGPhysics3DServer::get_singleton()->body_unstuck(rid, max_slides);

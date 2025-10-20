@@ -290,6 +290,12 @@ Ref<SGFixedVector3> SGFixedNode3D::get_fixed_scale() const {
 	return fixed_scale;
 }
 
+void SGFixedNode3D::set_fixed_rotation_internal(const SGFixedVector3Internal &p_fixed_rotation) {
+	fixed_rotation->set_internal(p_fixed_rotation);
+	_update_fixed_transform_rotation_and_scale();
+	// transform_changed();
+}
+
 void SGFixedNode3D::set_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation) {
 	ERR_FAIL_COND(!p_fixed_rotation.is_valid());
 
@@ -346,13 +352,18 @@ void SGFixedNode3D::set_global_fixed_position_internal(const SGFixedVector3Inter
 
 
 void SGFixedNode3D::set_global_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation) {
+	ERR_FAIL_COND(!p_fixed_rotation.is_valid());
+	set_global_fixed_rotation_internal(p_fixed_rotation->get_internal());
+}
+
+void SGFixedNode3D::set_global_fixed_rotation_internal(const SGFixedVector3Internal &p_fixed_rotation) {
 	SGFixedNode3D *fixed_parent = Object::cast_to<SGFixedNode3D>(get_parent());
 	if (fixed_parent) {
 		SGFixedVector3Internal parent_rotation = fixed_parent->get_global_fixed_transform_internal().get_rotation(); // TODO: to euler vector?
-		set_fixed_rotation(p_fixed_rotation - parent_rotation);
+		fixed_rotation->set_internal(p_fixed_rotation - parent_rotation);
 	}
 	else {
-		set_fixed_rotation(p_fixed_rotation);
+		fixed_rotation->set_internal(p_fixed_rotation);
 	}
 }
 
