@@ -1,30 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://c7mjfc0nu8g16"]
+[gd_scene load_steps=8 format=3 uid="uid://c7mjfc0nu8g16"]
 
 [ext_resource type="Script" path="res://demos/move_and_collide/MoveAndCollide.gd" id="1_tidnq"]
 [ext_resource type="Texture2D" uid="uid://cgbjhrh37tx7c" path="res://demos/move_and_collide/tank_blue.png" id="2_b6iah"]
 
-[sub_resource type="SGRectangleShape2D" id="1"]
-resource_local_to_scene = false
-resource_name = ""
-extents_x = 3276800
-extents_y = 3276800
+[sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_au5y0"]
 
-[sub_resource type="SGCircleShape2D" id="2"]
-resource_local_to_scene = false
-resource_name = ""
-radius = 3635322
+[sub_resource type="SGCircleShape3D" id="SGCircleShape3D_7dnt1"]
 
-[sub_resource type="SGCapsuleShape2D" id="4"]
-resource_local_to_scene = false
-resource_name = ""
-radius = 1966084
-height = 3342978
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_xgu7p"]
 
-[sub_resource type="SGRectangleShape2D" id="3"]
-resource_local_to_scene = false
-resource_name = ""
-extents_x = 4259840
-extents_y = 4259840
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_iefqj"]
+
+[sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_ugska"]
 
 [node name="PhysicsTest2" type="Node2D"]
 position = Vector2(-1, 0)
@@ -37,7 +24,7 @@ fixed_position_y = 15859712
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 682, 242, 0)
 
 [node name="Rectangle" type="SGCollisionShape3D" parent="StaticBody"]
-shape = SubResource("1")
+shape = SubResource("SGRectangleShape3D_au5y0")
 fixed_position_x = -6356998
 fixed_position_y = -393216
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -97.0001, -6, 0)
@@ -49,13 +36,13 @@ offset_right = 50.0
 offset_bottom = 50.0
 
 [node name="Circle" type="SGCollisionShape3D" parent="StaticBody"]
-shape = SubResource("2")
+shape = SubResource("SGCircleShape3D_7dnt1")
 fixed_position_x = -19464192
 fixed_position_y = 5636096
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -297, 86, 0)
 
 [node name="Capsule" type="SGCollisionShape3D" parent="StaticBody"]
-shape = SubResource("4")
+shape = SubResource("SGCapsuleShape3D_xgu7p")
 fixed_position_x = 2031622
 fixed_position_y = 6422528
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.0001, 98, 0)
@@ -70,6 +57,7 @@ rotation = -1.5708
 texture = ExtResource("2_b6iah")
 
 [node name="SGCharacterBody3D" type="SGCollisionShape3D" parent="Character"]
+shape = SubResource("SGCapsuleShape3D_iefqj")
 
 [node name="Area" type="SGArea3D" parent="."]
 collision_mask = 2
@@ -78,7 +66,7 @@ fixed_position_y = 33554432
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 406, 512, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area"]
-shape = SubResource("3")
+shape = SubResource("SGRectangleShape3D_ugska")
 
 [node name="Spot" type="ColorRect" parent="."]
 offset_left = -5.0

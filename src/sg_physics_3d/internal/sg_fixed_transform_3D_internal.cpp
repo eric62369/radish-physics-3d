@@ -87,6 +87,7 @@ SGFixedVector3Internal SGFixedTransform3DInternal::get_rotation() const {
 	fixed euler_y;
 	fixed euler_z;
 	
+	// Euler Order: XZY
 	fixed sz = elements[1][0];
 	if (sz < (fixed::ONE - epsilon)) {
 		if (sz > -(fixed::ONE - epsilon)) {

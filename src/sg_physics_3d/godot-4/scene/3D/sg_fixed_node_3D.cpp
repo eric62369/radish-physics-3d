@@ -132,7 +132,7 @@ void SGFixedNode3D::_changed_callback(Object *p_changed, const char *p_prop) {
 
 void SGFixedNode3D::_update_fixed_transform_rotation_and_scale() {
 	SGFixedTransform3DInternal new_xform;
-	new_xform.set_rotation_and_scale(fixed_rotation->get_internal().y, fixed_scale->get_internal());
+	new_xform.set_rotation_and_scale(fixed_rotation->get_internal(), fixed_scale->get_internal());
 	fixed_transform->get_x()->set_internal(new_xform[0]);
 	fixed_transform->get_y()->set_internal(new_xform[1]);
 	fixed_transform->get_z()->set_internal(new_xform[2]);
@@ -359,7 +359,7 @@ void SGFixedNode3D::set_global_fixed_rotation(const Ref<SGFixedVector3> &p_fixed
 void SGFixedNode3D::set_global_fixed_rotation_internal(const SGFixedVector3Internal &p_fixed_rotation) {
 	SGFixedNode3D *fixed_parent = Object::cast_to<SGFixedNode3D>(get_parent());
 	if (fixed_parent) {
-		SGFixedVector3Internal parent_rotation = fixed_parent->get_global_fixed_transform_internal().get_rotation(); // TODO: to euler vector?
+		SGFixedVector3Internal parent_rotation = fixed_parent->get_global_fixed_transform_internal().get_rotation();
 		fixed_rotation->set_internal(p_fixed_rotation - parent_rotation);
 	}
 	else {
@@ -368,7 +368,7 @@ void SGFixedNode3D::set_global_fixed_rotation_internal(const SGFixedVector3Inter
 }
 
 Ref<SGFixedVector3> SGFixedNode3D::get_global_fixed_rotation() const {
-	return SGFixedVector3::from_internal(get_global_fixed_transform_internal().get_rotation()); // TODO: to euler vector?
+	return SGFixedVector3::from_internal(get_global_fixed_transform_internal().get_rotation());
 }
 
 void SGFixedNode3D::update_float_transform() {
@@ -378,6 +378,8 @@ void SGFixedNode3D::update_float_transform() {
 #endif
 		Transform3D float_xform;
 		float_xform.rotate_basis(Vector3(0, 1, 0), fixed(fixed_rotation->get_y()).to_float());
+		float_xform.rotate_basis(Vector3(1, 0, 0), fixed(fixed_rotation->get_x()).to_float());
+		float_xform.rotate_basis(Vector3(0, 0, 1), fixed(fixed_rotation->get_z()).to_float());
 		float_xform.scale(fixed_scale->to_float());
 		float_xform.origin = fixed_transform->get_origin()->to_float();
 		set_transform(float_xform);
@@ -423,7 +425,7 @@ SGFixedNode3D::SGFixedNode3D() {
 	fixed_scale->set_watcher(this);
 
 	fixed_rotation = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ZERO, fixed::ZERO, fixed::ZERO))));
-	fixed_scale->set_watcher(this);
+	fixed_rotation->set_watcher(this);
 
 	fixed_xform_dirty = false;
 

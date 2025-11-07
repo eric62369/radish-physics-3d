@@ -8,7 +8,6 @@ radius = 2855360
 height = 18655360
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_rnabo"]
-radius = 65536
 height = 465536
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_hta42"]

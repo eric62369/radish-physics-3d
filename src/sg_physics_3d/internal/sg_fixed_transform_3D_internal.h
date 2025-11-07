@@ -152,7 +152,8 @@ SGFixedVector3Internal SGFixedTransform3DInternal::xform_inv(const SGFixedVector
 	return SGFixedVector3Internal(elements[0].dot(v), elements[1].dot(v), elements[2].dot(v));
 }
 
-void SGFixedTransform3DInternal::set_rotation_and_scale(fixed p_rot, const SGFixedVector3Internal &p_scale) {
+void SGFixedTransform3DInternal::set_rotation_and_scale(const SGFixedVector3Internal &p_rot, const SGFixedVector3Internal &p_scale) {
+	// TODO: update for all dimensions
 	// TODO: is there supposed to be 0 for certain vector elements? https://en.wikipedia.org/wiki/Rotation_matrix
 	elements[0][0] = p_rot.cos() * p_scale.x;
 	elements[2][2] = p_rot.cos() * p_scale.z;
