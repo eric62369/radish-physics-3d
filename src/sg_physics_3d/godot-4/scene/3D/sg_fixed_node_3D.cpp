@@ -305,7 +305,7 @@ void SGFixedNode3D::set_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotati
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (Engine::get_singleton()->is_editor_hint()) {
 		updating_transform = true;
-		set_rotation(fixed_rotation->to_float());
+		set_rotation(fixed_rotation->to_float()); // TODO: change to 3 axis
 		updating_transform = false;
 	}
 	// CanvasItem::set_notify_transform(true);
