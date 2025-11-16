@@ -63,7 +63,7 @@ struct SGFixedTransform3DInternal {
 	void affine_invert();
 	SGFixedTransform3DInternal affine_inverse() const;
 
-	void set_rotation(fixed p_rot);
+	void set_rotation(const SGFixedVector3Internal &p_rot);
 	SGFixedVector3Internal get_rotation() const;
 	_FORCE_INLINE_ void set_rotation_and_scale(const SGFixedVector3Internal &p_rot, const SGFixedVector3Internal &p_scale);
 	void rotate(fixed p_phi);
@@ -153,11 +153,10 @@ SGFixedVector3Internal SGFixedTransform3DInternal::xform_inv(const SGFixedVector
 }
 
 void SGFixedTransform3DInternal::set_rotation_and_scale(const SGFixedVector3Internal &p_rot, const SGFixedVector3Internal &p_scale) {
-	// TODO: update for all dimensions
 	// TODO: is there supposed to be 0 for certain vector elements? https://en.wikipedia.org/wiki/Rotation_matrix
 	fixed first = p_rot.x;
-	fixed second = p_rot.x;
-	fixed third = p_rot.x;
+	fixed second = p_rot.y;
+	fixed third = p_rot.z;
 
 	elements[0][0] = first.cos() * second.cos() * p_scale.x;
 	elements[0][1] = first.sin() * second.cos() * p_scale.x;
@@ -170,13 +169,6 @@ void SGFixedTransform3DInternal::set_rotation_and_scale(const SGFixedVector3Inte
 	elements[2][0] = ((first.cos() * second.sin() * third.cos()) + (first.sin() * third.sin())) * p_scale.z;
 	elements[2][1] = ((first.sin() * second.sin() * third.cos()) - (first.cos() * third.sin())) * p_scale.z;
 	elements[2][2] = second.cos() * third.cos() * p_scale.z;
-	
-	// elements[1][0] = fixed.ZERO * p_scale.y;
-	// elements[0][1] = fixed.ZERO * p_scale.x;
-	// elements[2][1] = fixed.ZERO * p_scale.z;
-	// elements[1][2] = fixed.ZERO * p_scale.y;
-
-	elements[1][1] = p_scale.y;
 }
 
 #endif

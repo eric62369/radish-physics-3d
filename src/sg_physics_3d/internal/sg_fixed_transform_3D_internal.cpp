@@ -110,16 +110,26 @@ SGFixedVector3Internal SGFixedTransform3DInternal::get_rotation() const {
 	// return elements[0].z.atan2(elements[0].x);
 }
 
-void SGFixedTransform3DInternal::set_rotation(fixed p_rot) {
-	SGFixedVector3Internal scale = get_scale();
-	fixed cr = p_rot.cos();
-	fixed sr = p_rot.sin();
-	elements[0][0] = cr;
-	elements[0][2] = sr;
-	elements[1][1] = fixed::ONE;
-	elements[2][0] = -sr;
-	elements[2][2] = cr;
-	set_scale(scale);
+void SGFixedTransform3DInternal::set_rotation(const SGFixedVector3Internal &p_rot) {
+	SGFixedVector3Internal p_scale = get_scale();
+
+	fixed first = p_rot.x;
+	fixed second = p_rot.y;
+	fixed third = p_rot.z;
+
+	elements[0][0] = first.cos() * second.cos();
+	elements[0][1] = first.sin() * second.cos();
+	elements[0][2] = -second.sin();
+	
+	elements[1][0] = ((first.cos() * second.sin() * third.sin()) - (first.sin() * third.cos()));
+	elements[1][1] = ((first.sin() * second.sin() * third.sin()) + (first.cos() * third.cos()));
+	elements[1][2] = second.cos() * third.sin();
+	
+	elements[2][0] = ((first.cos() * second.sin() * third.cos()) + (first.sin() * third.sin()));
+	elements[2][1] = ((first.sin() * second.sin() * third.cos()) - (first.cos() * third.sin()));
+	elements[2][2] = second.cos() * third.cos();
+
+	set_scale(p_scale);
 }
 
 SGFixedTransform3DInternal::SGFixedTransform3DInternal(fixed p_rot, const SGFixedVector3Internal &p_pos) {
