@@ -87,47 +87,60 @@ SGFixedVector3Internal SGFixedTransform3DInternal::get_rotation() const {
 	fixed euler_y;
 	fixed euler_z;
 	
-	// Euler Order: XZY
-	fixed sz = elements[1][0];
-	if (sz < (fixed::ONE - epsilon)) {
-		if (sz > -(fixed::ONE - epsilon)) {
-			euler_x = -elements[1].z.atan2(elements[1].y);
-			euler_y = -elements[2][0].atan2(elements[0][0]);
-			euler_z = sz.asin();
-		} else {
-			// It's -1
-			euler_x = elements[2][1].atan2(elements[2][2]);
-			euler_y = fixed::ZERO;
-			euler_z = -fixed::PI_DIV_2;
+	// Euler angles in YXZ convention.
+	// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
+	//
+	// rot =  cy*cz+sy*sx*sz    cz*sy*sx-cy*sz        cx*sy
+	//        cx*sz             cx*cz                 -sx
+	//        cy*sx*sz-cz*sy    cy*cz*sx+sy*sz        cy*cx
+
+	fixed m12 = elements[1][2];
+
+	if (m12 < (fixed::ONE - epsilon)) {
+		if (m12 > -(fixed::ONE - epsilon)) {
+			// is this a pure X rotation?
+			if (elements[1][0] == fixed::ZERO && elements[0][1] == fixed::ZERO && elements[0][2] == fixed::ZERO && elements[2][0] == fixed::ZERO && elements[0][0] == fixed::ONE) {
+				// return the simplest form (human friendlier in editor and scripts)
+				euler_x = -m12.atan2(elements[1][1]);
+				euler_y = fixed::ZERO;
+				euler_z = fixed::ZERO;
+			} else {
+				euler_x = -m12.asin();
+				euler_y = elements[0][2].atan2(elements[2][2]);
+				euler_z = elements[1][0].atan2(elements[1][1]);
+			}
+		} else { // m12 == -1
+			euler_x = fixed::PI * fixed::HALF;
+			euler_y = elements[0][1].atan2(elements[0][0]);
+			euler_z = fixed::ZERO;
 		}
-	} else {
-		// It's 1
-		euler_x = elements[2][1].atan2(elements[2][2]);
-		euler_y = fixed::ZERO;
-		euler_z = fixed::PI_DIV_2;
+	} else { // m12 == 1
+		euler_x = -fixed::PI * fixed::HALF;
+		euler_y = -elements[0][1].atan2(elements[0][0]);
+		euler_z = fixed::ZERO;
 	}
+
 	return SGFixedVector3Internal(euler_x, euler_y, euler_z);
-	// return elements[0].z.atan2(elements[0].x);
 }
 
 void SGFixedTransform3DInternal::set_rotation(const SGFixedVector3Internal &p_rot) {
 	SGFixedVector3Internal p_scale = get_scale();
 
 	fixed first = p_rot.x;
-	fixed second = p_rot.y;
-	fixed third = p_rot.z;
+	fixed second = p_rot.z;
+	fixed third = p_rot.y;
 
-	elements[0][0] = first.cos() * second.cos();
-	elements[0][1] = first.sin() * second.cos();
-	elements[0][2] = -second.sin();
+	elements[0][0] = ((first.cos()*third.cos()) + (first.sin()*second.sin()*third.sin()));
+	elements[0][1] = (second.cos() * third.sin());
+	elements[0][2] = ((first.cos()*second.sin()*third.sin()) - (third.cos()*first.sin()));
 	
-	elements[1][0] = ((first.cos() * second.sin() * third.sin()) - (first.sin() * third.cos()));
-	elements[1][1] = ((first.sin() * second.sin() * third.sin()) + (first.cos() * third.cos()));
-	elements[1][2] = second.cos() * third.sin();
+	elements[1][0] = ((third.cos() * first.sin() * second.sin()) - (first.cos() * third.sin()));
+	elements[1][1] = (second.cos() * third.cos());
+	elements[1][2] = ((first.cos()*third.cos()*second.sin()) + (first.sin()*third.sin()));
 	
-	elements[2][0] = ((first.cos() * second.sin() * third.cos()) + (first.sin() * third.sin()));
-	elements[2][1] = ((first.sin() * second.sin() * third.cos()) - (first.cos() * third.sin()));
-	elements[2][2] = second.cos() * third.cos();
+	elements[2][0] = (second.cos()*first.sin());
+	elements[2][1] = (-second.sin());
+	elements[2][2] = (first.cos() * second.cos());
 
 	set_scale(p_scale);
 }

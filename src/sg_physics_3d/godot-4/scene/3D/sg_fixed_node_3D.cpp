@@ -93,7 +93,7 @@ void SGFixedNode3D::_notification(int p_what) {
 			if (Engine::get_singleton()->is_editor_hint() && !updating_transform) {
 				updating_transform = true;
 				fixed_transform->from_float(get_transform());
-				fixed_rotation->set_internal(fixed_transform->get_internal().get_rotation());  // TODO: to euler vector?
+				fixed_rotation->set_internal(fixed_transform->get_internal().get_rotation());
 				fixed_scale->set_internal(fixed_transform->get_internal().get_scale());
 				updating_transform = false;
 			}
@@ -305,7 +305,8 @@ void SGFixedNode3D::set_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotati
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (Engine::get_singleton()->is_editor_hint()) {
 		updating_transform = true;
-		set_rotation(fixed_rotation->to_float()); // TODO: change to 3 axis
+		set_rotation_order(EULER_ORDER_YXZ);
+		set_rotation(fixed_rotation->to_float());
 		updating_transform = false;
 	}
 	// CanvasItem::set_notify_transform(true);

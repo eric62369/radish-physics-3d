@@ -154,21 +154,21 @@ SGFixedVector3Internal SGFixedTransform3DInternal::xform_inv(const SGFixedVector
 
 void SGFixedTransform3DInternal::set_rotation_and_scale(const SGFixedVector3Internal &p_rot, const SGFixedVector3Internal &p_scale) {
 	// TODO: is there supposed to be 0 for certain vector elements? https://en.wikipedia.org/wiki/Rotation_matrix
-	fixed first = p_rot.x;
-	fixed second = p_rot.y;
+	fixed first = p_rot.y;
+	fixed second = p_rot.x;
 	fixed third = p_rot.z;
 
-	elements[0][0] = first.cos() * second.cos() * p_scale.x;
-	elements[0][1] = first.sin() * second.cos() * p_scale.x;
-	elements[0][2] = -second.sin() * p_scale.x;
+	elements[0][0] = ((first.cos()*third.cos()) + (first.sin()*second.sin()*third.sin())) * p_scale.x;
+	elements[0][1] = (second.cos() * third.sin()) * p_scale.x;
+	elements[0][2] = ((first.cos()*second.sin()*third.sin()) - (third.cos()*first.sin())) * p_scale.x;
 	
-	elements[1][0] = ((first.cos() * second.sin() * third.sin()) - (first.sin() * third.cos())) * p_scale.y;
-	elements[1][1] = ((first.sin() * second.sin() * third.sin()) + (first.cos() * third.cos())) * p_scale.y;
-	elements[1][2] = second.cos() * third.sin() * p_scale.y;
+	elements[1][0] = ((third.cos() * first.sin() * second.sin()) - (first.cos() * third.sin())) * p_scale.y;
+	elements[1][1] = (second.cos() * third.cos()) * p_scale.y;
+	elements[1][2] = ((first.cos()*third.cos()*second.sin()) + (first.sin()*third.sin())) * p_scale.y;
 	
-	elements[2][0] = ((first.cos() * second.sin() * third.cos()) + (first.sin() * third.sin())) * p_scale.z;
-	elements[2][1] = ((first.sin() * second.sin() * third.cos()) - (first.cos() * third.sin())) * p_scale.z;
-	elements[2][2] = second.cos() * third.cos() * p_scale.z;
+	elements[2][0] = (second.cos()*first.sin()) * p_scale.z;
+	elements[2][1] = (-second.sin()) * p_scale.z;
+	elements[2][2] = (first.cos() * second.cos()) * p_scale.z;
 }
 
 #endif

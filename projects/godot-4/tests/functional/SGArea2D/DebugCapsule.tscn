@@ -17,16 +17,12 @@ speed = 2.0
 
 [node name="Area1" type="SGArea3D" parent="."]
 fixed_position_y = 2949120
-fixed_scale_y = 65533
-fixed_scale_z = 65533
-fixed_rotation_x = -49307
-transform = Transform3D(1, 0, 0, 0, 0.7295, -0.683937, 0, 0.683937, 0.7295, 0, 45, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 45, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area1"]
 shape = SubResource("SGCapsuleShape3D_jj3ay")
-fixed_scale_y = 65535
-fixed_scale_z = 65535
-transform = Transform3D(1, 0, 0, 0, 0.999985, 0, 0, 0, 0.999985, 0, 0, 0)
+fixed_rotation_x = -102944
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 
 [node name="Area2" type="SGArea3D" parent="."]
 fixed_position_x = 5742185
@@ -39,7 +35,7 @@ shape = SubResource("SGCapsuleShape3D_jmfxl")
 [node name="Area3" type="SGArea3D" parent="."]
 fixed_scale_x = 65532
 fixed_scale_z = 65531
-fixed_rotation_y = -16779
+fixed_rotation_y = -16780
 transform = Transform3D(0.967221, 0, 0.2538, 0, 1, 0, -0.253807, 0, 0.967196, 0, 0, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area3"]
