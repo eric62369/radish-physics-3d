@@ -17,8 +17,10 @@ speed = 2.0
 
 [node name="Area1" type="SGArea3D" parent="."]
 fixed_position_y = 2949120
-fixed_rotation_x = -102943
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 45, 0)
+fixed_scale_y = 65533
+fixed_scale_z = 65533
+fixed_rotation_x = -49307
+transform = Transform3D(1, 0, 0, 0, 0.7295, -0.683937, 0, 0.683937, 0.7295, 0, 45, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="Area1"]
 shape = SubResource("SGCapsuleShape3D_jj3ay")
