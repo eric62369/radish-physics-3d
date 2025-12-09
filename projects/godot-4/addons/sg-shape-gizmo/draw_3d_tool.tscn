@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c10t7w161umuo"]
+
+[ext_resource type="Script" path="res://addons/sg-shape-gizmo/draw_3d_tool.gd" id="1_lnexd"]
+
+[node name="Draw3DTool" type="Node3D"]
+script = ExtResource("1_lnexd")

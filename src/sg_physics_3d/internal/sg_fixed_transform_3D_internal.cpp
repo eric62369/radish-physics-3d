@@ -56,7 +56,7 @@ void SGFixedTransform3DInternal::affine_invert() {
 	set(co[0] / determinant, cofac(0, 2, 2, 1) / determinant, cofac(0, 1, 1, 2) / determinant,
 			co[1] / determinant, cofac(0, 0, 2, 2) / determinant, cofac(0, 2, 1, 0) / determinant,
 			co[2] / determinant, cofac(0, 1, 2, 0) / determinant, cofac(0, 0, 1, 1) / determinant);
-	// elements[0][0] = co[0] / determinant; // TODO: has a bug in it somehow????
+	// elements[0][0] = co[0] / determinant;
 	// elements[0][1] = cofac(0, 2, 2, 1) / determinant;
 	// elements[0][2] = cofac(0, 1, 1, 2) / determinant;
 	// elements[1][0] = co[1] / determinant;
@@ -80,20 +80,69 @@ void SGFixedTransform3DInternal::rotate(fixed p_phi) {
 	set_scale(scale);
 }
 
-fixed SGFixedTransform3DInternal::get_rotation() const {
-	return elements[0].z.atan2(elements[0].x);
+SGFixedVector3Internal SGFixedTransform3DInternal::get_rotation() const {
+	// https://stackoverflow.com/questions/21622956/how-to-convert-direction-vector-to-euler-angles
+	const fixed epsilon = fixed(25);
+	fixed euler_x;
+	fixed euler_y;
+	fixed euler_z;
+	
+	// Euler angles in YXZ convention.
+	// See https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
+	//
+	// rot =  cy*cz+sy*sx*sz    cz*sy*sx-cy*sz        cx*sy
+	//        cx*sz             cx*cz                 -sx
+	//        cy*sx*sz-cz*sy    cy*cz*sx+sy*sz        cy*cx
+
+	fixed m12 = elements[1][2];
+
+	if (m12 < (fixed::ONE - epsilon)) {
+		if (m12 > -(fixed::ONE - epsilon)) {
+			// is this a pure X rotation?
+			if (elements[1][0] == fixed::ZERO && elements[0][1] == fixed::ZERO && elements[0][2] == fixed::ZERO && elements[2][0] == fixed::ZERO && elements[0][0] == fixed::ONE) {
+				// return the simplest form (human friendlier in editor and scripts)
+				euler_x = -m12.atan2(elements[1][1]);
+				euler_y = fixed::ZERO;
+				euler_z = fixed::ZERO;
+			} else {
+				euler_x = -m12.asin();
+				euler_y = elements[0][2].atan2(elements[2][2]);
+				euler_z = elements[1][0].atan2(elements[1][1]);
+			}
+		} else { // m12 == -1
+			euler_x = fixed::PI * fixed::HALF;
+			euler_y = elements[0][1].atan2(elements[0][0]);
+			euler_z = fixed::ZERO;
+		}
+	} else { // m12 == 1
+		euler_x = -fixed::PI * fixed::HALF;
+		euler_y = -elements[0][1].atan2(elements[0][0]);
+		euler_z = fixed::ZERO;
+	}
+
+	return SGFixedVector3Internal(euler_x, euler_y, euler_z);
 }
 
-void SGFixedTransform3DInternal::set_rotation(fixed p_rot) {
-	SGFixedVector3Internal scale = get_scale();
-	fixed cr = p_rot.cos();
-	fixed sr = p_rot.sin();
-	elements[0][0] = cr;
-	elements[0][2] = sr;
-	elements[1][1] = fixed::ONE;
-	elements[2][0] = -sr;
-	elements[2][2] = cr;
-	set_scale(scale);
+void SGFixedTransform3DInternal::set_rotation(const SGFixedVector3Internal &p_rot) {
+	SGFixedVector3Internal p_scale = get_scale();
+
+	fixed first = p_rot.x;
+	fixed second = p_rot.z;
+	fixed third = p_rot.y;
+
+	elements[0][0] = ((first.cos()*third.cos()) + (first.sin()*second.sin()*third.sin()));
+	elements[0][1] = (second.cos() * third.sin());
+	elements[0][2] = ((first.cos()*second.sin()*third.sin()) - (third.cos()*first.sin()));
+	
+	elements[1][0] = ((third.cos() * first.sin() * second.sin()) - (first.cos() * third.sin()));
+	elements[1][1] = (second.cos() * third.cos());
+	elements[1][2] = ((first.cos()*third.cos()*second.sin()) + (first.sin()*third.sin()));
+	
+	elements[2][0] = (second.cos()*first.sin());
+	elements[2][1] = (-second.sin());
+	elements[2][2] = (first.cos() * second.cos());
+
+	set_scale(p_scale);
 }
 
 SGFixedTransform3DInternal::SGFixedTransform3DInternal(fixed p_rot, const SGFixedVector3Internal &p_pos) {
@@ -109,7 +158,7 @@ SGFixedTransform3DInternal::SGFixedTransform3DInternal(fixed p_rot, const SGFixe
 
 SGFixedVector3Internal SGFixedTransform3DInternal::get_scale() const {
 	fixed det_sign = FIXED_SGN(basis_determinant());
-	return SGFixedVector3Internal(elements[0].length(), det_sign * elements[1].length(), det_sign * elements[2].length()); // TODO: determinant vector math
+	return SGFixedVector3Internal(elements[0].length(), det_sign * elements[1].length(), det_sign * elements[2].length());
 }
 
 void SGFixedTransform3DInternal::set_scale(const SGFixedVector3Internal &p_scale) {
@@ -259,14 +308,14 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::interpolate_with(const SG
 	SGFixedVector3Internal p1 = get_origin();
 	SGFixedVector3Internal p2 = p_transform.get_origin();
 
-	fixed r1 = get_rotation();
-	fixed r2 = p_transform.get_rotation();
+	SGFixedVector3Internal r1 = get_rotation();
+	SGFixedVector3Internal r2 = p_transform.get_rotation();
 
 	SGFixedVector3Internal s1 = get_scale();
 	SGFixedVector3Internal s2 = p_transform.get_scale();
 
-	SGFixedVector3Internal v1(r1.cos(), fixed(1), r1.sin()); // TODO: whats the z axis in this case??
-	SGFixedVector3Internal v2(r2.cos(), fixed(1), r2.sin());
+	SGFixedVector3Internal v1(r1.y.cos(), fixed(1), r1.y.sin()); // TODO: how to rotation interpolate?
+	SGFixedVector3Internal v2(r2.y.cos(), fixed(1), r2.y.sin());
 
 	fixed dot = v1.dot(v2);
 	dot = CLAMP(dot, fixed::NEG_ONE, fixed::ONE);

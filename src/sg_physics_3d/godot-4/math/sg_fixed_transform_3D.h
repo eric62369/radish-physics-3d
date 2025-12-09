@@ -86,7 +86,7 @@ public:
 	Ref<SGFixedTransform3D> inverse() const;
 	Ref<SGFixedTransform3D> affine_inverse() const;
 
-	int64_t get_rotation() const;
+	Ref<SGFixedVector3> get_rotation() const;
 	Ref<SGFixedTransform3D> rotated(int64_t p_radians) const;
 
 	Ref<SGFixedVector3> get_scale() const;

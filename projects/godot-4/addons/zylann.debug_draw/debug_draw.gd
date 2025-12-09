@@ -1,4 +1,4 @@
-
+@tool
 ## @brief Single-file autoload for debug drawing and printing.
 ## Draw and print on screen from anywhere in a single line of code.
 ## Find it quickly by naming it "DDD".

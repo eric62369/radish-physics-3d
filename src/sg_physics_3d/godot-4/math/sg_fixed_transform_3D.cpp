@@ -66,7 +66,6 @@ Transform3D SGFixedTransform3D::to_float() const {
 }
 
 void SGFixedTransform3D::from_float(const Transform3D &p_float_transform) {
-	// TODO: someone remind me how 3D transforms are different than columns in 2D / how to get the vectors from transform 
 	x->from_float(p_float_transform.get_basis().get_column(0));
 	y->from_float(p_float_transform.get_basis().get_column(1));
 	z->from_float(p_float_transform.get_basis().get_column(2));
@@ -114,9 +113,9 @@ Ref<SGFixedTransform3D> SGFixedTransform3D::affine_inverse() const {
 	return SGFixedTransform3D::from_internal(internal);
 }
 
-int64_t SGFixedTransform3D::get_rotation() const {
+Ref<SGFixedVector3> SGFixedTransform3D::get_rotation() const {
 	SGFixedTransform3DInternal internal = get_internal();
-	return internal.get_rotation().value;
+	return SGFixedVector3::from_internal(internal.get_rotation());
 }
 
 Ref<SGFixedTransform3D> SGFixedTransform3D::rotated(int64_t p_radians) const {

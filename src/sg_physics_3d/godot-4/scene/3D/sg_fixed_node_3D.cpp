@@ -49,7 +49,13 @@ void SGFixedNode3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_set_fixed_scale_z", "z"), &SGFixedNode3D::_set_fixed_scale_z);
 
 	ClassDB::bind_method(D_METHOD("get_fixed_rotation"), &SGFixedNode3D::get_fixed_rotation);
-	ClassDB::bind_method(D_METHOD("set_fixed_rotation", "fixed_scale"), &SGFixedNode3D::set_fixed_rotation);
+	ClassDB::bind_method(D_METHOD("set_fixed_rotation", "fixed_rotation"), &SGFixedNode3D::set_fixed_rotation);
+	ClassDB::bind_method(D_METHOD("_get_fixed_rotation_x"), &SGFixedNode3D::_get_fixed_rotation_x);
+	ClassDB::bind_method(D_METHOD("_set_fixed_rotation_x", "x"), &SGFixedNode3D::_set_fixed_rotation_x);
+	ClassDB::bind_method(D_METHOD("_get_fixed_rotation_y"), &SGFixedNode3D::_get_fixed_rotation_y);
+	ClassDB::bind_method(D_METHOD("_set_fixed_rotation_y", "y"), &SGFixedNode3D::_set_fixed_rotation_y);
+	ClassDB::bind_method(D_METHOD("_get_fixed_rotation_z"), &SGFixedNode3D::_get_fixed_rotation_z);
+	ClassDB::bind_method(D_METHOD("_set_fixed_rotation_z", "z"), &SGFixedNode3D::_set_fixed_rotation_z);
 
 	// For editor and storage.
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_position_x"), "_set_fixed_position_x", "_get_fixed_position_x");
@@ -58,12 +64,15 @@ void SGFixedNode3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_scale_x"), "_set_fixed_scale_x", "_get_fixed_scale_x");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_scale_y"), "_set_fixed_scale_y", "_get_fixed_scale_y");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_scale_z"), "_set_fixed_scale_z", "_get_fixed_scale_z");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_rotation"), "set_fixed_rotation", "get_fixed_rotation");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_rotation_x"), "_set_fixed_rotation_x", "_get_fixed_rotation_x");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_rotation_y"), "_set_fixed_rotation_y", "_get_fixed_rotation_y");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "fixed_rotation_z"), "_set_fixed_rotation_z", "_get_fixed_rotation_z");
 
 	// For code only.
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fixed_transform", PROPERTY_HINT_NONE, "", 0), "set_fixed_transform", "get_fixed_transform");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fixed_position", PROPERTY_HINT_NONE, "", 0), "set_fixed_position", "get_fixed_position");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fixed_scale", PROPERTY_HINT_NONE, "", 0), "set_fixed_scale", "get_fixed_scale");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "fixed_rotation", PROPERTY_HINT_NONE, "", 0), "set_fixed_rotation", "get_fixed_rotation");
 
 	ClassDB::bind_method(D_METHOD("get_global_fixed_transform"), &SGFixedNode3D::get_global_fixed_transform);
 	ClassDB::bind_method(D_METHOD("set_global_fixed_transform", "fixed_transform"), &SGFixedNode3D::set_global_fixed_transform);
@@ -84,7 +93,7 @@ void SGFixedNode3D::_notification(int p_what) {
 			if (Engine::get_singleton()->is_editor_hint() && !updating_transform) {
 				updating_transform = true;
 				fixed_transform->from_float(get_transform());
-				fixed_rotation = fixed_transform->get_internal().get_rotation().value;
+				fixed_rotation->set_internal(fixed_transform->get_internal().get_rotation());
 				fixed_scale->set_internal(fixed_transform->get_internal().get_scale());
 				updating_transform = false;
 			}
@@ -123,7 +132,7 @@ void SGFixedNode3D::_changed_callback(Object *p_changed, const char *p_prop) {
 
 void SGFixedNode3D::_update_fixed_transform_rotation_and_scale() {
 	SGFixedTransform3DInternal new_xform;
-	new_xform.set_rotation_and_scale(fixed(fixed_rotation), fixed_scale->get_internal());
+	new_xform.set_rotation_and_scale(fixed_rotation->get_internal(), fixed_scale->get_internal());
 	fixed_transform->get_x()->set_internal(new_xform[0]);
 	fixed_transform->get_y()->set_internal(new_xform[1]);
 	fixed_transform->get_z()->set_internal(new_xform[2]);
@@ -141,7 +150,7 @@ SGFixedTransform3DInternal SGFixedNode3D::get_global_fixed_transform_internal() 
 void SGFixedNode3D::update_fixed_transform_internal(const SGFixedTransform3DInternal &p_transform) {
 	fixed_transform->set_internal(p_transform);
 	fixed_scale->set_internal(p_transform.get_scale());
-	fixed_rotation = p_transform.get_rotation().value;
+	fixed_rotation->set_internal(p_transform.get_rotation());
 	transform_changed();
 }
 
@@ -178,6 +187,34 @@ int64_t SGFixedNode3D::_get_fixed_position_z() const {
 void SGFixedNode3D::_set_fixed_position_z(int64_t p_z) {
 	fixed_transform->get_origin()->set_z(p_z);
 }
+
+int64_t SGFixedNode3D::_get_fixed_rotation_x() const {
+	return fixed_rotation->get_x();
+}
+
+void SGFixedNode3D::_set_fixed_rotation_x(int64_t p_rotation_x) {
+	fixed_rotation->set_x(p_rotation_x);
+	_update_fixed_transform_rotation_and_scale();
+}
+
+int64_t SGFixedNode3D::_get_fixed_rotation_y() const {
+	return fixed_rotation->get_y();
+}
+
+void SGFixedNode3D::_set_fixed_rotation_y(int64_t p_rotation_y) {
+	fixed_rotation->set_y(p_rotation_y);
+	_update_fixed_transform_rotation_and_scale();
+}
+
+int64_t SGFixedNode3D::_get_fixed_rotation_z() const {
+	return fixed_rotation->get_z();
+}
+
+void SGFixedNode3D::_set_fixed_rotation_z(int64_t p_rotation_z) {
+	fixed_rotation->set_z(p_rotation_z);
+	_update_fixed_transform_rotation_and_scale();
+}
+
 
 int64_t SGFixedNode3D::_get_fixed_scale_x() const {
 	return fixed_scale->get_x();
@@ -253,24 +290,30 @@ Ref<SGFixedVector3> SGFixedNode3D::get_fixed_scale() const {
 	return fixed_scale;
 }
 
-void SGFixedNode3D::set_fixed_rotation(int64_t p_fixed_rotation) {
-#if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
-	//disable to avoid loop of updates of transform
-	// CanvasItem::set_notify_transform(false);
-#endif
-	fixed_rotation = p_fixed_rotation;
+void SGFixedNode3D::set_fixed_rotation_internal(const SGFixedVector3Internal &p_fixed_rotation) {
+	fixed_rotation->set_internal(p_fixed_rotation);
 	_update_fixed_transform_rotation_and_scale();
+	// transform_changed();
+}
+
+void SGFixedNode3D::set_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation) {
+	ERR_FAIL_COND(!p_fixed_rotation.is_valid());
+
+	fixed_rotation->set_internal(p_fixed_rotation->get_internal());
+	_update_fixed_transform_rotation_and_scale();
+
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
 	if (Engine::get_singleton()->is_editor_hint()) {
 		updating_transform = true;
-		set_rotation(Vector3(0, fixed(fixed_rotation).to_float(), 0));
+		set_rotation_order(EULER_ORDER_YXZ);
+		set_rotation(fixed_rotation->to_float());
 		updating_transform = false;
 	}
 	// CanvasItem::set_notify_transform(true);
 #endif
 }
 
-int64_t SGFixedNode3D::get_fixed_rotation() const {
+Ref<SGFixedVector3> SGFixedNode3D::get_fixed_rotation() const {
 	return fixed_rotation;
 }
 
@@ -309,19 +352,24 @@ void SGFixedNode3D::set_global_fixed_position_internal(const SGFixedVector3Inter
 }
 
 
-void SGFixedNode3D::set_global_fixed_rotation(int64_t p_fixed_rotation) {
+void SGFixedNode3D::set_global_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation) {
+	ERR_FAIL_COND(!p_fixed_rotation.is_valid());
+	set_global_fixed_rotation_internal(p_fixed_rotation->get_internal());
+}
+
+void SGFixedNode3D::set_global_fixed_rotation_internal(const SGFixedVector3Internal &p_fixed_rotation) {
 	SGFixedNode3D *fixed_parent = Object::cast_to<SGFixedNode3D>(get_parent());
 	if (fixed_parent) {
-		fixed parent_rotation = fixed_parent->get_global_fixed_transform_internal().get_rotation();
-		set_fixed_rotation(p_fixed_rotation - parent_rotation.value);
+		SGFixedVector3Internal parent_rotation = fixed_parent->get_global_fixed_transform_internal().get_rotation();
+		fixed_rotation->set_internal(p_fixed_rotation - parent_rotation);
 	}
 	else {
-		set_fixed_rotation(p_fixed_rotation);
+		fixed_rotation->set_internal(p_fixed_rotation);
 	}
 }
 
-int64_t SGFixedNode3D::get_global_fixed_rotation() const {
-	return get_global_fixed_transform_internal().get_rotation().value;
+Ref<SGFixedVector3> SGFixedNode3D::get_global_fixed_rotation() const {
+	return SGFixedVector3::from_internal(get_global_fixed_transform_internal().get_rotation());
 }
 
 void SGFixedNode3D::update_float_transform() {
@@ -330,7 +378,9 @@ void SGFixedNode3D::update_float_transform() {
 		updating_transform = true;
 #endif
 		Transform3D float_xform;
-		float_xform.rotate_basis(Vector3(0, 1, 0), fixed(fixed_rotation).to_float());
+		float_xform.rotate_basis(Vector3(0, 1, 0), fixed(fixed_rotation->get_y()).to_float());
+		float_xform.rotate_basis(Vector3(1, 0, 0), fixed(fixed_rotation->get_x()).to_float());
+		float_xform.rotate_basis(Vector3(0, 0, 1), fixed(fixed_rotation->get_z()).to_float());
 		float_xform.scale(fixed_scale->to_float());
 		float_xform.origin = fixed_transform->get_origin()->to_float();
 		set_transform(float_xform);
@@ -375,7 +425,8 @@ SGFixedNode3D::SGFixedNode3D() {
 	fixed_scale = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ONE, fixed::ONE, fixed::ONE))));
 	fixed_scale->set_watcher(this);
 
-	fixed_rotation = 0;
+	fixed_rotation = Ref<SGFixedVector3>(memnew(SGFixedVector3(SGFixedVector3Internal(fixed::ZERO, fixed::ZERO, fixed::ZERO))));
+	fixed_rotation->set_watcher(this);
 
 	fixed_xform_dirty = false;
 

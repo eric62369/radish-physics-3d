@@ -6,7 +6,7 @@ extends Node2D
 @onready var spot = $Spot
 
 var rotation_speed = 3277 # 0.05
-var velocity = SGFixed.vector2(0, 0)
+var velocity = SGFixed.vector3(0, 0, 0)
 
 func _physics_process(delta: float) -> void:
 	var rotating := false

@@ -8,7 +8,6 @@ radius = 2855360
 height = 18655360
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_rnabo"]
-radius = 65536
 height = 465536
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_hta42"]
@@ -61,23 +60,23 @@ shape = SubResource("SGCapsuleShape3D_hta42")
 
 [node name="StaticBody3" type="SGStaticBody3D" parent="."]
 fixed_position_x = 10092544
-fixed_position_y = 6014656
+fixed_position_y = 6014658
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 154, 91.7764, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody3"]
 shape = SubResource("SGCapsuleShape3D_fwxyo")
 
 [node name="StaticBody4" type="SGStaticBody3D" parent="."]
-fixed_position_x = -6686976
+fixed_position_x = -6686966
 fixed_position_y = 65536
-fixed_position_z = -6686951
+fixed_position_z = -6686966
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -102.035, 1, -102.035)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody4"]
 shape = SubResource("SGCapsuleShape3D_nod5q")
 
 [node name="StaticBody5" type="SGStaticBody3D" parent="."]
-fixed_position_x = 33866624
+fixed_position_x = 33866644
 fixed_position_y = -2424832
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 516.764, -37, 0)
 
@@ -96,7 +95,7 @@ collision_layer = 2
 collision_mask = 2
 fixed_position_x = 3211264
 fixed_position_y = 6160384
-fixed_position_z = -6555360
+fixed_position_z = -6555369
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49, 94, -100.027)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody7"]

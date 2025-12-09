@@ -1,6 +1,28 @@
-[gd_scene load_steps=8 format=3 uid="uid://k6rrmtux4k47"]
+[gd_scene load_steps=9 format=3 uid="uid://k6rrmtux4k47"]
 
 [ext_resource type="Script" path="res://tests/functional/SGArea2D/GetOverlappingShapeCollisions.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://bcjtflkpuopaq" path="res://camera_pivot.tscn" id="2_sllv1"]
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_uut72"]
+radius = 6553600
+height = 6553600
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_5ukex"]
+radius = 6553600
+height = 6553600
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_y3nrb"]
+radius = 6553600
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_ybt0u"]
+height = 65536000
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_c7l1t"]
+radius = 6553600
+height = 6553600
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_1ink0"]
+height = 65536000
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_uut72"]
 
@@ -20,9 +42,6 @@ script = ExtResource("1")
 [node name="DetectorArea1" type="SGArea3D" parent="."]
 monitorable = false
 collision_layer = 0
-fixed_position_x = 25010968
-fixed_position_y = 18831790
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 381.637, 287.35, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="DetectorArea1"]
 shape = SubResource("SGCapsuleShape3D_uut72")
@@ -30,45 +49,44 @@ shape = SubResource("SGCapsuleShape3D_uut72")
 [node name="DetectorArea2" type="SGArea3D" parent="."]
 monitorable = false
 collision_layer = 0
-fixed_position_x = 35015352
-fixed_position_y = 25231654
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 534.292, 385.004, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="DetectorArea2"]
 shape = SubResource("SGCapsuleShape3D_5ukex")
 
 [node name="CollidingArea" type="SGArea3D" parent="."]
 collision_mask = 0
-fixed_position_x = 35015356
-fixed_position_y = 16330691
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 534.292, 249.187, 0)
+fixed_position_x = 35015360
+fixed_position_z = -16330719
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 534.292, 0, -249.187)
 
 [node name="Shape1" type="SGCollisionShape3D" parent="CollidingArea"]
-shape = SubResource("SGCapsuleShape3D_ckdep")
-fixed_position_x = -2427536
-fixed_position_y = -73562
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0413, -1.12247, 0)
+shape = SubResource("SGCapsuleShape3D_y3nrb")
+fixed_position_x = -2427538
+fixed_position_z = -24275386
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0413, 0, -370.413)
 
 [node name="Shape2" type="SGCollisionShape3D" parent="CollidingArea"]
 shape = SubResource("SGCapsuleShape3D_ybt0u")
 fixed_position_x = -588492
-fixed_position_y = 3383837
+fixed_position_y = 3383840
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.97968, 51.6333, 0)
 
 [node name="CollidingBody" type="SGStaticBody3D" parent="."]
 collision_mask = 0
-fixed_position_x = 35015356
-fixed_position_y = 16330691
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 534.292, 249.187, 0)
+fixed_position_z = 655360
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 
 [node name="Shape1" type="SGCollisionShape3D" parent="CollidingBody"]
 shape = SubResource("SGCapsuleShape3D_c7l1t")
-fixed_position_x = -2427536
+fixed_position_x = -2427538
 fixed_position_y = -73562
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.0413, -1.12247, 0)
 
 [node name="Shape2" type="SGCollisionShape3D" parent="CollidingBody"]
 shape = SubResource("SGCapsuleShape3D_1ink0")
 fixed_position_x = -588492
-fixed_position_y = 3383837
+fixed_position_y = 3383840
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.97968, 51.6333, 0)
+
+[node name="CameraPivot" parent="." instance=ExtResource("2_sllv1")]
+speed = 6.0

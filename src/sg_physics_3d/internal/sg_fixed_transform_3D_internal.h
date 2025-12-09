@@ -63,9 +63,9 @@ struct SGFixedTransform3DInternal {
 	void affine_invert();
 	SGFixedTransform3DInternal affine_inverse() const;
 
-	void set_rotation(fixed p_rot);
-	fixed get_rotation() const;
-	_FORCE_INLINE_ void set_rotation_and_scale(fixed p_rot, const SGFixedVector3Internal &p_scale);
+	void set_rotation(const SGFixedVector3Internal &p_rot);
+	SGFixedVector3Internal get_rotation() const;
+	_FORCE_INLINE_ void set_rotation_and_scale(const SGFixedVector3Internal &p_rot, const SGFixedVector3Internal &p_scale);
 	void rotate(fixed p_phi);
 
 	void scale(const SGFixedVector3Internal &p_scale);
@@ -152,19 +152,23 @@ SGFixedVector3Internal SGFixedTransform3DInternal::xform_inv(const SGFixedVector
 	return SGFixedVector3Internal(elements[0].dot(v), elements[1].dot(v), elements[2].dot(v));
 }
 
-void SGFixedTransform3DInternal::set_rotation_and_scale(fixed p_rot, const SGFixedVector3Internal &p_scale) {
+void SGFixedTransform3DInternal::set_rotation_and_scale(const SGFixedVector3Internal &p_rot, const SGFixedVector3Internal &p_scale) {
 	// TODO: is there supposed to be 0 for certain vector elements? https://en.wikipedia.org/wiki/Rotation_matrix
-	elements[0][0] = p_rot.cos() * p_scale.x;
-	elements[2][2] = p_rot.cos() * p_scale.z;
-	elements[2][0] = p_rot.sin() * p_scale.z;
-	elements[0][2] = -p_rot.sin() * p_scale.x;
+	fixed first = p_rot.y;
+	fixed second = p_rot.x;
+	fixed third = p_rot.z;
 
-	// elements[1][0] = fixed.ZERO * p_scale.y;
-	// elements[0][1] = fixed.ZERO * p_scale.x;
-	// elements[2][1] = fixed.ZERO * p_scale.z;
-	// elements[1][2] = fixed.ZERO * p_scale.y;
-
-	elements[1][1] = p_scale.y;
+	elements[0][0] = ((first.cos()*third.cos()) + (first.sin()*second.sin()*third.sin())) * p_scale.x;
+	elements[0][1] = (second.cos() * third.sin()) * p_scale.x;
+	elements[0][2] = ((first.cos()*second.sin()*third.sin()) - (third.cos()*first.sin())) * p_scale.x;
+	
+	elements[1][0] = ((third.cos() * first.sin() * second.sin()) - (first.cos() * third.sin())) * p_scale.y;
+	elements[1][1] = (second.cos() * third.cos()) * p_scale.y;
+	elements[1][2] = ((first.cos()*third.cos()*second.sin()) + (first.sin()*third.sin())) * p_scale.y;
+	
+	elements[2][0] = (second.cos()*first.sin()) * p_scale.z;
+	elements[2][1] = (-second.sin()) * p_scale.z;
+	elements[2][2] = (first.cos() * second.cos()) * p_scale.z;
 }
 
 #endif

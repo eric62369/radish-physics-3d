@@ -20,7 +20,7 @@
 /* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE     */
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                */
 /*************************************************************************/
-#include <godot_cpp/variant/utility_functions.hpp> // TODO: remove this later
+// #include <godot_cpp/variant/utility_functions.hpp> // TODO: remove this later
 #include "sg_collision_detector_3D_internal.h"
 #include <algorithm>
 
@@ -405,8 +405,6 @@ bool SGCollisionDetector3DInternal::Capsule_overlaps_Capsule(const SGCapsule3DIn
 }
 
 bool SGCollisionDetector3DInternal::segment_intersects_Capsule(const SGFixedVector3Internal& p_start, const SGFixedVector3Internal& p_cast_to, const SGCapsule3DInternal& capsule, SGFixedVector3Internal& p_intersection_point, SGFixedVector3Internal& p_collision_normal) {
-
-
 	SGCircle3DInternal circle(capsule.get_radius());
 	auto t = capsule.get_global_transform();
 	t.set_origin(capsule.get_global_vertices()[0]);

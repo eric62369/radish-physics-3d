@@ -173,6 +173,7 @@ fixed SGFixedVector3Internal::dot(const SGFixedVector3Internal &p_other) const {
 }
 
 fixed SGFixedVector3Internal::cross(const SGFixedVector3Internal &p_other) const {
+	// TODO: Cross product returns a Vector3 in 3D
 	// c.x = (a.y * b.z) - (a.z * b.y)
 	// c.y = (a.z * b.x) - (a.x * b.z)
 	// c.z = (a.x * b.y) - (a.y * b.x)

@@ -38,7 +38,7 @@ class SGFixedNode3D : public Node3D, public SGFixedVector3Watcher {
 
 	Ref<SGFixedTransform3D> fixed_transform;
 	Ref<SGFixedVector3> fixed_scale;
-	int64_t fixed_rotation;
+	Ref<SGFixedVector3> fixed_rotation;
 	bool fixed_xform_dirty;
 
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)
@@ -61,7 +61,6 @@ protected:
 	void update_fixed_transform_internal(const SGFixedTransform3DInternal &p_transform);
 	void update_global_fixed_transform_internal(const SGFixedTransform3DInternal &p_global_transform);
 
-
 	int64_t _get_fixed_position_x() const;
 	void _set_fixed_position_x(int64_t p_x);
 	int64_t _get_fixed_position_y() const;
@@ -76,6 +75,13 @@ protected:
 	int64_t _get_fixed_scale_z() const;
 	void _set_fixed_scale_z(int64_t p_z);
 
+	int64_t _get_fixed_rotation_x() const;
+	void _set_fixed_rotation_x(int64_t p_x);
+	int64_t _get_fixed_rotation_y() const;
+	void _set_fixed_rotation_y(int64_t p_y);
+	int64_t _get_fixed_rotation_z() const;
+	void _set_fixed_rotation_z(int64_t p_z);
+
 	void transform_changed();
 
 public:
@@ -88,8 +94,9 @@ public:
 	void set_fixed_scale(const Ref<SGFixedVector3> &p_fixed_scale);
 	Ref<SGFixedVector3> get_fixed_scale() const;
 
-	void set_fixed_rotation(int64_t p_fixed_rotation);
-	int64_t get_fixed_rotation() const;
+	void set_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation);
+	void set_fixed_rotation_internal(const SGFixedVector3Internal &p_fixed_rotation);
+	Ref<SGFixedVector3> get_fixed_rotation() const;
 
 	void set_global_fixed_transform(const Ref<SGFixedTransform3D> &p_global_transform);
 	Ref<SGFixedTransform3D> get_global_fixed_transform() const;
@@ -100,8 +107,9 @@ public:
 	void set_fixed_position_internal(const SGFixedVector3Internal &p_fixed_position);
 	void set_global_fixed_position_internal(const SGFixedVector3Internal &p_fixed_position);
 
-	void set_global_fixed_rotation(int64_t p_fixed_rotation);
-	int64_t get_global_fixed_rotation() const;
+	void set_global_fixed_rotation(const Ref<SGFixedVector3> &p_fixed_rotation);
+	void set_global_fixed_rotation_internal(const SGFixedVector3Internal &p_fixed_rotation);
+	Ref<SGFixedVector3> get_global_fixed_rotation() const;
 
 	void update_float_transform();
 

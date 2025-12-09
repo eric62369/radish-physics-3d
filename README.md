@@ -3,6 +3,10 @@ https://www.youtube.com/watch?v=8WSIMTJWCBk
 
 https://stackoverflow.com/questions/13040777/lldb-error-variable-not-available
 
+Run Godot with command line (logs after crash): https://www.youtube.com/watch?v=XB2H1YYwDYo
+From radish-physics-3d directory:
+..\..\Godot_v4.3-stable_win64.exe\Godot_v4.3-stable_win64.exe --editor --path projects\godot-4\
+can attach -v for verbose,
 
 
 SG Physics 3D
