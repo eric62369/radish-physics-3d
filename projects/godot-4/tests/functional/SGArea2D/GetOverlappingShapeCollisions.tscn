@@ -24,6 +24,18 @@ height = 6553600
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_1ink0"]
 height = 65536000
 
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_uut72"]
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_5ukex"]
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_ckdep"]
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_ybt0u"]
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_c7l1t"]
+
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_1ink0"]
+
 [node name="GetOverlappingShapeCollisions" type="Node2D"]
 script = ExtResource("1")
 
