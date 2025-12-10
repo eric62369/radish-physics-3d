@@ -68,7 +68,7 @@ static func get_instance():
 		the_root.add_child(inst)
 	return inst
 
-var Logger = load('res://addons/gut/logger.gd') # everything should use get_logger
+var Logger_util = load('res://addons/gut/logger.gd') # everything should use get_logger
 var _lgr = null
 var json = JSON.new()
 
@@ -212,10 +212,10 @@ func is_godot_version_gte(expected, engine_info=Engine.get_version_info()):
 # ------------------------------------------------------------------------------
 func get_logger():
 	if(_test_mode):
-		return Logger.new()
+		return Logger_util.new()
 	else:
 		if(_lgr == null):
-			_lgr = Logger.new()
+			_lgr = Logger_util.new()
 		return _lgr
 
 

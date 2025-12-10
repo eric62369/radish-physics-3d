@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://ddm2f5oxpbhs7"]
 
-[ext_resource type="Script" path="res://tests/functional/SGCharacterBody2D/MoveAndCollide1.gd" id="1"]
+[ext_resource type="Script" uid="uid://q7xfyaddlgpb" path="res://tests/functional/SGCharacterBody2D/MoveAndCollide1.gd" id="1"]
 
 [sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_vh388"]
 
