@@ -8,7 +8,7 @@
 
 [sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_tb6kd"]
 
-[node name="MoveAndCollide1" type="Node2D"]
+[node name="MoveAndCollide1" type="Node3D"]
 script = ExtResource("1")
 
 [node name="StaticBody1" type="SGStaticBody3D" parent="."]

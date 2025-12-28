@@ -1,4 +1,4 @@
-extends Node2D
+extends Node3D
 
 @onready var kinematic_right = $SGCharacterBody2DRight
 @onready var kinematic_right2 = $SGCharacterBody2DRight2

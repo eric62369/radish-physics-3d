@@ -75,8 +75,10 @@ public:
 	RID get_collider_rid() const;
 	Ref<SGFixedVector3> get_normal() const;
 	Ref<SGFixedVector3> get_remainder() const;
+	void set_normal(const Ref<SGFixedVector3> &p_normal);
+	void set_remainder(const Ref<SGFixedVector3> &p_remainder);
 
-	SGKinematicCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector3> &p_normal, const Ref<SGFixedVector3> &p_remainder);
+	SGKinematicCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid);
 	SGKinematicCollision3D();
 };
 

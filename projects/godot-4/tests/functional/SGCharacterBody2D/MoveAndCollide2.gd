@@ -1,4 +1,4 @@
-extends Node2D
+extends Node3D
 
 @onready var static_body1: SGStaticBody3D = $StaticBody1
 @onready var static_body2: SGStaticBody3D = $StaticBody2

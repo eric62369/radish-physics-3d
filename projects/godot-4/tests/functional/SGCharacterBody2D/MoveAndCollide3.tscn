@@ -1,11 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://dwxl5ocul5oo2"]
+[gd_scene load_steps=7 format=3 uid="uid://dwxl5ocul5oo2"]
 
-[ext_resource type="Script" path="res://tests/functional/SGCharacterBody2D/MoveAndCollide3.gd" id="1"]
+[ext_resource type="Script" uid="uid://dpw1p6h8lsoy4" path="res://tests/functional/SGCharacterBody2D/MoveAndCollide3.gd" id="1"]
 
-[sub_resource type="SGCircleShape2D" id="1"]
-resource_local_to_scene = false
-resource_name = ""
-radius = 79252512
+[sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_8cev4"]
+
+[sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_wfm3b"]
+
+[sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_h6pro"]
+
+[sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_kbxu0"]
+
+[sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_35qv5"]
 
 [node name="MoveAndCollide3" type="Node3D"]
 script = ExtResource("1")
@@ -19,6 +24,7 @@ fixed_scale_z = 0
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 0, 12712, 6912, 0)
 
 [node name="SGCollisionPolygon2D" type="SGCollisionShape3D" parent="SGStaticBody2D"]
+shape = SubResource("SGRectangleShape3D_8cev4")
 fixed_position_x = -20971520
 fixed_position_y = -12582912
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -320, -192, 0)
@@ -30,7 +36,7 @@ fixed_position_y = 538443776
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6704, 8216, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="SGCharacterBody2DRight"]
-shape = SubResource("1")
+shape = SubResource("SGRectangleShape3D_wfm3b")
 
 [node name="SGCharacterBody2DRight2" type="SGCharacterBody3D" parent="."]
 collision_layer = 0
@@ -39,7 +45,7 @@ fixed_position_y = 362086400
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6704, 5525, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="SGCharacterBody2DRight2"]
-shape = SubResource("1")
+shape = SubResource("SGRectangleShape3D_h6pro")
 
 [node name="SGCharacterBody2DLeft" type="SGCharacterBody3D" parent="."]
 collision_layer = 0
@@ -48,7 +54,7 @@ fixed_position_y = 538443776
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18221, 8216, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="SGCharacterBody2DLeft"]
-shape = SubResource("1")
+shape = SubResource("SGRectangleShape3D_kbxu0")
 
 [node name="SGCharacterBody2DLeft2" type="SGCharacterBody3D" parent="."]
 collision_layer = 0
@@ -57,7 +63,7 @@ fixed_position_y = 362086400
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18221, 5525, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="SGCharacterBody2DLeft2"]
-shape = SubResource("1")
+shape = SubResource("SGRectangleShape3D_35qv5")
 
 [node name="Camera2D" type="Camera3D" parent="."]
 current = true

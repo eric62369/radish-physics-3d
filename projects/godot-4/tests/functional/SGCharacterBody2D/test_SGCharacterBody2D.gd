@@ -121,7 +121,7 @@ func test_move_and_collide_concave() -> void:
 
 	var collision_count := 0
 	for _i in range(200):
-		var input = Vector2.RIGHT
+		var input = Vector3.RIGHT
 		var collider = scene.move(input)
 		if collider:
 			assert_ne(collider.normal.to_float(), Vector2.ZERO)

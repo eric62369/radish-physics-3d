@@ -224,15 +224,21 @@ Ref<SGFixedVector3> SGKinematicCollision3D::get_remainder() const {
 	return remainder;
 }
 
-SGKinematicCollision3D::SGKinematicCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector3> &p_normal, const Ref<SGFixedVector3> &p_remainder) {
+SGKinematicCollision3D::SGKinematicCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid) {
 	collider = p_collider;
 	collider_rid = p_collider_rid;
-	normal = p_normal;
-	remainder = p_remainder;
 }
 
 SGKinematicCollision3D::SGKinematicCollision3D() {
 	collider = nullptr;
+}
+
+void SGKinematicCollision3D::set_normal(const Ref<SGFixedVector3> &p_normal) {
+	normal = p_normal;
+}
+
+void SGKinematicCollision3D::set_remainder(const Ref<SGFixedVector3> &p_remainder) {
+	remainder = p_remainder;
 }
 
 void SGRayCastCollision3D::_bind_methods() {
@@ -245,6 +251,8 @@ void SGRayCastCollision3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "collider_rid", PROPERTY_HINT_NONE, "", 0), "", "get_collider_rid");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "point", PROPERTY_HINT_NONE, "", 0), "", "get_point");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "normal", PROPERTY_HINT_NONE, "", 0), "", "get_normal");
+	// void set_normal(const Ref<SGFixedVector3> &p_normal);
+	// void set_remainder(const Ref<SGFixedVector3> &p_remainder);
 }
 
 Object *SGRayCastCollision3D::get_collider() const {
@@ -262,6 +270,8 @@ Ref<SGFixedVector3> SGRayCastCollision3D::get_point() const {
 Ref<SGFixedVector3> SGRayCastCollision3D::get_normal() const {
 	return normal;
 }
+
+
 
 SGRayCastCollision3D::SGRayCastCollision3D(SGCollisionObject3D *p_collider, RID p_collider_rid, const Ref<SGFixedVector3> &p_point, const Ref<SGFixedVector3> &p_normal) {
 	collider = p_collider;
@@ -780,12 +790,13 @@ Ref<SGKinematicCollision3D> SGPhysics3DServer::body_move_and_collide(RID p_body,
 	if (internal->get_world()->move_and_collide(internal, p_linear_velocity->get_internal(), &collision)) {
 		SGInternalData *object_data = (SGInternalData *)collision.collider->get_data();
 		SGCollisionObject3D *object = Object::cast_to<SGCollisionObject3D>(object_data->get_object());
-		Ref<SGKinematicCollision3D> result = Ref<SGKinematicCollision3D>(memnew(SGKinematicCollision3D(
+		SGKinematicCollision3D *object_collide = memnew(SGKinematicCollision3D(
 			object,
-			object_data->rid,
-			SGFixedVector3::from_internal(collision.normal),
-			SGFixedVector3::from_internal(collision.remainder)
-		)));
+			object_data->rid
+		));
+		object_collide->set_normal(SGFixedVector3::from_internal(collision.normal));
+		object_collide->set_remainder(SGFixedVector3::from_internal(collision.remainder));
+		Ref<SGKinematicCollision3D> result = Ref<SGKinematicCollision3D>(object_collide);
 		return result;
 	}
 

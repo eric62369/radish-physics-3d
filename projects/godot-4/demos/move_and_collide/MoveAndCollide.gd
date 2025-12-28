@@ -1,4 +1,4 @@
-extends Node2D
+extends Node3D
 
 @onready var character = $Character
 @onready var area = $Area
