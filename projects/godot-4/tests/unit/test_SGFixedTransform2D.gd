@@ -26,7 +26,9 @@ func test_deterministic_rotation():
 	t.z.y = 0
 	t.z.z = 65535
 	
-	assert_eq(t.get_rotation(), -364)
+	assert_eq(t.get_rotation().x, 0)
+	assert_eq(t.get_rotation().y, -364)
+	assert_eq(t.get_rotation().z, 0)
 
 	var big_t = t.scaled(SGFixed.vector3(13107200, 13107200, 13107200))
 	assert_almost_eq(big_t.x.x, 13107200, 2000) # 200 is 13107200 / 65536
@@ -76,8 +78,10 @@ func test_deterministic_rotation():
 	t.x.z = -4956
 	t.z.x = 4956
 	t.z.z = 65348
-	assert_eq(t.get_rotation(), -4937)
-
+	assert_eq(t.get_rotation().x, 0)
+	assert_eq(t.get_rotation().y, -4937)
+	assert_eq(t.get_rotation().z, 0)
+	
 	t = SGFixed.transform3d(-290, SGFixed.vector3(0, 0, 0))
 	assert_eq(t.x.x, 65535)
 	assert_eq(t.x.y, 0)
@@ -103,7 +107,9 @@ func test_deterministic_rotation():
 	assert_eq(t.z.x, 0)
 	assert_eq(t.z.y, 0)
 	assert_eq(t.z.z, 65536)
-	assert_eq(t.get_rotation(), 0)
+	assert_eq(t.get_rotation().x, 0)
+	assert_eq(t.get_rotation().y, 0)
+	assert_eq(t.get_rotation().z, 0)
 	var scale = t.get_scale()
 	assert_eq(scale.x, 65536)
 	assert_eq(scale.y, 65536)
