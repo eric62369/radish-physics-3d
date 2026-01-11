@@ -45,3 +45,30 @@ func _physics_process(delta: float) -> void:
 
 		if ray_cast.is_colliding():
 			spot.position = ray_cast.get_collision_point().to_float() - Vector2(5, 5)
+
+
+func _process(delta):
+	for child in self.get_children():
+		if child is SGArea3D:
+			var sg = child
+			var capsule_mesh = CapsuleMesh.new()
+			var shape = sg.get_child(0)
+			if (shape is SGCollisionShape3D and shape.shape is SGCapsuleShape3D):
+				shape = shape.shape
+				# (Optional) Customize the CapsuleMesh properties
+				capsule_mesh.radius = SGFixed.to_float(shape.radius)
+				if (shape is SGCapsuleShape3D):
+					capsule_mesh.height = SGFixed.to_float(shape.height + shape.radius*2)
+				else:
+					capsule_mesh.height = SGFixed.to_float(shape.radius)*2
+				capsule_mesh.radial_segments = 18
+				capsule_mesh.rings = 6
+				
+				var color = Color(1, 0, 0, 1)
+				#for i in range(0, len(areas)):
+					#if child.name == areas[i].name and colliding[i]:
+						#color = Color (0, 1, 0, 1)
+
+				DebugDraw.draw_mesh(capsule_mesh, sg.transform, color)
+		else:
+			continue

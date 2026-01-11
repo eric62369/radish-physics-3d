@@ -15,24 +15,13 @@ script = ExtResource("1")
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody1"]
 shape = SubResource("SGRectangleShape3D_vh388")
-fixed_position_x = 655360
-fixed_position_y = 655360
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 0)
 
 [node name="StaticBody2" type="SGStaticBody3D" parent="."]
-fixed_position_x = 1310720
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody2"]
 shape = SubResource("SGRectangleShape3D_x4fpi")
-fixed_position_x = 655360
-fixed_position_y = 655360
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 0)
 
 [node name="KinematicBody" type="SGCharacterBody3D" parent="."]
-fixed_position_x = 1310720
-fixed_position_y = 2031616
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 31, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="KinematicBody"]
 shape = SubResource("SGCapsuleShape3D_tb6kd")

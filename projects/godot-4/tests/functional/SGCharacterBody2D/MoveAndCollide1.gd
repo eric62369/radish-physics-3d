@@ -11,7 +11,8 @@ func reset_kinematic_body() -> void:
 
 func do_move_and_collide() -> SGKinematicCollision3D:
 	var vector = SGFixed.vector3(0, -SGFixed.TWO, 0)
-	return kinematic_body.move_and_collide(vector)
+	var collision = kinematic_body.move_and_collide(vector)
+	return collision
 
 func _on_Button_pressed() -> void:
 	reset_kinematic_body()

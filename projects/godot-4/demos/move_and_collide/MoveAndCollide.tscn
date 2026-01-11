@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://c7mjfc0nu8g16"]
+[gd_scene load_steps=10 format=3 uid="uid://c7mjfc0nu8g16"]
 
-[ext_resource type="Script" path="res://demos/move_and_collide/MoveAndCollide.gd" id="1_tidnq"]
+[ext_resource type="Script" uid="uid://pqtajqm18s83" path="res://demos/move_and_collide/MoveAndCollide.gd" id="1_tidnq"]
 [ext_resource type="Texture2D" uid="uid://cgbjhrh37tx7c" path="res://demos/move_and_collide/tank_blue.png" id="2_b6iah"]
+[ext_resource type="PackedScene" uid="uid://bcjtflkpuopaq" path="res://camera_pivot.tscn" id="3_3x7u2"]
 
 [sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_au5y0"]
 
@@ -13,8 +14,9 @@
 
 [sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_ugska"]
 
-[node name="PhysicsTest2" type="Node2D"]
-position = Vector2(-1, 0)
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3x7u2"]
+
+[node name="PhysicsTest2" type="Node3D"]
 script = ExtResource("1_tidnq")
 
 [node name="StaticBody" type="SGStaticBody3D" parent="."]
@@ -52,8 +54,7 @@ fixed_position_x = 33554432
 fixed_position_y = 23789568
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 512, 363, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="Character"]
-rotation = -1.5708
+[node name="Sprite2D" type="Sprite3D" parent="Character"]
 texture = ExtResource("2_b6iah")
 
 [node name="SGCharacterBody3D" type="SGCollisionShape3D" parent="Character"]
@@ -69,12 +70,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 406, 512, 0)
 shape = SubResource("SGRectangleShape3D_ugska")
 
 [node name="Spot" type="ColorRect" parent="."]
+visible = false
 offset_left = -5.0
 offset_top = -5.0
 offset_right = 5.0
 offset_bottom = 5.0
 color = Color(0.0313726, 1, 0, 1)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(507, 383)
-zoom = Vector2(1.333, 1.333)
+[node name="CameraPivot" parent="." instance=ExtResource("3_3x7u2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 507, 383, 184.598)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_3x7u2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.4667082)
