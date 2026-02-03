@@ -455,39 +455,40 @@ bool SGCollisionDetector3DInternal::segment_intersects_Capsule(const SGFixedVect
 // q = p_start_2
 // s = p_cast_to_2
 bool SGCollisionDetector3DInternal::segment_intersects_segment(const SGFixedVector3Internal &p_start_1, const SGFixedVector3Internal &p_cast_to_1, const SGFixedVector3Internal &p_start_2, const SGFixedVector3Internal &p_cast_to_2, SGFixedVector3Internal &p_intersection_point) {
-	fixed denominator = p_cast_to_1.cross(p_cast_to_2);
-	fixed u_nominator = (p_start_2 - p_start_1).cross(p_cast_to_1);
+	// fixed denominator = p_cast_to_1.cross(p_cast_to_2);
+	// fixed u_nominator = (p_start_2 - p_start_1).cross(p_cast_to_1);
 
-	if (denominator == fixed::ZERO && u_nominator == fixed::ZERO) {
-		// Line segments are collinear.
-		//
-		// They could overlap, but since we are always dealing with polygons,
-		// we know that there will always be another edge that shares one of
-		// the 2nd line segments end points, so we can trust that we'll
-		// collide with that edge (so long as there aren't two collinear edges).
-		return false;
-	}
+	// if (denominator == fixed::ZERO && u_nominator == fixed::ZERO) {
+	// 	// Line segments are collinear.
+	// 	//
+	// 	// They could overlap, but since we are always dealing with polygons,
+	// 	// we know that there will always be another edge that shares one of
+	// 	// the 2nd line segments end points, so we can trust that we'll
+	// 	// collide with that edge (so long as there aren't two collinear edges).
+	// 	return false;
+	// }
 
-	if (denominator == fixed::ZERO) {
-		// Line segments are parallel and so non-intersecting.
-		return false;
-	}
+	// if (denominator == fixed::ZERO) {
+	// 	// Line segments are parallel and so non-intersecting.
+	// 	return false;
+	// }
 
-	fixed u = u_nominator / denominator;
-	if (u < fixed::ZERO || u > fixed::ONE) {
-		// Intersection would happen before the start or after the end of the 2nd segment.
-		return false;
-	}
+	// fixed u = u_nominator / denominator;
+	// if (u < fixed::ZERO || u > fixed::ONE) {
+	// 	// Intersection would happen before the start or after the end of the 2nd segment.
+	// 	return false;
+	// }
 
-	fixed t = (p_start_2 - p_start_1).cross(p_cast_to_2) / denominator;
-	if (t < fixed::ZERO || t > fixed::ONE) {
-		// Intersection would happen before the start or after the end of the 1st segment.
-		return false;
-	}
+	// fixed t = (p_start_2 - p_start_1).cross(p_cast_to_2) / denominator;
+	// if (t < fixed::ZERO || t > fixed::ONE) {
+	// 	// Intersection would happen before the start or after the end of the 1st segment.
+	// 	return false;
+	// }
 
-	p_intersection_point = p_start_1 + (p_cast_to_1 * t);
+	// p_intersection_point = p_start_1 + (p_cast_to_1 * t);
 
-	return true;
+	// return true;
+	return false;
 }
 
 bool SGCollisionDetector3DInternal::segment_intersects_Polygon(const SGFixedVector3Internal &p_start, const SGFixedVector3Internal &p_cast_to, const SGShape3DInternal &polygon, SGFixedVector3Internal &p_intersection_point, SGFixedVector3Internal &p_collision_normal) {

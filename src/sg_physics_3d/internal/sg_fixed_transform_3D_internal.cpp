@@ -336,3 +336,30 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::interpolate_with(const SG
 	res.scale_basis(SGFixedVector3Internal::linear_interpolate(s1, s2, p_c));
 	return res;
 }
+
+SGFixedTransform3DInternal SGFixedTransform3DInternal::looking_at(const SGFixedVector3Internal &p_target, const SGFixedVector3Internal &p_up, bool p_use_model_front) const {
+#ifdef MATH_CHECKS
+	ERR_FAIL_COND_V_MSG(p_target.is_zero_approx(), SGFixedTransform3DInternal() , "The target vector can't be zero.");
+	ERR_FAIL_COND_V_MSG(p_up.is_zero_approx(), SGFixedTransform3DInternal() , "The up vector can't be zero.");
+#endif
+	SGFixedVector3Internal v_z = p_target.normalized();
+	if (!p_use_model_front) {
+		v_z = -v_z;
+	}
+	SGFixedVector3Internal v_x = p_up.cross(v_z);
+	if (v_x.is_zero_approx()) {
+		WARN_PRINT("Target and up vectors are colinear. This is not advised as it may cause unwanted rotation around local Z axis.");
+		v_x = SGFixedVector3Internal(fixed::ONE, fixed::ZERO, fixed::ZERO);
+		// v_x = p_up.get_any_perpendicular(); // Vectors are almost parallel.
+	}
+	v_x.normalize();
+	SGFixedVector3Internal v_y = v_z.cross(v_x);
+
+	SGFixedTransform3DInternal t = *this;
+	t.set(
+		v_x.x, v_x.y, v_x.z,
+		v_y.x, v_y.y, v_y.z,
+		v_z.x, v_z.y, v_z.z
+	);
+	return t;
+}

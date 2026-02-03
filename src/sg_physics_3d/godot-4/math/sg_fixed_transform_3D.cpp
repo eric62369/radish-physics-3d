@@ -143,6 +143,13 @@ Ref<SGFixedTransform3D> SGFixedTransform3D::translated(const Ref<SGFixedVector3>
 	return SGFixedTransform3D::from_internal(internal);
 }
 
+Ref<SGFixedTransform3D> SGFixedTransform3D::looking_at(const Ref<SGFixedVector3> &p_target, bool p_use_model_front) const {
+	SGFixedVector3Internal p_up = SGFixedVector3Internal(fixed::ZERO, fixed::ONE, fixed::ZERO);
+	SGFixedTransform3DInternal internal = get_internal();
+	internal.looking_at(p_target->get_internal(), p_up, p_use_model_front);
+	return SGFixedTransform3D::from_internal(internal);
+}
+
 Ref<SGFixedTransform3D> SGFixedTransform3D::orthonormalized() const {
 	SGFixedTransform3DInternal internal = get_internal();
 	internal.orthonormalize();

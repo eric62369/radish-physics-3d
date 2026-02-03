@@ -3,15 +3,25 @@
 [ext_resource type="Script" uid="uid://q7xfyaddlgpb" path="res://tests/functional/SGCharacterBody2D/MoveAndCollide1.gd" id="1"]
 
 [sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_vh388"]
+extents_x = 65536
+extents_y = 65536
+extents_z = 65536
 
 [sub_resource type="SGRectangleShape3D" id="SGRectangleShape3D_x4fpi"]
+extents_x = 65536
+extents_y = 65536
+extents_z = 65536
 
-[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_tb6kd"]
+[sub_resource type="SGCapsuleShape3D" id="SGCapsuleShape3D_3p54g"]
+radius = 65536
+height = 65536
 
 [node name="MoveAndCollide1" type="Node3D"]
 script = ExtResource("1")
 
 [node name="StaticBody1" type="SGStaticBody3D" parent="."]
+fixed_position_x = 131072
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="StaticBody1"]
 shape = SubResource("SGRectangleShape3D_vh388")
@@ -22,9 +32,11 @@ shape = SubResource("SGRectangleShape3D_vh388")
 shape = SubResource("SGRectangleShape3D_x4fpi")
 
 [node name="KinematicBody" type="SGCharacterBody3D" parent="."]
+fixed_position_y = 95536
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4577637, 0)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape3D" parent="KinematicBody"]
-shape = SubResource("SGCapsuleShape3D_tb6kd")
+shape = SubResource("SGCapsuleShape3D_3p54g")
 
 [node name="Button" type="Button" parent="."]
 offset_left = 70.0

@@ -161,7 +161,9 @@ fixed SGFixedVector3Internal::distance_squared_to(const SGFixedVector3Internal &
 }
 
 fixed SGFixedVector3Internal::angle_to(const SGFixedVector3Internal &p_other) const {
-	return cross(p_other).atan2(dot(p_other));
+	// TODO: angle_to but how do you pick an axis?
+	// cross(p_other).atan2(dot(p_other));
+	return cross(p_other).y.atan2(dot(p_other));
 }
 
 fixed SGFixedVector3Internal::angle_to_point(const SGFixedVector3Internal &p_other) const {
@@ -172,12 +174,17 @@ fixed SGFixedVector3Internal::dot(const SGFixedVector3Internal &p_other) const {
 	return x * p_other.x + y * p_other.y + z * p_other.z;
 }
 
-fixed SGFixedVector3Internal::cross(const SGFixedVector3Internal &p_other) const {
-	// TODO: Cross product returns a Vector3 in 3D
+SGFixedVector3Internal SGFixedVector3Internal::cross(const SGFixedVector3Internal &p_other) const {
+	// Cross product returns a Vector3 in 3D
 	// c.x = (a.y * b.z) - (a.z * b.y)
 	// c.y = (a.z * b.x) - (a.x * b.z)
 	// c.z = (a.x * b.y) - (a.y * b.x)
-	return x * p_other.y - y * p_other.x; // TODO: https://docs.godotengine.org/en/latest/tutorials/math/vector_math.html#cross-product
+	// https://docs.godotengine.org/en/latest/tutorials/math/vector_math.html#cross-product
+	SGFixedVector3Internal v;
+	v.x = (y * p_other.z) - (z * p_other.y);
+	v.y = (z * p_other.x) - (x * p_other.z);
+	v.z = (x * p_other.y) - (y * p_other.x);
+	return v;
 }
 
 /*
@@ -213,7 +220,11 @@ SGFixedVector3Internal SGFixedVector3Internal::reflect(const SGFixedVector3Inter
 }
 
 bool SGFixedVector3Internal::is_equal_approx(const SGFixedVector3Internal &p_v) const {
-	return fixed::is_equal_approx(x, p_v.x) && fixed::is_equal_approx(y, p_v.y);
+	return fixed::is_equal_approx(x, p_v.x) && fixed::is_equal_approx(y, p_v.y) && fixed::is_equal_approx(z, p_v.z);
+}
+
+bool SGFixedVector3Internal::is_zero_approx() const {
+	return fixed::is_equal_approx(x, fixed::ZERO) && fixed::is_equal_approx(y, fixed::ZERO) && fixed::is_equal_approx(z, fixed::ZERO);
 }
 
 SGFixedVector3Internal SGFixedVector3Internal::cubic_interpolate(const SGFixedVector3Internal& p_b, const SGFixedVector3Internal& p_pre_a, const SGFixedVector3Internal& p_post_b, fixed p_weight) const {

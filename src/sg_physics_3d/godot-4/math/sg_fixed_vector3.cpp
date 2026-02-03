@@ -249,9 +249,9 @@ int64_t SGFixedVector3::dot(const Ref<SGFixedVector3> &p_other) const {
 	return value.dot(p_other->get_internal()).value;
 }
 
-int64_t SGFixedVector3::cross(const Ref<SGFixedVector3> &p_other) const {
+Ref<SGFixedVector3> SGFixedVector3::cross(const Ref<SGFixedVector3> &p_other) const {
 	ERR_FAIL_COND_V(!p_other.is_valid(), 0);
-	return value.cross(p_other->get_internal()).value;
+	return SGFixedVector3::from_internal(value.cross(p_other->get_internal()));
 }
 
 Ref<SGFixedVector3> SGFixedVector3::rotated(int64_t p_rotation) const {

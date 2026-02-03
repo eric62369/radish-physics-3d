@@ -119,7 +119,7 @@ public:
 	int64_t angle() const;
 
 	int64_t dot(const Ref<SGFixedVector3> &p_other) const;
-	int64_t cross(const Ref<SGFixedVector3> &p_other) const;
+	Ref<SGFixedVector3> cross(const Ref<SGFixedVector3> &p_other) const;
 
 	Ref<SGFixedVector3> linear_interpolate(const Ref<SGFixedVector3> &p_to, int64_t weight) const;
 	Ref<SGFixedVector3> cubic_interpolate(const Ref<SGFixedVector3>& p_b, const Ref<SGFixedVector3>& p_pre_a, const Ref<SGFixedVector3>& p_post_b, int64_t p_weight) const;

@@ -175,7 +175,7 @@ struct SGFixedVector3Internal {
 	_FORCE_INLINE_ SGFixedVector3Internal direction_to(const SGFixedVector3Internal &p_to) const;
 
 	fixed dot(const SGFixedVector3Internal &p_other) const;
-	fixed cross(const SGFixedVector3Internal &p_other) const;
+	SGFixedVector3Internal cross(const SGFixedVector3Internal &p_other) const;
 	//fixed posmod(const fixed p_mod) const;
 	//fixed posmodv(const SGFixedVector3Internal &p_modv) const;
 	//SGFixedVector3Internal project(const SGFixedVector3Internal &p_to) const;
@@ -191,6 +191,7 @@ struct SGFixedVector3Internal {
 	SGFixedVector3Internal reflect(const SGFixedVector3Internal &p_normal) const;
 
 	bool is_equal_approx(const SGFixedVector3Internal &p_v) const;
+	bool is_zero_approx() const;
 
 	_FORCE_INLINE_ SGFixedVector3Internal(fixed p_x, fixed p_y, fixed p_z)
 		: x(p_x), y(p_y), z(p_z) {}

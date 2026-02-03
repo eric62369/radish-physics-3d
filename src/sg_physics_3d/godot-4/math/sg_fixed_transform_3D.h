@@ -105,6 +105,9 @@ public:
 	Ref<SGFixedVector3> xform(const Ref<SGFixedVector3> &p_vec) const;
 	Ref<SGFixedVector3> xform_inv(const Ref<SGFixedVector3> &p_vec) const;
 
+	// static Basis looking_at(const Vector3 &p_target, const Vector3 &p_up = Vector3::UP, bool p_use_model_front = false);
+	Ref<SGFixedTransform3D> looking_at(const Ref<SGFixedVector3> &p_target, bool p_use_model_front) const;
+
 	SGFixedTransform3D();
 	SGFixedTransform3D(const SGFixedTransform3DInternal &p_internal);
 };

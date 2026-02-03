@@ -88,6 +88,8 @@ struct SGFixedTransform3DInternal {
 
 	SGFixedTransform3DInternal untranslated() const;
 
+	SGFixedTransform3DInternal looking_at(const SGFixedVector3Internal &p_target, const SGFixedVector3Internal &p_up, bool p_use_model_front = false) const;
+
 	void orthonormalize();
 	SGFixedTransform3DInternal orthonormalized() const;
 	bool is_equal_approx(const SGFixedTransform3DInternal &p_transform) const;
@@ -106,6 +108,8 @@ struct SGFixedTransform3DInternal {
 	_FORCE_INLINE_ SGFixedVector3Internal xform_inv(const SGFixedVector3Internal &p_vec) const;
 	//_FORCE_INLINE_ SGFixedRect3Internal xform(const SGFixedRect3Internal &p_rect) const;
 	//_FORCE_INLINE_ SGFixedRect3Internal xform_inv(const SGFixedRect3Internal &p_rect) const;
+
+
 
 	SGFixedTransform3DInternal(fixed xx, fixed xy, fixed xz, fixed yx, fixed yy, fixed yz, fixed zx, fixed zy, fixed zz, fixed ox, fixed oy, fixed oz) {
 		elements[0][0] = xx;
