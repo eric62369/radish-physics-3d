@@ -361,5 +361,16 @@ SGFixedTransform3DInternal SGFixedTransform3DInternal::looking_at(const SGFixedV
 		v_y.x, v_y.y, v_y.z,
 		v_z.x, v_z.y, v_z.z
 	);
+	// elements[0][0] = ((first.cos()*third.cos()) + (first.sin()*second.sin()*third.sin()));
+	// elements[0][1] = (second.cos() * third.sin());
+	// elements[0][2] = ((first.cos()*second.sin()*third.sin()) - (third.cos()*first.sin()));
+	
+	// elements[1][0] = ((third.cos() * first.sin() * second.sin()) - (first.cos() * third.sin()));
+	// elements[1][1] = (second.cos() * third.cos());
+	// elements[1][2] = ((first.cos()*third.cos()*second.sin()) + (first.sin()*third.sin()));
+	
+	// elements[2][0] = (second.cos()*first.sin());
+	// elements[2][1] = (-second.sin());
+	// elements[2][2] = (first.cos() * second.cos());
 	return t;
 }

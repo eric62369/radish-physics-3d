@@ -61,3 +61,16 @@ func test_normalize():
 	# Smallish values that (due to imprecision) resist normalization.
 	v = SGFixed.vector3(334, -667, 334).normalized()
 	assert_true(v.is_normalized())
+	
+	v = SGFixed.vector3(65536, 0, 0).normalized()
+	v = v.cross(SGFixed.vector3(65536, 65536, 65536))
+	assert_eq(v.x, 0)
+	assert_eq(v.y, -65536)
+	assert_eq(v.z, 65536)
+	
+	v = SGFixed.vector3(65536, 0, 0).normalized()
+	v = v.cross(SGFixed.vector3(0, 65536, 0))
+	assert_eq(v.x, 0)
+	assert_eq(v.y, 0)
+	assert_eq(v.z, 65536)
+	

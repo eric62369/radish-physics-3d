@@ -53,6 +53,7 @@ void SGFixedTransform3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("basis_xform_inv", "vector"), &SGFixedTransform3D::basis_xform_inv);
 	ClassDB::bind_method(D_METHOD("xform", "vector"), &SGFixedTransform3D::xform);
 	ClassDB::bind_method(D_METHOD("xform_inv", "vector"), &SGFixedTransform3D::xform_inv);
+	ClassDB::bind_method(D_METHOD("looking_at", "target", "p_use_model_front"), &SGFixedTransform3D::looking_at);
 
 	ClassDB::bind_method(D_METHOD("copy"), &SGFixedTransform3D::copy);
 }
@@ -146,7 +147,7 @@ Ref<SGFixedTransform3D> SGFixedTransform3D::translated(const Ref<SGFixedVector3>
 Ref<SGFixedTransform3D> SGFixedTransform3D::looking_at(const Ref<SGFixedVector3> &p_target, bool p_use_model_front) const {
 	SGFixedVector3Internal p_up = SGFixedVector3Internal(fixed::ZERO, fixed::ONE, fixed::ZERO);
 	SGFixedTransform3DInternal internal = get_internal();
-	internal.looking_at(p_target->get_internal(), p_up, p_use_model_front);
+	internal = internal.looking_at(p_target->get_internal(), p_up, p_use_model_front);
 	return SGFixedTransform3D::from_internal(internal);
 }
 
