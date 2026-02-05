@@ -378,11 +378,17 @@ void SGFixedNode3D::update_float_transform() {
 		updating_transform = true;
 #endif
 		Transform3D float_xform;
-		float_xform.rotate_basis(Vector3(0, 1, 0), fixed(fixed_rotation->get_y()).to_float());
-		float_xform.rotate_basis(Vector3(1, 0, 0), fixed(fixed_rotation->get_x()).to_float());
-		float_xform.rotate_basis(Vector3(0, 0, 1), fixed(fixed_rotation->get_z()).to_float());
-		float_xform.scale(fixed_scale->to_float());
+		float_xform.basis.set_columns(
+			fixed_transform->get_x()->to_float(),
+			fixed_transform->get_y()->to_float(),
+			fixed_transform->get_z()->to_float()
+		);
 		float_xform.origin = fixed_transform->get_origin()->to_float();
+		// float_xform.rotate_basis(Vector3(0, 1, 0), fixed(fixed_rotation->get_y()).to_float());
+		// float_xform.rotate_basis(Vector3(1, 0, 0), fixed(fixed_rotation->get_x()).to_float());
+		// float_xform.rotate_basis(Vector3(0, 0, 1), fixed(fixed_rotation->get_z()).to_float());
+		// float_xform.scale(fixed_scale->to_float());
+		// float_xform.origin = fixed_transform->get_origin()->to_float();
 		set_transform(float_xform);
 
 #if defined(TOOLS_ENABLED) || defined(DEBUG_ENABLED)

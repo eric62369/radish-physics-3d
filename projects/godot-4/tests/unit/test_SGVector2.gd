@@ -74,3 +74,6 @@ func test_normalize():
 	assert_eq(v.y, 0)
 	assert_eq(v.z, 65536)
 	
+	v = SGFixed.vector3(0, 0, 0)
+	var w = SGFixed.vector3(0, 0, 0)
+	assert_eq(v.is_equal_approx(w), true)

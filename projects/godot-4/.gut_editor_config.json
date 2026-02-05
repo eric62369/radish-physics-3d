@@ -32,7 +32,7 @@
  "post_run_script": "",
  "pre_run_script": "",
  "prefix": "test_",
- "selected": "test_SGFixedTransform2D.gd",
+ "selected": "test_SGVector2.gd",
  "should_exit": false,
  "should_exit_on_success": false,
  "should_maximize": false,
